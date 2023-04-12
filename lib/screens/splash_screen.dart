@@ -28,13 +28,25 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff000915),
-      body:Column(
-        children: [
-        SvgPicture.asset(
-          'images/logo.svg',
-        )
-      ]),
+      backgroundColor: Colors.blue,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('images/logo.png'),
+            SvgPicture.asset('images/logo.svg'),
+            SizedBox(height: 16),
+            Text(
+              'Bem-vindo ao meu aplicativo',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
