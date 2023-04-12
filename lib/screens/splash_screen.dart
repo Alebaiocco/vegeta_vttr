@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'home_screen.dart';
+import 'login_screen.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -16,34 +17,24 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    //_navigatetohome();
+    _navigatetohome();
   }
 
   _navigatetohome() async {
     await Future.delayed(Duration(seconds: 4), () {});
     Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => MyHomePage(title: 'Home')));
+        MaterialPageRoute(builder: (context) => Login()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: Color(0xff000915),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('images/logo.png'),
-            SvgPicture.asset('images/logo.svg'),
-            SizedBox(height: 16),
-            Text(
-              'Bem-vindo ao meu aplicativo',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            Image.asset('assets/logo.png', height: 100, width: 100,),
           ],
         ),
       ),
