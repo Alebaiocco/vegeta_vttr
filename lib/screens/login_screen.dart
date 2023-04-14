@@ -13,41 +13,39 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff00000),
+      backgroundColor: Colors.white,
       body: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/jhonMayer.png'),
-            fit: BoxFit.cover,
-            opacity: 0.40
-              )
-            ),
+            image: DecorationImage(
+                image: AssetImage(''), fit: BoxFit.cover, opacity: 0.40)),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             TextField(
               decoration: InputDecoration(
-                labelText: 'E-mail',
-              ),
+                  hintText: 'name@example.com',
+                  labelText: 'Email',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  )),
             ),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Senha',
-              ),
-              obscureText: true,
+            Padding(
+              padding: EdgeInsets.only(top: 10),
             ),
-            /*  RaisedButton(
-              child: Text('Entrar'),
-              onPressed: () {
-                // Adicione aqui a lógica de validação do formulário
-                if (true) {
-                  Scaffold.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Erro de validação'),
-                    ),
-                  );
-                }
-              },
-            ), */
+            SizedBox(
+              width: 300,
+              child: TextField(
+                style: TextStyle(color: Colors.red),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5)),
+                  hintText: '***********',
+                  labelText: 'Senha',
+                ),
+                obscureText: true,
+              ),
+            )
           ],
         ),
       ),
