@@ -22,8 +22,8 @@ class _SplashState extends State<Splash> {
 
   _navigatetohome() async {
     await Future.delayed(Duration(seconds: 4), () {});
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => Login()));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => Login()));
   }
 
   @override
@@ -34,7 +34,11 @@ class _SplashState extends State<Splash> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/logo.png', height: 250, width: 250,),
+            Image.asset(
+              'assets/images/logo.png',
+              height: 250,
+              width: 250,
+            ),
           ],
         ),
       ),
