@@ -10,6 +10,9 @@ class Contact extends StatefulWidget {
 }
 
 class _ContactState extends State<Contact> {
+  List<String> items = ['Item 1', 'Item 2', 'Item 3'];
+  String? selectedItem = 'item 1';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +38,15 @@ class _ContactState extends State<Contact> {
                 fontFamily: 'Rubik',
               ),
             ),
-            TextField()
+            DropdownButton<String>(
+              value: selectedItem,
+              items: items.
+                map((item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(item, style: TextStyle(fontSize: 24)),
+                 )).toList(),
+                 onChanged: (item) => setState(()=> selectedItem = item),
+           )
           ],
         ),
       ),
