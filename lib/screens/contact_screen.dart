@@ -13,7 +13,7 @@ class Contact extends StatefulWidget {
 
 class _ContactState extends State<Contact> {
   List<String> items = ['Item 1', 'Item 2', 'Item 3'];
-  String? selectedItem = 'item 1';
+  String? selectedItem = 'Item 1';
 
   @override
   Widget build(BuildContext context) {
@@ -56,22 +56,53 @@ class _ContactState extends State<Contact> {
             child: TextField(
               style: TextStyle(color: Colors.white ),
               decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical:  2),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(width: 2, color: Color(0xffA49930)),
                 ),
               ),
             ),
-          ),
-          //    DropdownButton<String>(
-          //      value: selectedItem,
-          //      items: items.
-          //        map((item) => DropdownMenuItem<String>(
-          //          value: item,
-          //          child: Text(item, style: TextStyle(fontSize: 24)),
-          //         )).toList(),
-          //         onChanged: (item) => setState(()=> selectedItem = item),  
-          // ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 20, top: 20),
+                  child: Text(
+                    'Categorias',
+                    style: TextStyle(
+                      color: Color(0xffA49930),
+                      fontFamily: 'Roboto-bold', fontSize: 18,
+                    ),
+                ),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.95,
+              child: DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical:  2),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(width: 2, color: Color(0xffA49930)),
+                ),
+              ),
+                value: selectedItem,
+                items: items.map((item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 20),
+                    child: Text(item, style: TextStyle(fontSize: 20 ,color: Color(0xffA2A2A4)),),
+                  ),
+                )).toList(),
+                onChanged: (item)=> setState(() => selectedItem = item),
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -95,13 +126,17 @@ class _ContactState extends State<Contact> {
             child: TextField(
               style: TextStyle(color: Colors.white ),
               decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical:  2),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(width: 2, color: Color(0xffA49930)),
                 ),
               ),
             ),
-          )
+          ),
+          ElevatedButton(
+            onPressed: (){}, 
+            child: Text('Enviar', style: TextStyle(color: Colors.white),))
           ],
         ),
       ),

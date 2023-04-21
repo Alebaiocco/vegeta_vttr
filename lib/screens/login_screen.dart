@@ -37,7 +37,7 @@ class _LoginState extends State<Login> {
             ),),
             Padding(padding: EdgeInsets.only(left: 10,top: 30),
             child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.95,
+              width: MediaQuery.of(context).size.width * 0.93,
               child: TextField(
                 style: TextStyle(color: Colors.white ),
                 obscureText: true,
@@ -52,7 +52,6 @@ class _LoginState extends State<Login> {
                 ),
               ),
             ),),
-          
             ],
         ),
       ),
