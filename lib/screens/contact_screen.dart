@@ -54,7 +54,7 @@ class _ContactState extends State<Contact> {
             SizedBox(
             width: MediaQuery.of(context).size.width * 0.95,
             child: TextField(
-              style: TextStyle(color: Colors.white ),
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(vertical:  2),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
@@ -68,7 +68,7 @@ class _ContactState extends State<Contact> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 20, top: 20),
+                  padding: EdgeInsets.only(left: 20, top: 15),
                   child: Text(
                     'Categorias',
                     style: TextStyle(
@@ -107,7 +107,7 @@ class _ContactState extends State<Contact> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 20, top: 10),
+                  padding: EdgeInsets.only(left: 20, top: 15),
                   child: Text(
                     'Descrição',
                     style: TextStyle(
@@ -124,6 +124,8 @@ class _ContactState extends State<Contact> {
             SizedBox(
             width: MediaQuery.of(context).size.width * 0.95,
             child: TextField(
+              maxLines: 5,
+              minLines: 1,
               style: TextStyle(color: Colors.white ),
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(vertical:  2),
@@ -134,8 +136,11 @@ class _ContactState extends State<Contact> {
               ),
             ),
           ),
+          SizedBox(
+              height: 30,
+            ),
           ElevatedButton(
-            onPressed: (){}, 
+            onPressed: (){},
             child: Text('Enviar', style: TextStyle(color: Colors.white),))
           ],
         ),
