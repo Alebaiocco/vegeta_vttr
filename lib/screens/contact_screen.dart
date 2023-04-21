@@ -1,6 +1,8 @@
-// ignore_for_file: unused_import, prefer_const_constructors, avoid_unnecessary_containers
+// ignore_for_file: unused_import, prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, avoid_web_libraries_in_flutter
 
 import 'package:flutter/material.dart';
+import 'dart:math';
+
 
 class Contact extends StatefulWidget {
   const Contact({super.key});
@@ -31,22 +33,75 @@ class _ContactState extends State<Contact> {
               thickness: 2,
               color: Color(0xffA49930),
             ),
-            Text(
-              'Nome',
-              style: TextStyle(
-                color: Color(0xffA49930),
-                fontFamily: 'Rubik',
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 20, top: 40),
+                  child: Text(
+                    'Nome',
+                    style: TextStyle(
+                      color: Color(0xffA49930),
+                      fontFamily: 'Roboto-bold', fontSize: 18,
+                    ),
+                ),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+            width: MediaQuery.of(context).size.width * 0.95,
+            child: TextField(
+              style: TextStyle(color: Colors.white ),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(width: 2, color: Color(0xffA49930)),
+                ),
               ),
             ),
-            DropdownButton<String>(
-              value: selectedItem,
-              items: items.
-                map((item) => DropdownMenuItem<String>(
-                  value: item,
-                  child: Text(item, style: TextStyle(fontSize: 24)),
-                 )).toList(),
-                 onChanged: (item) => setState(()=> selectedItem = item),
-           )
+          ),
+          //    DropdownButton<String>(
+          //      value: selectedItem,
+          //      items: items.
+          //        map((item) => DropdownMenuItem<String>(
+          //          value: item,
+          //          child: Text(item, style: TextStyle(fontSize: 24)),
+          //         )).toList(),
+          //         onChanged: (item) => setState(()=> selectedItem = item),  
+          // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 20, top: 10),
+                  child: Text(
+                    'Descrição',
+                    style: TextStyle(
+                      color: Color(0xffA49930),
+                      fontFamily: 'Roboto-bold', fontSize: 18,
+                    ),
+                ),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+            width: MediaQuery.of(context).size.width * 0.95,
+            child: TextField(
+              style: TextStyle(color: Colors.white ),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(width: 2, color: Color(0xffA49930)),
+                ),
+              ),
+            ),
+          )
           ],
         ),
       ),

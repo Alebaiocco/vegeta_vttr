@@ -28,4 +28,16 @@ flutter:
   assets:
       - assets/images/
 
+  fonts:
+    - family: Rubki
+      fonts:
+        - asset: assets\fonts\Rubik-VariableFont_wght.ttf
+    - family: Roboto
+      fonts:
+        - asset: assets\fonts\Roboto-thin.ttf
+        - asset: assets\fonts\Roboto-Regular.ttf
+        - asset: assets\fonts\Roboto-Medium.ttf
+        - asset: assets\fonts\Roboto-Bold.ttf
+
+
       

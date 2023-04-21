@@ -13,52 +13,47 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff000915),
       body: Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('assets/images/logo.png'), fit: BoxFit.cover, opacity: 0.40)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(
-              width: 300,
+            Image.asset('assets/images/logo.png', width: 200 , height: 200),
+            Padding(padding: EdgeInsets.only(left: 10),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.95,
               child: TextField(
-              decoration: InputDecoration(
-                  hintText: 'name@example.com',
-                  labelText: 'Email',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white, width: 2.0),
-                    borderRadius: BorderRadius.circular(5),
-                  )),
-             ),
-            ),
-            TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.red,
+                style: TextStyle(color: Colors.white ),
+                decoration: InputDecoration(
+                  labelStyle: TextStyle(color: Color(0xffA49930)),
+                  labelText: 'Login',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 2, color: Color(0xffA2A2A4)),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 10),
-            ),
-            SizedBox(
-              width: 300,
+            ),),
+            Padding(padding: EdgeInsets.only(left: 10,top: 30),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.95,
               child: TextField(
-                style: TextStyle(color: Colors.red),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5)),
-                  hintText: '***********',
-                  labelText: 'Senha',
-                ),
+                style: TextStyle(color: Colors.white ),
                 obscureText: true,
+                decoration: InputDecoration(
+                  hintText: '************',
+                  labelText: 'Senha',
+                  labelStyle: TextStyle(color: Color(0xffA49930)),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 2, color: Color(0xffA2A2A4)),
+                  ),
+                ),
               ),
-            )
-          ],
+            ),),
+          
+            ],
         ),
       ),
     );

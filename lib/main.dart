@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, unused_import
 
 import 'package:flutter/material.dart';
+import 'package:vttr/screens/login_screen.dart';
 import 'package:vttr/screens/splash_screen.dart';
-
 import 'screens/contact_screen.dart';
 
 void main() {
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
       ),
-      home: Contact(),
+      home: Login(),
     );
   }
 }
