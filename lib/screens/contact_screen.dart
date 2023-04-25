@@ -12,8 +12,8 @@ class Contact extends StatefulWidget {
 }
 
 class _ContactState extends State<Contact> {
-  List<String> items = ['Item 1', 'Item 2', 'Item 3'];
-  String? selectedItem = 'Item 1';
+  List<String> items = ['Selecione uma categoria','Solicitação de Garantia', 'Dúvidas','Problemas com Funcionalidades', 'Sugestão', 'Outros'];
+  String? selectedItem = 'Selecione uma categoria';
 
   @override
   Widget build(BuildContext context) {

@@ -14,9 +14,11 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff000915),
-      body: Container(
+      body: SingleChildScrollView(
+        child:Container(
         child: Column(
           children: [
+            Row(),
             Padding(padding: EdgeInsets.only(top: 10)),
             Image.asset(
               'assets/images/logo.png',
@@ -43,18 +45,10 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
-            // Row(
-            //   children: [
-            //     Container(
-            //       width: MediaQuery.of(context).size.width * 0.5,
-            //       height: 200,
-            //       color:Color(0xffA49930) ,
-            //     ),
-            //   ],
-            //)
           ],
         ),
-      ),
+      ), 
+      )
     );
   }
 }
