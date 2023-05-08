@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_import, avoid_unnecessary_containers
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:vttr/screens/home_screen.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -22,7 +23,7 @@ class _LoginState extends State<Login> {
             Image.asset('assets/images/logo.png', width: 200 , height: 200),
             Padding(padding: EdgeInsets.only(left: 10),
             child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.95,
+              width: MediaQuery.of(context).size.width * 0.93,
               child: TextField(
                 style: TextStyle(color: Colors.white ),
                 decoration: InputDecoration(
@@ -52,6 +53,15 @@ class _LoginState extends State<Login> {
                 ),
               ),
             ),),
+            ElevatedButton(
+              child: Text("Entrar"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Home()),
+                );
+              },
+            )
             ],
         ),
       ),
