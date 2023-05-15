@@ -16,7 +16,8 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff000915),
-      body: Container(
+      body: SingleChildScrollView(
+        child: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -97,6 +98,7 @@ class _LoginState extends State<Login> {
           ],
         ),
       ),
+      )
     );
   }
 }
