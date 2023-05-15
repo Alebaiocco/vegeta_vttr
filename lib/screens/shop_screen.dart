@@ -2,14 +2,14 @@
 
 import 'package:flutter/material.dart';
 
-class MyProducts extends StatefulWidget {
-  const MyProducts({super.key});
+class ShopPage extends StatefulWidget {
+  const ShopPage({super.key});
 
   @override
-  State<MyProducts> createState() => _MyProductsState();
+  State<ShopPage> createState() => _ShopPageState();
 }
 
-class _MyProductsState extends State<MyProducts> {
+class _ShopPageState extends State<ShopPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
