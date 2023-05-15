@@ -19,7 +19,7 @@ class _ContactState extends State<Contact> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff000915),
-      body: Container(
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -143,7 +143,7 @@ class _ContactState extends State<Contact> {
             onPressed: (){},
             child: Text('Enviar', style: TextStyle(color: Colors.white),))
           ],
-        ),
+        ), 
       ),
     );
   }
