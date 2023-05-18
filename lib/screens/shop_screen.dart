@@ -17,7 +17,7 @@ class _ShopPageState extends State<ShopPage> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-            // Header 
+            // Cabeçalho
             Padding(padding: EdgeInsets.only(top: 10)),
             Image.asset(
               'assets/images/logo.png',
@@ -28,7 +28,7 @@ class _ShopPageState extends State<ShopPage> {
               thickness: 2,
               color: Color(0xffA49930),
             ),
-            // Header 
+            // Cabeçalho
             Column(
               children: [
                 Text(
