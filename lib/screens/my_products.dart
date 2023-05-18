@@ -24,7 +24,7 @@ class MyProductsPage extends StatefulWidget {
 }
 
 class _MyProductsPageState extends State<MyProductsPage> {
-  final List<Product> products = [/*
+  final List<Product> products = [
     Product(
       numSerie: 08821,
       description: 'Descrição do produto 1',
@@ -42,7 +42,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
       description: 'Descrição do produto 3',
       garantia: '27/12/2024',
       photoUrl: 'assets/images/pedalTres.png',
-    ),*/
+    ),
   ];
 
   @override
