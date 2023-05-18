@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
         child:Container(
         child: Column(
           children: [
-            Row(),
+            // Header 
             Padding(padding: EdgeInsets.only(top: 10)),
             Image.asset(
               'assets/images/logo.png',
@@ -29,6 +29,7 @@ class _HomeState extends State<Home> {
               thickness: 2,
               color: Color(0xffA49930),
             ),
+            // Header 
             Column(
               children: [
                 Image.asset('assets/images/equipe.jpeg', width:MediaQuery.of(context).size.width * 0.8 ),
