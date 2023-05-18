@@ -23,6 +23,7 @@ class _ContactState extends State<Contact> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // Header 
             Padding(padding: EdgeInsets.only(top: 10)),
             Image.asset(
               'assets/images/logo.png',
@@ -33,6 +34,7 @@ class _ContactState extends State<Contact> {
               thickness: 2,
               color: Color(0xffA49930),
             ),
+            // Header 
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
