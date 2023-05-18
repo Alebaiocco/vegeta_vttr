@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:vttr/screens/home_screen.dart';
 import 'package:vttr/screens/signup_screen.dart';
+import 'package:http/http.dart' as http;
+
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -100,5 +102,30 @@ class _LoginState extends State<Login> {
       ),
       )
     );
+  }
+}
+
+
+
+Future<void> loginUser(String email, String password) async {
+  var url = Uri.parse('http://127.0.0.1:8000/api/user/login');
+  var body = {
+    'email': email,
+    'password': password,
+  };
+
+  try {
+    var response = await http.post(url, body: body);
+
+    if (response.statusCode == 200) {
+      // Sucesso! O login foi realizado com sucesso.
+      print('Login realizado com sucesso!');
+    } else {
+      // O servidor retornou um código de status de erro.
+      print('Erro ao fazer login. Código de status: ${response.statusCode}');
+    }
+  } catch (e) {
+    // Ocorreu um erro ao tentar fazer a solicitação.
+    print('Erro ao fazer login: $e');
   }
 }
