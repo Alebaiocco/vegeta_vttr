@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 
@@ -45,7 +45,17 @@ class _ShopPageState extends State<ShopPage> {
                       children: [
                         Image.asset(
                           'assets/images/pedalUm.png',
+                          fit: BoxFit.fill,
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          height: 200,
                         ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text('Narciso')
+                          ],
+                        )
                       ],
                     ),
                   ),
@@ -60,6 +70,9 @@ class _ShopPageState extends State<ShopPage> {
                       children: [
                         Image.asset(
                           'assets/images/pedalDois.png',
+                          fit: BoxFit.fill,
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          height: 200,
                         ),
                       ],
                     ),
@@ -75,6 +88,9 @@ class _ShopPageState extends State<ShopPage> {
                       children: [
                         Image.asset(
                           'assets/images/pedalTres.png',
+                          fit: BoxFit.fill,
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          height: 200,
                         ),
                       ],
                     ),
