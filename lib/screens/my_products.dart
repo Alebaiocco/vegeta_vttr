@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:vttr/components/top_bar.dart';
 
 class Product {
   final int numSerie;
@@ -17,7 +18,7 @@ class Product {
 }
 
 class MyProductsPage extends StatefulWidget {
-  const MyProductsPage({super.key});
+  const MyProductsPage({Key? key}) : super(key: key);
 
   @override
   State<MyProductsPage> createState() => _MyProductsPageState();
@@ -52,151 +53,183 @@ class _MyProductsPageState extends State<MyProductsPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            TopBar(
+              text: 'Meus Produtos', 
+              text2: ''),           
+            const Divider(
+              thickness: 2,
+              color: Color(0xffA49930),
+            ),
+            Padding(padding: EdgeInsets.only(top: 10)),
+            ElevatedButton(             
+              onPressed: () {
+                showConfirmationDialog(context);
+              }, 
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    width: 2,
+                    color: Color(0xffA49930),
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                backgroundColor:  Color(0x00A49830),
+                foregroundColor:  Color(0xffA49930),
+              ),
+              child: Text('Termos De Garantia'),
+            ),
+            if (products.isNotEmpty)
+              _buildProductList()
+            else
+              _buildEmptyProducts(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProductList() {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: products.length,
+      itemBuilder: (context, index) {
+        final product = products[index];
+        return Column(
+          children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              alignment: Alignment.center,
+              margin: const EdgeInsets.only(top: 20),
+              width: 288,
+              height: 300,
+              color: Color(0xffA49930),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(right: 16),
+                  Expanded(
                     child: Image.asset(
-                      'assets/images/logo.png',
-                      height: 50,
-                      width: 50,
+                      product.photoUrl,
+                      fit: BoxFit.contain,
                     ),
                   ),
-                  Expanded(
+                ],
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              width: 288,
+              height: 55,
+              decoration: BoxDecoration(
+                color: Color(0xffA49930),
+                borderRadius: const BorderRadius.only(
+                  bottomRight: Radius.circular(35),
+                ),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(left: 3),
+                    alignment: Alignment.topLeft,
                     child: Text(
-                      'Meus Produtos',
+                      product.description,
                       style: TextStyle(
-                        color: Color(0xffA49930),
+                        color: Colors.black,
+                        fontFamily: 'Rubik',
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-            Divider(
-              thickness: 2,
-              color: Color(0xffA49930),
-            ),
-            if (products.isNotEmpty)
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 20),
-                        width: 288,
-                        height: 300,
-                        color: Color(0xffA49930),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Image.asset(
-                                products[index].photoUrl,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        width: 288,
-                        height: 55,
-                        decoration: BoxDecoration(
-                          color: Color(0xffA49930),
-                          borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(35),
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(left: 3),
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                products[index].description,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'Rubik',
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 3),
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'N ${products[index].numSerie}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'Rubik',
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                top: 2,
-                                bottom: 2,
-                                left: 3,
-                                right: 180,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(35),
-                                ),
-                              ),
-                              alignment: Alignment.bottomLeft,
-                              child: Container(
-                                margin: EdgeInsets.only(left: 3),
-                                child: Text(
-                                  products[index].garantia,
-                                  style: TextStyle(
-                                    color: Color(0xffA49930),
-                                    fontFamily: 'Rubik',
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              )
-            else
-              Column(
-                children: [
                   Container(
-                    margin: EdgeInsets.only(top:100, left: 100, right: 100),
-                    alignment: Alignment.center,
-                    child: Image.asset(
-                      'assets/images/empityProducts.png',
-                      height: 200,
-                      width: 200,
+                    margin: const EdgeInsets.only(left: 3),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'N ${product.numSerie}',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Rubik',
+                      ),
                     ),
                   ),
-                  Text(
-                    'Nenhum produto encontrado',
-                    style: TextStyle(
-                      color: Color(0xffA49930),
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 2,
+                      bottom: 2,
+                      left: 3,
+                      right: 180,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: const BorderRadius.only(
+                        bottomRight: Radius.circular(35),
+                      ),
+                    ),
+                    alignment: Alignment.bottomLeft,
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 3),
+                      child: Text(
+                        product.garantia,
+                        style: TextStyle(
+                          color: Color(0xffA49930),
+                          fontFamily: 'Rubik',
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
+            ),
           ],
+        );
+      },
+    );
+  }
+
+  Widget _buildEmptyProducts() {
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 100, left: 100, right: 100),
+          alignment: Alignment.center,
+          child: Image.asset(
+            'assets/images/empityProducts.png',
+            height: 200,
+            width: 200,
+          ),
         ),
-      ),
+        Text(
+          'Nenhum produto encontrado',
+          style: TextStyle(
+            color: Color(0xffA49930),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+  //Função para mostrar o texto de garantia ao usuário
+  void showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Termo de Garantia'),
+          content: Text('Aqui estão algumas informações importantes para ajudá-lo a entender melhor como a Garantia Shopee protege sua compra e como você pode solicitar o reembolso, caso haja algum contratempo com seu pedido. A Garantia Shopee assegura o recebimento e qualidade dos produtos que comprou, tornando mais fácil para você solicitar um reembolso em caso de inconvenientes. Esse processo certifica que o valor pago por você, em qualquer compra feita na nossa plataforma, seja creditado ao vendedor após 7 dias do recebimento do produto. É importante lembrar que para pedidos que ainda não foram encaminhados, os vendedores devem enviá-los dentro do período de Garantia Shopee. Caso contrário, o pagamento será automaticamente reembolsado a você após o término do prazo. Além disso, você pode usar uma extensão única de 3 dias da Garantia Shopee para um pedido que ainda não foi enviado. Para fazer isso, selecione Estender Garantia Shopee na página Detalhes do pedido.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Fecha a caixa de diálogo e retorna true
+              },
+              child: Text('Confirmar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // Fecha a caixa de diálogo e retorna false
+              },
+              child: Text('Negar'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
