@@ -1,7 +1,11 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, non_constant_identifier_names, override_on_non_overriding_member, annotate_overrides
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, non_constant_identifier_names, override_on_non_overriding_member, annotate_overrides, avoid_print, prefer_const_literals_to_create_immutables, deprecated_member_use
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:vttr/screens/contact_screen.dart';
+import 'package:vttr/screens/my_products.dart';
 import 'package:vttr/screens/shop_screen.dart';
 
 class Home extends StatefulWidget {
@@ -22,6 +26,40 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xff000915),
+        bottomNavigationBar: CurvedNavigationBar(
+          height: 60,
+          backgroundColor: Color(0xffA49930),
+          color:Color(0xff000915),
+          animationDuration: Duration(milliseconds: 300),
+          onTap: (index) {
+            print(index);
+            switch (index) {
+              case 0:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ShopPage()),
+                );
+                break;
+              case 1:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MyProductsPage()),
+                );
+                break;
+              case 2:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Contact()),
+                );
+                break;
+            }
+          },
+          items: [
+            SvgPicture.asset('assets/images/shop.svg', color: Color(0xffA2A2A4)),
+            SvgPicture.asset('assets/images/myProducts.svg', color: Color(0xffA2A2A4)),
+            SvgPicture.asset('assets/images/contact.svg', color: Color(0xffA2A2A4)),
+          ],
+        ),
         body: SingleChildScrollView(
           child: Container(
             child: Column(
