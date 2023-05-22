@@ -1,8 +1,8 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_import
 
 import 'package:flutter/material.dart';
 import 'package:vttr/components/top_bar.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 class Product {
   final int numSerie;
   final String description;
@@ -17,6 +17,8 @@ class Product {
   });
 }
 
+final Uri _url = Uri.parse('https://pub.dev/packages/url_launcher');
+
 class MyProductsPage extends StatefulWidget {
   const MyProductsPage({Key? key}) : super(key: key);
 
@@ -24,6 +26,11 @@ class MyProductsPage extends StatefulWidget {
   State<MyProductsPage> createState() => _MyProductsPageState();
 }
 
+Future<void> _launchUrl() async {
+  if (!await launchUrl(_url)) {
+    throw Exception('Could not launch $_url');
+  }
+}
 class _MyProductsPageState extends State<MyProductsPage> {
   final List<Product> products = [
     Product(
@@ -77,6 +84,21 @@ class _MyProductsPageState extends State<MyProductsPage> {
                 foregroundColor:  Color(0xffA49930),
               ),
               child: Text('Termos De Garantia'),
+            ),
+            ElevatedButton(             
+              onPressed: _launchUrl,
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                    width: 2,
+                    color: Color(0xffA49930),
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                backgroundColor:  Color(0x00A49830),
+                foregroundColor:  Color(0xffA49930),
+              ),
+              child: Text('Manual'),
             ),
             if (products.isNotEmpty)
               _buildProductList()
