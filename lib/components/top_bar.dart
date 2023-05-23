@@ -11,7 +11,7 @@ class TopBar extends StatelessWidget {
   Widget build(BuildContext context) {
     if ((text2 != '') && (text != '')) {
       return Padding(
-        padding: EdgeInsets.only(top: 30, bottom: 20),
+        padding: EdgeInsets.only(top: 50),
         child: Row(
           children: [
             Container(
@@ -46,7 +46,7 @@ class TopBar extends StatelessWidget {
       );
     } else if ((text2 == '') && (text != '')) {
       return Padding(
-        padding: EdgeInsets.only(top: 30, bottom: 20),
+        padding: EdgeInsets.only(top: 50),
         child: Row(
           children: [
             Container(
@@ -71,7 +71,7 @@ class TopBar extends StatelessWidget {
       );
     } else {
       return Padding(
-        padding: EdgeInsets.only(top: 30, bottom: 20),
+        padding: EdgeInsets.only(top: 50),
         child: Image.asset(
           'assets/images/logo.png',
           height: 50,
