@@ -55,20 +55,22 @@ class _MyProductsPageState extends State<MyProductsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff000915),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            TopBar(text: 'Meus Produtos', text2: ''),
-            const Divider(
-              thickness: 2,
-              color: Color(0xffA49930),
-            ),
-            Padding(padding: EdgeInsets.only(top: 10)),
-            if (products.isNotEmpty)
-              _buildProductList()
-            else
-              _buildEmptyProducts(),
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TopBar(text: 'Meus Produtos', text2: ''),
+              const Divider(
+                thickness: 2,
+                color: Color(0xffA49930),
+              ),
+              Padding(padding: EdgeInsets.only(top: 10)),
+              if (products.isNotEmpty)
+                _buildProductList()
+              else
+                _buildEmptyProducts(),
+            ],
+          ),
         ),
       ),
     );

@@ -43,84 +43,87 @@ class _HomeState extends State<Home> {
           });
         },
       ),
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                // Cabeçalho
-                TopBar(text: 'Olá, Username!', text2: 'Bem vindo a VTR Effects'),
-                const Divider(
-                  thickness: 2,
-                  color: Color(0xffA49930),
-                ),
-                // Cabeçalho
-                Column(
-                  children: [
-                    const Padding(padding: EdgeInsets.only(top: 10)),
-                    // Carrossel de imagens
-                    CarouselSlider.builder(
-                      options: CarouselOptions(height: 400),
-                      itemCount: CarouselImages.length,
-                      itemBuilder: (context, index, realIndex) {
-                        final carrossel = CarouselImages[index];
+      body: SafeArea(
+        child: IndexedStack(
+          index: _selectedIndex,
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Cabeçalho
+                  TopBar(
+                      text: 'Olá, Username!', text2: 'Bem vindo a VTR Effects'),
+                  const Divider(
+                    thickness: 2,
+                    color: Color(0xffA49930),
+                  ),
+                  // Cabeçalho
+                  Column(
+                    children: [
+                      const Padding(padding: EdgeInsets.only(top: 10)),
+                      // Carrossel de imagens
+                      CarouselSlider.builder(
+                        options: CarouselOptions(height: 400),
+                        itemCount: CarouselImages.length,
+                        itemBuilder: (context, index, realIndex) {
+                          final carrossel = CarouselImages[index];
 
-                        return buildImage(carrossel, index);
-                      },
-                    ),
-                    Padding(padding: EdgeInsets.only(top: 10)),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _selectedIndex = 1; // Navega para a página ShopPage
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(
-                            width: 2,
-                            color: Color(0xffA49930),
+                          return buildImage(carrossel, index);
+                        },
+                      ),
+                      Padding(padding: EdgeInsets.only(top: 10)),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _selectedIndex = 1; // Navega para a página ShopPage
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              width: 2,
+                              color: Color(0xffA49930),
+                            ),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          borderRadius: BorderRadius.circular(10),
+                          backgroundColor: Color(0x00A49830),
+                          foregroundColor: Color(0xffA2A2A4),
                         ),
-                        backgroundColor:  Color(0x00A49830),
-                        foregroundColor:  Color(0xffA2A2A4),
+                        child: const Text("Saiba Mais"),
                       ),
-                      child: const Text("Saiba Mais"),
-                    ),
-                    const Padding(padding: EdgeInsets.only(top: 20)),
-                    Image.asset(
-                      'assets/images/equipe.jpeg',
-                      width: MediaQuery.of(context).size.width * 0.8,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 30, bottom: 20),
-                      child: Text(
-                        'Quem Somos',
-                        style: TextStyle(color: Color(0xffA2A2A4)),
+                      const Padding(padding: EdgeInsets.only(top: 20)),
+                      Image.asset(
+                        'assets/images/equipe.jpeg',
+                        width: MediaQuery.of(context).size.width * 0.8,
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 6),
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 40, right: 40),
+                      Padding(
+                        padding: EdgeInsets.only(top: 30, bottom: 20),
                         child: Text(
-                          '  O ano era 2015 e nosso fundador Ítalo se encontrava insatisfeito com sua pedaleira Zoom G1. Sonhava em desbravar o mundo dos efeitos, mas não tinha recursos financeiros para investir em um setup de pedais ou mesmo em uma nova pedaleira. Contudo, a limitação financeira não foi um empecilho para ele. Pelo contrário, diante deste cenário encontrou o ambiente perfeito para a idealização de um pedal, que de forma despretensiosa se tornaria o sonho chamado VTR EFFECTS.',
+                          'Quem Somos',
                           style: TextStyle(color: Color(0xffA2A2A4)),
-                          textAlign: TextAlign.justify,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      Padding(
+                        padding: EdgeInsets.only(top: 6),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 40, right: 40),
+                          child: Text(
+                            '  O ano era 2015 e nosso fundador Ítalo se encontrava insatisfeito com sua pedaleira Zoom G1. Sonhava em desbravar o mundo dos efeitos, mas não tinha recursos financeiros para investir em um setup de pedais ou mesmo em uma nova pedaleira. Contudo, a limitação financeira não foi um empecilho para ele. Pelo contrário, diante deste cenário encontrou o ambiente perfeito para a idealização de um pedal, que de forma despretensiosa se tornaria o sonho chamado VTR EFFECTS.',
+                            style: TextStyle(color: Color(0xffA2A2A4)),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          const ShopPage(),
-          const MyProductsPage(),
-          const Contact(),
-        ],
+            const ShopPage(),
+            const MyProductsPage(),
+            const Contact(),
+          ],
+        ),
       ),
     );
   }
