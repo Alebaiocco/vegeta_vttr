@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import, prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, avoid_web_libraries_in_flutter
 
 import 'package:flutter/material.dart';
+import 'package:vttr/components/top_bar.dart';
 import 'dart:math';
 
 
@@ -21,15 +22,9 @@ class _ContactState extends State<Contact> {
       backgroundColor: Color(0xff000915),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Cabeçalho 
-            Padding(padding: EdgeInsets.only(top: 10)),
-            Image.asset(
-              'assets/images/logo.png',
-              height: 50,
-              width: 50,
-            ),
+            TopBar(text: 'Fale Conosco', text2: 'Tire suas dúvidas diretamente com o time da VTR'),
             Divider(
               thickness: 2,
               color: Color(0xffA49930),
@@ -143,7 +138,18 @@ class _ContactState extends State<Contact> {
             ),
           ElevatedButton(
             onPressed: (){},
-            child: Text('Enviar', style: TextStyle(color: Colors.white),))
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                side: BorderSide(
+                  width: 2,
+                  color: Color(0xffA49930),
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              backgroundColor:  Color(0x00A49830),
+              foregroundColor:  Color(0xffA2A2A4),
+            ),
+            child: Text('Enviar'))
           ],
         ), 
       ),

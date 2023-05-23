@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:vttr/components/top_bar.dart';
 
 class ShopPage extends StatefulWidget {
   const ShopPage({super.key});
@@ -18,12 +19,7 @@ class _ShopPageState extends State<ShopPage> {
           child: Column(
             children: [
             // Cabeçalho
-            Padding(padding: EdgeInsets.only(top: 10)),
-            Image.asset(
-              'assets/images/logo.png',
-              height: 50,
-              width: 50,
-            ),
+            TopBar(text: 'Produtos VTR', text2: 'Explore nossa linha de produtos!'),
             Divider(
               thickness: 2,
               color: Color(0xffA49930),
@@ -31,10 +27,6 @@ class _ShopPageState extends State<ShopPage> {
             // Cabeçalho
             Column(
               children: [
-                Text(
-                  'Conheça Nossos Produtos',
-                  style: TextStyle(color: Colors.white),
-                ),
                 Padding(
                   padding: EdgeInsets.only(top: 20),
                   child: Container(
