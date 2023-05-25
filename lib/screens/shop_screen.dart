@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:vttr/components/top_bar.dart';
+import 'package:vttr/screens/product_page.dart';
 
 class ShopPage extends StatefulWidget {
   const ShopPage({super.key});
@@ -38,12 +39,19 @@ class _ShopPageState extends State<ShopPage> {
                       color: Color(0xffA49930),
                       child: Row(
                         children: [
-                          Image.asset(
+                          GestureDetector(
+                            onTap: () => {
+                              Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) =>  ProdPage()))
+                            },
+                            child: Image.asset(
                             'assets/images/pedalUm.png',
                             fit: BoxFit.fill,
                             width: MediaQuery.of(context).size.width * 0.45,
                             height: 200,
                           ),
+                          )
                         ],
                       ),
                     ),

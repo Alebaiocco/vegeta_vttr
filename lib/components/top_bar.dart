@@ -57,7 +57,7 @@ class TopBar extends StatelessWidget {
               onTap: () => {
                 Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const Home()))         
+                      MaterialPageRoute(builder: (context) => const Home()))       
               },
               child: Image.asset(
               'assets/images/logo.png',

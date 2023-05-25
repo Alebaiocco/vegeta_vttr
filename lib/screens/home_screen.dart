@@ -62,7 +62,13 @@ class _HomeState extends State<Home> {
                     children: [
                       const Padding(padding: EdgeInsets.only(top: 10)),
                       // Carrossel de imagens
-                      CarouselSlider.builder(
+                      GestureDetector(
+                        onDoubleTap: ()=>{
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>  ShopPage()))
+                        },
+                        child: CarouselSlider.builder(
                         options: CarouselOptions(height: 400),
                         itemCount: CarouselImages.length,
                         itemBuilder: (context, index, realIndex) {
@@ -70,7 +76,7 @@ class _HomeState extends State<Home> {
 
                           return buildImage(carrossel, index);
                         },
-                      ),
+                      )),
                       Padding(padding: EdgeInsets.only(top: 10)),
                       ElevatedButton(
                         onPressed: () {
