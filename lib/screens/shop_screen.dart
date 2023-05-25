@@ -44,11 +44,6 @@ class _ShopPageState extends State<ShopPage> {
                             width: MediaQuery.of(context).size.width * 0.45,
                             height: 200,
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [Text('Narciso')],
-                          )
                         ],
                       ),
                     ),

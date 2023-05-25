@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, deprecated_member_use
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:vttr/screens/home_screen.dart';
 
 class TopBar extends StatelessWidget {
   final String text, text2;
@@ -14,11 +15,18 @@ class TopBar extends StatelessWidget {
         children: [
           Container(
             margin: const EdgeInsets.only(right: 16),
-            child: Image.asset(
+            child: GestureDetector(
+              onTap: () => {
+                Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Home()))         
+              },
+              child: Image.asset(
               'assets/images/logo.png',
               height: 50,
               width: 50,
             ),
+            )
           ),
           Expanded(
             child:
@@ -45,11 +53,18 @@ class TopBar extends StatelessWidget {
         children: [
           Container(
             margin: const EdgeInsets.only(right: 16),
-            child: Image.asset(
+            child: GestureDetector(
+              onTap: () => {
+                Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Home()))         
+              },
+              child: Image.asset(
               'assets/images/logo.png',
               height: 50,
               width: 50,
             ),
+            )
           ),
           Expanded(
             child: Text(
