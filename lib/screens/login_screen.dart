@@ -32,8 +32,8 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
-  Future<void> loginUser(String email, String password) async {
-    var url = Uri.parse('http://10.0.2.2:8000/api/user/login');
+  Future<String> loginUser(String email, String password) async {
+    var url = Uri.parse('http://ronaldo.gtasamp.com.br/api/user/login');
 
     try {
       var response = await http.post(url,
@@ -43,18 +43,22 @@ class _LoginState extends State<Login> {
           body: jsonEncode(
               <String, String>{'email': email, 'password': password}));
 
-      dynamic responseBody = response.body;
-      if (responseBody.success) {
-        //Executar login aqui
-        dynamic data = responseBody.data;
-        var token = data.token;
-        
+      final responseBody = json.decode(response.body);
+      final data = responseBody['data'];
+
+      if (data['token'] != null) {
+        final token = data['token'];
+
+        print("Token = " + token);
+        return token;
       }
-      print(responseBody);
     } catch (e) {
       //Renderizar uma mensagem na tela do usuário informando que o aplicativo está fora do ar
       print(e);
+      return "";
     }
+
+    return "";
   }
 
   @override
@@ -116,13 +120,28 @@ class _LoginState extends State<Login> {
                 padding: EdgeInsets.only(top: 5, bottom: 10),
                 child: ElevatedButton(
                   onPressed: () {
+                    //Colocar um sninner loading
+
                     String email = emailController.text;
                     String password = passwordController.text;
-                    loginUser(email, password);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Home()),
-                    );
+                    loginUser(email, password).then((value) => {
+                          //Remover spinner loading
+                          print(value),
+                          if (value.isEmpty)
+                            {
+                              print("Usuário ou senha incorreto")
+                              //Renderizar que usuário ou senha incorreto
+                            }
+                          else
+                            {
+                              //Salvar aqui o token (value) no AsyncStorage do aplicativo
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Home()),
+                              )
+                            }
+                        });
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xffA49930),

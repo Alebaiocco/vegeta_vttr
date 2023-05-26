@@ -83,11 +83,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
       itemCount: products.length,
       itemBuilder: (context, index) {
         final product = products[index];
-        return GestureDetector(
-          onTap: () {
-            showManualOrDriver(context);
-          },
-          child: Column(
+        return Column(
             children: [
               Container(
                 margin: const EdgeInsets.only(top: 10),
@@ -96,10 +92,15 @@ class _MyProductsPageState extends State<MyProductsPage> {
                 color: Color(0xff000915),
                 child: ClipRRect(
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-                  child: Image.asset(
+                  child: GestureDetector(
+                    onTap: ()=>{
+                      showManualOrDriver(context)
+                    },
+                    child: Image.asset(
                     product.photoUrl,
                     fit: BoxFit.cover,
                   ),
+                  )
                 ),
               ),
               Container(
@@ -170,8 +171,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                 ),
               ),
             ],
-          ),
-        );
+          );
       },
     );
   }
