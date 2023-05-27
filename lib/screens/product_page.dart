@@ -35,16 +35,58 @@ class _ProdPageState extends State<ProdPage> {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.7,
-                    height:  MediaQuery.of(context).size.width * 1.10,
+                    height:  MediaQuery.of(context).size.width * 1.15,
                     color: Color(0xffA49930),
                     child: Column(children: [
                       Image.asset('assets/images/pedalUm.png', fit: BoxFit.fill,),
                       Padding(
-                        padding: EdgeInsets.only(top: 20),
-                      child: Text('ok'),
+                        padding: EdgeInsets.only(top: 15),
+                      child: Text('Narciso Delay',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 17,
+                        fontFamily: 'Rubik',
+                        ),
+                      ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                      child: Text('Um delay stereo de alta qualidade com uma ampla gama de opções de personalização para dar ao seu som a ambiência perfeita. Com quatros modos de delays diferentes, você pode escolher desde um clássico delay analógico até um delay com pitch bem psicodélico.',
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontFamily: 'Rubik',
+                        fontWeight: FontWeight.w400
+                      ),
+                      )
                       )
                     ]),
-                  )
+                  ),
+                SizedBox(height: 8),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text('RS 999,99',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: 'Rubik',
+                      color: Color(0xffA2A2A4)
+                    ),),
+                    ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xff2C5DA3),
+                      foregroundColor: Colors.white,
+                      minimumSize: Size(0, 30)
+                    ),
+                    child: Text("Comprar"),
+                  ),
+                  ],
+                ),
+                )
                 ],
               ),
             ],
