@@ -120,6 +120,31 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
+                     Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color(0xffA49930),
+                        ),
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 200,
+                        child: 
+                            Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/artistas.png',
+                              fit: BoxFit.fill,
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              height: 200
+                              ,
+                            )
+                          ],
+                        ),
+                      ),
+                    )
                     ],
                   ),
                 ],
