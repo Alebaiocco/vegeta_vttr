@@ -9,12 +9,14 @@ class Product {
   final String description;
   final String garantia;
   final String photoUrl;
+  final bool hasNewVersion;
 
   Product({
     required this.numSerie,
     required this.description,
     required this.garantia,
     required this.photoUrl,
+    this.hasNewVersion = false,
   });
 }
 
@@ -36,6 +38,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
       description: 'Descrição do produto 1',
       garantia: 'Vitalícia',
       photoUrl: 'assets/images/pedalUm.png',
+      hasNewVersion: true,
     ),
     Product(
       numSerie: 2034,
@@ -84,94 +87,136 @@ class _MyProductsPageState extends State<MyProductsPage> {
       itemBuilder: (context, index) {
         final product = products[index];
         return Column(
-            children: [
+          children: [
+            if (product.hasNewVersion)
               Container(
                 margin: const EdgeInsets.only(top: 10),
                 width: 288,
                 height: 300,
                 color: Color(0xff000915),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-                  child: GestureDetector(
-                    onTap: ()=>{
-                      showManualOrDriver(context)
-                    },
-                    child: Image.asset(
-                    product.photoUrl,
-                    fit: BoxFit.cover,
-                  ),
-                  )
-                ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                width: 288,
-                height: 55,
-                decoration: BoxDecoration(
-                  color: Color(0xffA49930),
-                  borderRadius: const BorderRadius.only(
-                    bottomRight: Radius.circular(35),
-                  ),
-                ),
-                child: Column(
+                child: Stack(
                   children: [
-                    Container(
-                      margin: const EdgeInsets.only(left: 3),
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        product.description,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Rubik',
-                          fontWeight: FontWeight.bold,
+                    ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8),
+                      ),
+                      child: GestureDetector(
+                        onTap: () => {showManualOrDriver(context)},
+                        child: Image.asset(
+                          product.photoUrl,
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(left: 3),
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'N ${product.numSerie}',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Rubik',
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showConfirmationDialog(context);
-                      },
+                    Positioned(
+                      top: 0,
+                      right: 0,
                       child: Container(
-                        margin: const EdgeInsets.only(left: 3),
-                        alignment: Alignment.bottomLeft,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          margin: EdgeInsets.only(right: 150),
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: const BorderRadius.only(
-                              bottomRight: Radius.circular(35),
-                            ),
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(8),
+                            bottomRight: Radius.circular(8),
                           ),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              product.garantia,
-                              style: TextStyle(
-                                color: Color(0xffA49930),
-                                fontFamily: 'Rubik',
-                              ),
-                            ),
-                          ),
+                        ),
+                        child: Icon(
+                          Icons.new_releases,
+                          color: Colors.white,
                         ),
                       ),
                     ),
                   ],
                 ),
+              )
+            else 
+            Container(
+              margin: const EdgeInsets.only(top: 10),
+              width: 288,
+              height: 300,
+              color: Color(0xff000915),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8)),
+                  child: GestureDetector(
+                    onTap: () => {showManualOrDriver(context)},
+                    child: Image.asset(
+                      product.photoUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  )),
+            ),
+            Container(
+              alignment: Alignment.center,
+              width: 288,
+              height: 55,
+              decoration: BoxDecoration(
+                color: Color(0xffA49930),
+                borderRadius: const BorderRadius.only(
+                  bottomRight: Radius.circular(35),
+                ),
               ),
-            ],
-          );
+              child: Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(left: 3),
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      product.description,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Rubik',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 3),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'N ${product.numSerie}',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Rubik',
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      showConfirmationDialog(context);
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 3),
+                      alignment: Alignment.bottomLeft,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        margin: EdgeInsets.only(right: 150),
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: const BorderRadius.only(
+                            bottomRight: Radius.circular(35),
+                          ),
+                        ),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            product.garantia,
+                            style: TextStyle(
+                              color: Color(0xffA49930),
+                              fontFamily: 'Rubik',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
       },
     );
   }
@@ -219,9 +264,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                   Navigator.of(context)
                       .pop(true); // Fecha a caixa de diálogo e retorna true
                 },
-                child: Text('Confirmar',
-                style: TextStyle(color: Colors.white)
-                ),
+                child: Text('Confirmar', style: TextStyle(color: Colors.white)),
               ),
             ),
             Container(
@@ -229,14 +272,12 @@ class _MyProductsPageState extends State<MyProductsPage> {
                 color: Color.fromARGB(255, 236, 52, 5),
                 borderRadius: BorderRadius.circular(4),
               ),
-              child:TextButton(
+              child: TextButton(
                 onPressed: () {
                   Navigator.of(context)
                       .pop(false); // Fecha a caixa de diálogo e retorna false
                 },
-                child: Text('Negar',
-                style: TextStyle(color: Colors.white)
-                ),
+                child: Text('Negar', style: TextStyle(color: Colors.white)),
               ),
             ),
           ],
