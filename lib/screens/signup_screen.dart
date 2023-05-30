@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_final_fields, library_private_types_in_public_api
 
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:vttr/screens/login_screen.dart';
 
@@ -44,6 +47,52 @@ class _SignupState extends State<Signup> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
 
+  String email = "";
+  String username = "";
+  String password_1 = "";
+  String password_2 = "";
+
+  Future<List<String>> registerUser(
+      String name, String mail, String pwd_1, String pwd_2) async {
+    var url = Uri.parse('http://ronaldo.gtasamp.com.br/api/user/register');
+
+    List<String> listaString = [];
+
+    try {
+      var response = await http.post(url,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: jsonEncode(<String, String>{
+            "name": name,
+            "email": mail,
+            "password": pwd_1,
+            "password_confirmed": pwd_1
+          }));
+
+      if (response.statusCode == 201) {
+        return [];
+      } else {
+        final data = json.decode(response.body);
+
+        if (data['data']['message'] == null &&
+            data['message']['erros'] != null) {
+          List<String> erros = List<String>.from(
+              data['message']['erros'].map((item) => item.toString()));
+
+          if (erros != null && erros.length > 0) listaString.addAll(erros);
+        }
+      }
+
+      return listaString;
+    } catch (e) {
+      //Renderizar uma mensagem na tela do usuário informando que o aplicativo está fora do ar
+      print(e);
+      listaString.add('Não foi possível realizar o cadastro');
+      return listaString;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,6 +113,7 @@ class _SignupState extends State<Signup> {
                     child: TextFormField(
                       style: TextStyle(color: Colors.white),
                       validator: _validateUsername,
+                      onChanged: (value) => username = value,
                       decoration: InputDecoration(
                         labelStyle: TextStyle(color: Color(0xffA49930)),
                         labelText: 'Username',
@@ -71,7 +121,8 @@ class _SignupState extends State<Signup> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Color(0xffA2A2A4)),
+                          borderSide:
+                              BorderSide(width: 2, color: Color(0xffA2A2A4)),
                         ),
                       ),
                     ),
@@ -84,6 +135,7 @@ class _SignupState extends State<Signup> {
                     child: TextFormField(
                       style: TextStyle(color: Colors.white),
                       validator: _validateEmail,
+                      onChanged: (value) => email = value,
                       decoration: InputDecoration(
                         labelStyle: TextStyle(color: Color(0xffA49930)),
                         labelText: 'Email',
@@ -91,7 +143,8 @@ class _SignupState extends State<Signup> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Color(0xffA2A2A4)),
+                          borderSide:
+                              BorderSide(width: 2, color: Color(0xffA2A2A4)),
                         ),
                       ),
                     ),
@@ -105,6 +158,7 @@ class _SignupState extends State<Signup> {
                       style: TextStyle(color: Colors.white),
                       controller: _passwordController,
                       obscureText: true,
+                      onChanged: (value) => password_1 = value,
                       decoration: InputDecoration(
                         hintText: '************',
                         labelText: 'Senha',
@@ -113,7 +167,8 @@ class _SignupState extends State<Signup> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Color(0xffA2A2A4)),
+                          borderSide:
+                              BorderSide(width: 2, color: Color(0xffA2A2A4)),
                         ),
                       ),
                     ),
@@ -128,6 +183,7 @@ class _SignupState extends State<Signup> {
                       controller: _confirmPasswordController,
                       obscureText: true,
                       validator: _validatePassword,
+                      onChanged: (value) => password_2 = value,
                       decoration: InputDecoration(
                         hintText: '************',
                         labelText: 'Confirme sua Senha',
@@ -136,7 +192,8 @@ class _SignupState extends State<Signup> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: Color(0xffA2A2A4)),
+                          borderSide:
+                              BorderSide(width: 2, color: Color(0xffA2A2A4)),
                         ),
                       ),
                     ),
@@ -147,10 +204,25 @@ class _SignupState extends State<Signup> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const Login()),
-                        );
+                        registerUser(username, email, password_1, password_2)
+                            .then((errors) => {
+                                  if (errors.length == 0)
+                                    {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const Login()),
+                                      )
+                                    }
+                                  else
+                                    {
+                                      errors.forEach((element) {
+                                        print("Renderizar a mensagem: " +
+                                            element);
+                                      })
+                                    }
+                                });
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -160,15 +232,14 @@ class _SignupState extends State<Signup> {
                     child: Text("Cadastrar"),
                   ),
                 ),
-
                 Padding(
                   padding: EdgeInsets.only(top: 10, bottom: 5),
                   child: ElevatedButton(
                     onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const Login()),
-                        );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Login()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xff000915),

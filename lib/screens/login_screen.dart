@@ -45,7 +45,7 @@ class _LoginState extends State<Login> {
 
       final responseBody = json.decode(response.body);
       final data = responseBody['data'];
-
+      print(data);
       if (data['token'] != null) {
         final token = data['token'];
 
