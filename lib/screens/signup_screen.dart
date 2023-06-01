@@ -80,14 +80,13 @@ class _SignupState extends State<Signup> {
           List<String> erros = List<String>.from(
               data['message']['erros'].map((item) => item.toString()));
 
-          if (erros != null && erros.length > 0) listaString.addAll(erros);
+          if (erros.isNotEmpty) listaString.addAll(erros);
         }
       }
 
       return listaString;
     } catch (e) {
       //Renderizar uma mensagem na tela do usuário informando que o aplicativo está fora do ar
-      print(e);
       listaString.add('Não foi possível realizar o cadastro');
       return listaString;
     }
@@ -206,7 +205,7 @@ class _SignupState extends State<Signup> {
                       if (_formKey.currentState!.validate()) {
                         registerUser(username, email, password_1, password_2)
                             .then((errors) => {
-                                  if (errors.length == 0)
+                                  if (errors.isEmpty)
                                     {
                                       Navigator.push(
                                         context,
@@ -217,10 +216,11 @@ class _SignupState extends State<Signup> {
                                     }
                                   else
                                     {
-                                      errors.forEach((element) {
-                                        print("Renderizar a mensagem: " +
-                                            element);
-                                      })
+                                      for (var element in errors)
+                                        {
+                                          Text(element)
+                                          //Rendererizar na tela uma mensagem do erro + element
+                                        }
                                     }
                                 });
                       }
