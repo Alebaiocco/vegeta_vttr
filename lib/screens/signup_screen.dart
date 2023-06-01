@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_final_fields, library_private_types_in_public_api
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_final_fields, library_private_types_in_public_api, avoid_function_literals_in_foreach_calls, prefer_interpolation_to_compose_strings, avoid_print, use_build_context_synchronously, unused_local_variable, deprecated_member_use
 
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as https;
 import 'package:flutter/material.dart';
 import 'package:vttr/screens/login_screen.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
@@ -52,43 +53,122 @@ class _SignupState extends State<Signup> {
   String password_1 = "";
   String password_2 = "";
 
-  Future<List<String>> registerUser(
+  Future<void> registerUser(
       String name, String mail, String pwd_1, String pwd_2) async {
-    var url = Uri.parse('http://ronaldo.gtasamp.com.br/api/user/register');
+    var url = Uri.parse('https://ronaldo.gtasamp.com.br/api/user/register');
 
     List<String> listaString = [];
 
     try {
-      var response = await http.post(url,
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8'
-          },
-          body: jsonEncode(<String, String>{
-            "name": name,
-            "email": mail,
-            "password": pwd_1,
-            "password_confirmed": pwd_1
-          }));
+      var response = await https.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          "Access-Control-Allow-Credentials": 'true',
+          "Access-Control-Allow-Headers":
+              "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
+          "Access-Control-Allow-Methods": "POST"
+        },
+        body: jsonEncode(<String, String>{
+          "name": name,
+          "email": mail,
+          "password": pwd_1,
+          "password_confirmed": pwd_1
+        }),
+      );
 
-      if (response.statusCode == 201) {
-        return [];
-      } else {
-        final data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        if (data['data'] != null && data['data']['message'] != null) {
+          String message = data['data']['message'];
 
-        if (data['data']['message'] == null &&
-            data['message']['erros'] != null) {
+          Fluttertoast.showToast(
+            msg: message,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 5,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            webShowClose: true,
+            webPosition: 'center',
+          );
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Login()),
+          );
+        }
+      } else if (response.statusCode >= 500) {
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        if (data['message'] != null && data['message']['erros'] != null) {
           List<String> erros = List<String>.from(
               data['message']['erros'].map((item) => item.toString()));
 
-          if (erros.isNotEmpty) listaString.addAll(erros);
-        }
-      }
+          if (erros.isNotEmpty) {
+            listaString.addAll(erros);
+          }
 
-      return listaString;
+          String errorMessage = erros.join('\n');
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Ops! Ocorreram alguns erros no seu cadastro:\n$errorMessage',
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.red,
+              duration:
+                  Duration(seconds: 5), // Tempo que a notificação fica na tela
+              action: SnackBarAction(
+                label: 'OK',
+                textColor: Colors.white,
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
+              ),
+            ),
+          );
+        }
+      } else {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('Não foi possível realizar o cadastro.'),
+              actions: [
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
     } catch (e) {
-      //Renderizar uma mensagem na tela do usuário informando que o aplicativo está fora do ar
-      listaString.add('Não foi possível realizar o cadastro');
-      return listaString;
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text(e.toString()),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -203,26 +283,40 @@ class _SignupState extends State<Signup> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        registerUser(username, email, password_1, password_2)
-                            .then((errors) => {
-                                  if (errors.isEmpty)
-                                    {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const Login()),
-                                      )
-                                    }
-                                  else
-                                    {
-                                      for (var element in errors)
-                                        {
-                                          Text(element)
-                                          //Rendererizar na tela uma mensagem do erro + element
-                                        }
-                                    }
-                                });
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                  'Você está prestes a criar um novo usuário. Deseja continuar?'),
+                              actions: [
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                    primary: Colors.white,
+                                  ),
+                                  child: Text('Sim'),
+                                  onPressed: () {
+                                    registerUser(username, email, password_1,
+                                        password_2);
+                                    Navigator.of(context).pop(); 
+                                  },
+                                ),
+                                TextButton(
+                                   style: TextButton.styleFrom(
+                                    backgroundColor: Colors.red, 
+                                    primary: Colors.white, 
+                                  ),
+                                  child: Text('Não'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       }
                     },
                     style: ElevatedButton.styleFrom(
