@@ -26,9 +26,11 @@ class NavBar extends StatelessWidget {
         onTap: onTabChanged,
         items: [
           SvgPicture.asset('assets/images/home.svg', color: Color(0xffA2A2A4)),
-          SvgPicture.asset('assets/images/shop.svg', color: Color(0xffA2A2A4)),  
-          SvgPicture.asset('assets/images/myProducts.svg', color: Color(0xffA2A2A4)),
-          SvgPicture.asset('assets/images/contact.svg', color: Color(0xffA2A2A4)),
+          SvgPicture.asset('assets/images/shop.svg', color: Color(0xffA2A2A4)),
+          SvgPicture.asset('assets/images/myProducts.svg',
+              color: Color(0xffA2A2A4)),
+          SvgPicture.asset('assets/images/contact.svg',
+              color: Color(0xffA2A2A4)),
         ],
       ),
     );
