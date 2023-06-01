@@ -16,23 +16,19 @@ class NavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 20),
-      child: CurvedNavigationBar(
-        height: 50,
-        backgroundColor: Color(0xffA49930),
-        color: Color(0xff000915),
-        animationDuration: Duration(milliseconds: 300),
-        onTap: onTabChanged,
-        items: [
-          SvgPicture.asset('assets/images/home.svg', color: Color(0xffA2A2A4)),
-          SvgPicture.asset('assets/images/shop.svg', color: Color(0xffA2A2A4)),
-          SvgPicture.asset('assets/images/myProducts.svg',
-              color: Color(0xffA2A2A4)),
-          SvgPicture.asset('assets/images/contact.svg',
-              color: Color(0xffA2A2A4)),
-        ],
-      ),
+    return CurvedNavigationBar(
+      height: 50,
+      backgroundColor: Color(0xffA49930),
+      color: Color(0xff000915),
+      animationDuration: Duration(milliseconds: 300),
+      onTap: onTabChanged,
+      items: [
+        SvgPicture.asset('assets/images/home.svg', color: Color(0xffA2A2A4)),
+        SvgPicture.asset('assets/images/shop.svg', color: Color(0xffA2A2A4)),
+        SvgPicture.asset('assets/images/myProducts.svg',
+            color: Color(0xffA2A2A4)),
+        SvgPicture.asset('assets/images/contact.svg', color: Color(0xffA2A2A4)),
+      ],
     );
   }
 }
