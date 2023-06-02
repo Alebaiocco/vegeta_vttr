@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_import
+// ignore_for_file: prefer_const_constructors, unused_import, avoid_print, unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'package:vttr/screens/home_screen.dart';
@@ -37,6 +37,7 @@ void main() async {
           sound: true);
 
   final fcmToken = await FirebaseMessaging.instance.getToken();
+  print('Esse é o Token : $fcmToken');
 
   if (fcmToken != null) {
     await FirebaseMessaging.instance.subscribeToTopic("topic");
