@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "836208584309",
+    "project_id": "vttr-app",
+    "storage_bucket": "vttr-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836208584309:android:dd923dc6aefe4f02be7a3c",
+        "android_client_info": {
+          "package_name": "com.example.vttr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "836208584309-61m11v2ucufg8uhbb5ghd46vnj3e97vf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOdR0KTxd2uIbTMBCeDrY7gLKM8cuby50"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "836208584309-61m11v2ucufg8uhbb5ghd46vnj3e97vf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "836208584309-g4ftstpu07oo7ac6hbabfuvj36ta1sco.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vttr"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
