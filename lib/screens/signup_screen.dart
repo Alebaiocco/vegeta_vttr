@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_final_fields, library_private_types_in_public_api, avoid_function_literals_in_foreach_calls, prefer_interpolation_to_compose_strings, avoid_print, use_build_context_synchronously, unused_local_variable, deprecated_member_use
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_final_fields, library_private_types_in_public_api, avoid_function_literals_in_foreach_calls, prefer_interpolation_to_compose_strings, avoid_print, use_build_context_synchronously, unused_local_variable, deprecated_member_use, prefer_const_literals_to_create_immutables, use_function_type_syntax_for_parameters, depend_on_referenced_packages
 
 import 'dart:convert';
 
@@ -52,12 +52,17 @@ class _SignupState extends State<Signup> {
   String username = "";
   String password_1 = "";
   String password_2 = "";
+  bool isLoading = false;
 
   Future<void> registerUser(
       String name, String mail, String pwd_1, String pwd_2) async {
     var url = Uri.parse('https://ronaldo.gtasamp.com.br/api/user/register');
 
     List<String> listaString = [];
+
+    setState(() {
+      isLoading = true;
+    });
 
     try {
       var response = await https.post(
@@ -86,7 +91,7 @@ class _SignupState extends State<Signup> {
             msg: message,
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 5,
+            timeInSecForIosWeb: 10,
             backgroundColor: Colors.green,
             textColor: Colors.white,
             webShowClose: true,
@@ -118,8 +123,7 @@ class _SignupState extends State<Signup> {
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.red,
-              duration:
-                  Duration(seconds: 5), // Tempo que a notificação fica na tela
+              duration: Duration(seconds: 7),
               action: SnackBarAction(
                 label: 'OK',
                 textColor: Colors.white,
@@ -131,23 +135,22 @@ class _SignupState extends State<Signup> {
           );
         }
       } else {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Error'),
-              content: Text('Não foi possível realizar o cadastro.'),
-              actions: [
-                TextButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Ops! Ocorreu algum erro interno',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 7),
+            action: SnackBarAction(
+              label: 'OK',
+              textColor: Colors.white,
+              onPressed: () {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              },
+            ),
+          ),
         );
       }
     } catch (e) {
@@ -169,6 +172,10 @@ class _SignupState extends State<Signup> {
           );
         },
       );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -278,70 +285,108 @@ class _SignupState extends State<Signup> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10, bottom: 5),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text(
-                                  'Você está prestes a criar um novo usuário. Deseja continuar?'),
-                              actions: [
-                                TextButton(
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: Colors.green,
-                                    primary: Colors.white,
-                                  ),
-                                  child: Text('Sim'),
-                                  onPressed: () {
-                                    registerUser(username, email, password_1,
-                                        password_2);
-                                    Navigator.of(context).pop(); 
-                                  },
+                if (isLoading)
+                  Padding(
+                    padding: EdgeInsets.only(top: 80),
+                    child: CircularProgressIndicator(
+                      color: Color(0xffA49930),
+                    ),
+                  ),
+                if (!isLoading)
+                  Padding(
+                    padding: EdgeInsets.only(top: 10, bottom: 5),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      child: Image.asset(
+                                        'assets/images/logo.png',
+                                        fit: BoxFit.cover,
+                                        height: 40,
+                                        width: 40,
+                                      ),
+                                    ),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      'Confirmação',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                TextButton(
-                                   style: TextButton.styleFrom(
-                                    backgroundColor: Colors.red, 
-                                    primary: Colors.white, 
+                                content: Text(
+                                    'Você está prestes a criar um novo usuário. Deseja continuar?'),
+                                actions: [
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Color(0xffA49930),
+                                      onPrimary: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    child: Text('Sim'),
+                                    onPressed: () {
+                                      registerUser(username, email, password_1,
+                                          password_2);
+                                      FocusScope.of(context).unfocus();
+                                      Navigator.of(context).pop();
+                                    },
                                   ),
-                                  child: Text('Não'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.transparent,
+                                      onPrimary: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    child: Text('Não'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 164, 152, 48),
+                        foregroundColor: Colors.white,
+                      ),
+                      child: Text("Cadastrar"),
+                    ),
+                  ),
+                if (!isLoading)
+                  Padding(
+                    padding: EdgeInsets.only(top: 10, bottom: 5),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Login()),
                         );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 164, 152, 48),
-                      foregroundColor: Colors.white,
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xff000915),
+                        foregroundColor: Color.fromARGB(255, 164, 152, 48),
+                      ),
+                      child: Text("Voltar"),
                     ),
-                    child: Text("Cadastrar"),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10, bottom: 5),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const Login()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xff000915),
-                      foregroundColor: Color.fromARGB(255, 164, 152, 48),
-                    ),
-                    child: Text("Voltar"),
-                  ),
-                ),
               ],
             ),
           ),
