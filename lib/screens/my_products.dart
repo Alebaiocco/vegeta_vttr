@@ -1,8 +1,12 @@
-// ignore_for_file: prefer_const_constructors, unused_import, deprecated_member_use, prefer_const_declarations
+// ignore_for_file: prefer_const_constructors, unused_import, deprecated_member_use, prefer_const_declarations, use_build_context_synchronously, unused_local_variable
+
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:vttr/components/top_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Product {
   final int numSerie;
@@ -32,7 +36,20 @@ class MyProductsPage extends StatefulWidget {
 }
 
 class _MyProductsPageState extends State<MyProductsPage> {
-  final List<Product> products = [
+  final List<Product> products = [];
+  String messageEmptyProducts = '';
+
+  @override
+  void initState() {
+    super.initState();
+    listProduct().then((_) {
+      setState(() {
+        listProduct();
+      });
+    });
+  }
+
+  /*final List<Product> products = [
     Product(
       numSerie: 08821,
       description: 'Descrição do produto 1',
@@ -52,7 +69,73 @@ class _MyProductsPageState extends State<MyProductsPage> {
       garantia: '27/12/2024',
       photoUrl: 'assets/images/pedalTres.png',
     ),
-  ];
+  ];*/
+
+  Future<void> listProduct() async {
+    var url =
+        Uri.parse('https://ronaldo.gtasamp.com.br/api/product/users/Product');
+
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      var response = await http.get(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+          "Access-Control-Allow-Credentials": 'true',
+          "Access-Control-Allow-Headers":
+              "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
+          "Access-Control-Allow-Methods": "POST"
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        if (data['data'] != null && data['data']['product'] != null) {
+          final List<dynamic> productData = data['data']['product'];
+
+          setState(() {
+            products.addAll(productData.map((data) {
+              return Product(
+                numSerie: data['numSerie'],
+                garantia: data['garantia'],
+                photoUrl: data['photoUrl'],
+                description: data['description'],
+              );
+            }));
+          });
+        }
+      } else if (response.statusCode >= 500) {
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        if (data['data'] != null && data['data']['message'] != null) {
+          String message = data['data']['message'];
+          messageEmptyProducts = message;
+        }
+      }
+    } catch (e) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text(e.toString()),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +154,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
               if (products.isNotEmpty)
                 _buildProductList()
               else
-                _buildEmptyProducts(),
+                _buildEmptyProducts(messageEmptyProducts)
             ],
           ),
         ),
@@ -130,24 +213,24 @@ class _MyProductsPageState extends State<MyProductsPage> {
                   ],
                 ),
               )
-            else 
-            Container(
-              margin: const EdgeInsets.only(top: 10),
-              width: 288,
-              height: 300,
-              color: Color(0xff000915),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8)),
-                  child: GestureDetector(
-                    onTap: () => {showManualOrDriver(context)},
-                    child: Image.asset(
-                      product.photoUrl,
-                      fit: BoxFit.cover,
-                    ),
-                  )),
-            ),
+            else
+              Container(
+                margin: const EdgeInsets.only(top: 10),
+                width: 288,
+                height: 300,
+                color: Color(0xff000915),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8)),
+                    child: GestureDetector(
+                      onTap: () => {showManualOrDriver(context)},
+                      child: Image.asset(
+                        product.photoUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    )),
+              ),
             Container(
               alignment: Alignment.center,
               width: 288,
@@ -221,7 +304,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
     );
   }
 
-  Widget _buildEmptyProducts() {
+  Widget _buildEmptyProducts(String message) {
     return Column(
       children: [
         Container(
@@ -234,7 +317,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
           ),
         ),
         Text(
-          'Nenhum produto encontrado',
+          message,
           style: TextStyle(
             color: Color(0xffA49930),
             fontWeight: FontWeight.bold,
