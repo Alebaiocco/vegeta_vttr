@@ -1,7 +1,9 @@
-// ignore_for_file: non_constant_identifier_names, deprecated_member_use
+// ignore_for_file: non_constant_identifier_names, deprecated_member_use, use_build_context_synchronously
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:vttr/screens/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vttr/screens/login_screen.dart';
 
 class TopBar extends StatelessWidget {
   final String text, text2;
@@ -16,35 +18,54 @@ class TopBar extends StatelessWidget {
           Container(
             margin: const EdgeInsets.only(right: 16),
             child: GestureDetector(
-              onTap: () => {
+              onTap: () {
                 Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Home()))         
+                  context,
+                  MaterialPageRoute(builder: (context) => const Home()),
+                );
               },
               child: Image.asset(
-              'assets/images/logo.png',
-              height: 50,
-              width: 50,
+                'assets/images/logo.png',
+                height: 50,
+                width: 50,
+              ),
             ),
-            )
           ),
           Expanded(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(
-                text,
-                style: TextStyle(
-                  color: Color(0xffA49930),
-                  fontWeight: FontWeight.bold,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  text,
+                  style: TextStyle(
+                    color: Color(0xffA49930),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Text(
-                text2,
-                style: TextStyle(
-                  color: Color(0xffA49930),
+                Text(
+                  text2,
+                  style: TextStyle(
+                    color: Color(0xffA49930),
+                  ),
                 ),
-              ),
-            ]),
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: () async {
+              // Remover o token do SharedPreferences
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.remove('token');
+
+              // Navegar para a tela de login
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => Login()),
+                (route) => false,
+              );
+            },
+            icon: Icon(Icons.exit_to_app_outlined),
+            color: Color(0xffA49930),
           ),
         ],
       );
@@ -52,20 +73,18 @@ class TopBar extends StatelessWidget {
       return Row(
         children: [
           Container(
-            margin: const EdgeInsets.only(right: 16),
-            child: GestureDetector(
-              onTap: () => {
-                Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Home()))       
-              },
-              child: Image.asset(
-              'assets/images/logo.png',
-              height: 50,
-              width: 50,
-            ),
-            )
-          ),
+              margin: const EdgeInsets.only(right: 16),
+              child: GestureDetector(
+                onTap: () => {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Home()))
+                },
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  height: 50,
+                  width: 50,
+                ),
+              )),
           Expanded(
             child: Text(
               text,
@@ -74,6 +93,22 @@ class TopBar extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+          ),
+          IconButton(
+            onPressed: () async {
+              // Remover o token do SharedPreferences
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.remove('token');
+
+              // Navegar para a tela de login
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => Login()),
+                (route) => false,
+              );
+            },
+            icon: Icon(Icons.exit_to_app_outlined),
+            color: Color(0xffA49930),
           ),
         ],
       );
