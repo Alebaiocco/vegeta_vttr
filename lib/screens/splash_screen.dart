@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'home_screen.dart';
 import 'login_screen.dart';
 
@@ -16,7 +17,22 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    _navigatetohome();
+    checkLoginStatus();
+  }
+
+  bool isLoggedIn = false;
+
+  Future<void> checkLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+
+    setState(() {
+      isLoggedIn = token != null;
+    });
+
+    if (!isLoggedIn) {
+      _navigatetohome();
+    }
   }
 
   _navigatetohome() async {
@@ -27,20 +43,24 @@ class _SplashState extends State<Splash> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xff000915),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/images/logo.png',
-              height: 250,
-              width: 250,
-            ),
-          ],
+    if (isLoggedIn) {
+      return Home();
+    } else {
+      return Scaffold(
+        backgroundColor: Color(0xff000915),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/logo.png',
+                height: 250,
+                width: 250,
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
