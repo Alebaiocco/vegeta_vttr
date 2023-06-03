@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_import, avoid_unnecessary_containers, use_key_in_widget_constructors, avoid_print, unused_local_variable, prefer_interpolation_to_compose_strings, use_build_context_synchronously, prefer_final_fields
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_import, avoid_unnecessary_containers, use_key_in_widget_constructors, avoid_print, unused_local_variable, prefer_interpolation_to_compose_strings, use_build_context_synchronously, prefer_final_fields, depend_on_referenced_packages
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:vttr/screens/home_screen.dart';
 import 'package:vttr/screens/signup_screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key});
@@ -19,6 +20,9 @@ class _LoginState extends State<Login> {
   late TextEditingController emailController;
   late TextEditingController passwordController;
   final _formKey = GlobalKey<FormState>();
+  String email = "";
+  String password = "";
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -54,10 +58,6 @@ class _LoginState extends State<Login> {
     }
     return null;
   }
-
-  String email = "";
-  String password = "";
-  bool isLoading = false;
 
   Future<void> loginUser(String email, String password) async {
     var url = Uri.parse('https://ronaldo.gtasamp.com.br/api/user/login');
@@ -98,6 +98,10 @@ class _LoginState extends State<Login> {
           );
 
           final token = data['data']['token'];
+          // Armazenando o token no dispositivo do usuário
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('token', token);
+
 
           Navigator.push(
             context,
