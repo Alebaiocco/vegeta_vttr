@@ -120,6 +120,9 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
+                      SizedBox(
+                      height: 20,
+                      ),
                      Padding(
                       padding: EdgeInsets.only(top: 20),
                       child: Container(
@@ -129,21 +132,30 @@ class _HomeState extends State<Home> {
                         ),
                         width: MediaQuery.of(context).size.width * 0.9,
                         height: 200,
-                        child: 
-                            Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Image.asset(
+                            ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(5.0),
+                              bottomLeft: Radius.circular(5.0),),
+                            child: Image.asset(
                               'assets/images/artistas.png',
-                              fit: BoxFit.fill,
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              height: 200
-                              ,
-                            )
+                              fit: BoxFit.cover,
+                              width: MediaQuery.of(context).size.width * 0.49,
+                              height: 200,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 55),
+                              child: Text('Artistas'), 
+                            ),
                           ],
                         ),
                       ),
+                    ),
+                    SizedBox(
+                      height: 40,
                     )
                     ],
                   ),
