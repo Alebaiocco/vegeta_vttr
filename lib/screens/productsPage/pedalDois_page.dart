@@ -3,14 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:vttr/components/top_bar.dart';
 
-class ProdPage extends StatefulWidget {
-  const ProdPage({super.key});
+class PedalDoisPage extends StatefulWidget {
+  const PedalDoisPage({super.key});
 
   @override
-  State<ProdPage> createState() => _ProdPageState();
+  State<PedalDoisPage> createState() => _PedalDoisPageState();
 }
 
-class _ProdPageState extends State<ProdPage> {
+class _PedalDoisPageState extends State<PedalDoisPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +38,7 @@ class _ProdPageState extends State<ProdPage> {
                     height:  MediaQuery.of(context).size.width * 1.15,
                     color: Color(0xffA49930),
                     child: Column(children: [
-                      Image.asset('assets/images/pedalUm.png', fit: BoxFit.fill,),
+                      Image.asset('assets/images/pedalDois.png', fit: BoxFit.fill,),
                       Padding(
                         padding: EdgeInsets.only(top: 15),
                       child: Text('Narciso Delay',

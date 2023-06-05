@@ -1,8 +1,11 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
 import 'package:vttr/components/top_bar.dart';
-import 'package:vttr/screens/product_page.dart';
+import 'package:vttr/screens/productsPage/pedalDois_page.dart';
+import 'package:vttr/screens/productsPage/pedalUm_page.dart';
+
+import 'productsPage/pedalTres_page.dart';
 
 class ShopPage extends StatefulWidget {
   const ShopPage({super.key});
@@ -32,65 +35,247 @@ class _ShopPageState extends State<ShopPage> {
               Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.90,
-                      height: 200,
-                      color: Color(0xffA49930),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () => {
-                              Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) =>  ProdPage()))
-                            },
+                      padding: EdgeInsets.only(top: 20),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color(0xffA49930),
+                        ),
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 200,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(5.0),
+                              bottomLeft: Radius.circular(5.0),),
                             child: Image.asset(
-                            'assets/images/pedalUm.png',
-                            fit: BoxFit.fill,
-                            width: MediaQuery.of(context).size.width * 0.45,
-                            height: 200,
-                          ),
-                          )
-                        ],
+                              'assets/images/pedalUm.png',
+                              fit: BoxFit.cover,
+                              width: MediaQuery.of(context).size.width * 0.45,
+                              height: 200,
+                              ),
+                            ),
+                            Container(
+                              height: 200,
+                              width: MediaQuery.of(context).size.width * 0.45,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                Padding(padding: EdgeInsets.only(top: 10, bottom: 15),
+                                  child: Text('Narciso',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontFamily: 'Rubik',
+                                    fontWeight: FontWeight.bold
+                                  ),
+                                  )),
+                                Padding(padding: EdgeInsets.symmetric(horizontal: 9),
+                                  child: Text('Um delay stereo de alta qualidade com uma ampla gama de opções de personalização para dar ao seu som a ambiência perfeita. Com quatros modos de delays diferentes, você pode escolher desde um clássico delay analógico até um delay com pitch bem psicodélico.', 
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontFamily: 'Rubik',
+                                    fontWeight: FontWeight.w400
+                                  ),
+                                  textAlign: TextAlign.justify,
+                                )),
+                                SizedBox(height: 10,),
+                                ElevatedButton(
+                                  onPressed:  () => {
+                                    Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) =>  PedalUmPage()))
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                        width: 2,
+                                        color: Color(0xff2C5DA3),
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    minimumSize: Size(20, 20),
+                                    backgroundColor: Color(0xff2C5DA3),
+                                    foregroundColor: Color(0xffA2A2A4),
+                                  ),
+                                  child: Text(
+                                    'Saiba Mais',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontFamily: 'Rubik',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                )
+                              ]),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.90,
-                      height: 200,
-                      color: Color(0xffA49930),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            'assets/images/pedalDois.png',
-                            fit: BoxFit.fill,
-                            width: MediaQuery.of(context).size.width * 0.45,
-                            height: 200,
-                          ),
-                        ],
+                      padding: EdgeInsets.only(top: 20),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color(0xffA49930),
+                        ),
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 200,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(5.0),
+                              bottomLeft: Radius.circular(5.0),),
+                            child: Image.asset(
+                              'assets/images/pedalDois.png',
+                              fit: BoxFit.cover,
+                              width: MediaQuery.of(context).size.width * 0.45,
+                              height: 200,
+                              ),
+                            ),
+                            Container(
+                              height: 200,
+                              width: MediaQuery.of(context).size.width * 0.45,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                Padding(padding: EdgeInsets.only(top: 10, bottom: 15),
+                                  child: Text('Dream Machine',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontFamily: 'Rubik',
+                                    fontWeight: FontWeight.bold
+                                  ),
+                                  )),
+                                Padding(padding: EdgeInsets.symmetric(horizontal: 9),
+                                  child: Text('Um delay stereo de alta qualidade com uma ampla gama de opções de personalização para dar ao seu som a ambiência perfeita. Com quatros modos de delays diferentes, você pode escolher desde um clássico delay analógico até um delay com pitch bem psicodélico.', 
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontFamily: 'Rubik',
+                                    fontWeight: FontWeight.w400
+                                  ),
+                                  textAlign: TextAlign.justify,
+                                )),
+                                SizedBox(height: 10,),
+                                ElevatedButton(
+                                  onPressed:  () => {
+                                    Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) =>  PedalDoisPage()))
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                        width: 2,
+                                        color: Color(0xff2C5DA3),
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    minimumSize: Size(20, 20),
+                                    backgroundColor: Color(0xff2C5DA3),
+                                    foregroundColor: Color(0xffA2A2A4),
+                                  ),
+                                  child: Text(
+                                    'Saiba Mais',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontFamily: 'Rubik',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                )
+                              ]),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.90,
-                      height: 200,
-                      color: Color(0xffA49930),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            'assets/images/pedalTres.png',
-                            fit: BoxFit.fill,
-                            width: MediaQuery.of(context).size.width * 0.45,
-                            height: 200,
-                          ),
-                        ],
+                      padding: EdgeInsets.only(top: 20),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Color(0xffA49930),
+                        ),
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 200,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(5.0),
+                              bottomLeft: Radius.circular(5.0),),
+                            child: Image.asset(
+                              'assets/images/pedalTres.png',
+                              fit: BoxFit.cover,
+                              width: MediaQuery.of(context).size.width * 0.45,
+                              height: 200,
+                              ),
+                            ),
+                            Container(
+                              height: 200,
+                              width: MediaQuery.of(context).size.width * 0.45,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                Padding(padding: EdgeInsets.only(top: 10, bottom: 15),
+                                  child: Text('Kailani',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontFamily: 'Rubik',
+                                    fontWeight: FontWeight.bold
+                                  ),
+                                  )),
+                                Padding(padding: EdgeInsets.symmetric(horizontal: 9),
+                                  child: Text('Um delay stereo de alta qualidade com uma ampla gama de opções de personalização para dar ao seu som a ambiência perfeita. Com quatros modos de delays diferentes, você pode escolher desde um clássico delay analógico até um delay com pitch bem psicodélico.', 
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontFamily: 'Rubik',
+                                    fontWeight: FontWeight.w400
+                                  ),
+                                  textAlign: TextAlign.justify,
+                                )),
+                                SizedBox(height: 10,),
+                                ElevatedButton(
+                                  onPressed:  () => {
+                                    Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) =>  PedalTresPage()))
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      side: BorderSide(
+                                        width: 2,
+                                        color: Color(0xff2C5DA3),
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    minimumSize: Size(20, 20),
+                                    backgroundColor: Color(0xff2C5DA3),
+                                    foregroundColor: Color(0xffA2A2A4),
+                                  ),
+                                  child: Text(
+                                    'Saiba Mais',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      fontFamily: 'Rubik',
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                )
+                              ]),
+                            )
+                          ],
+                        ),
                       ),
                     ),
+                  SizedBox(
+                    height: 40,
                   )
                 ],
               ),
