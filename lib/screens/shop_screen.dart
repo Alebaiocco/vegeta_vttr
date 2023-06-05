@@ -64,7 +64,7 @@ class _ShopPageState extends State<ShopPage> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                 Padding(padding: EdgeInsets.only(top: 10, bottom: 15),
-                                  child: Text('Narciso',
+                                  child: Text('Narciso Delay',
                                   style: TextStyle(
                                     fontSize: 17,
                                     fontFamily: 'Rubik',
@@ -224,7 +224,7 @@ class _ShopPageState extends State<ShopPage> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                 Padding(padding: EdgeInsets.only(top: 10, bottom: 15),
-                                  child: Text('Kailani',
+                                  child: Text('Kailani Reverb',
                                   style: TextStyle(
                                     fontSize: 17,
                                     fontFamily: 'Rubik',

@@ -41,7 +41,7 @@ class _PedalTresPageState extends State<PedalTresPage> {
                       Image.asset('assets/images/pedalTres.png', fit: BoxFit.fill,),
                       Padding(
                         padding: EdgeInsets.only(top: 15),
-                      child: Text('Narciso Delay',
+                      child: Text('Kailani Reverb',
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 17,

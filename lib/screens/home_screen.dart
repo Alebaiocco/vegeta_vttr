@@ -148,7 +148,12 @@ class _HomeState extends State<Home> {
                             ),
                             Padding(
                               padding: EdgeInsets.only(left: 55),
-                              child: Text('Artistas'), 
+                              child: Text('Artistas',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 17,
+                                fontFamily: 'Rubik',
+                                ),), 
                             ),
                           ],
                         ),

@@ -41,7 +41,7 @@ class _PedalDoisPageState extends State<PedalDoisPage> {
                       Image.asset('assets/images/pedalDois.png', fit: BoxFit.fill,),
                       Padding(
                         padding: EdgeInsets.only(top: 15),
-                      child: Text('Narciso Delay',
+                      child: Text('Dream Machine',
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 17,

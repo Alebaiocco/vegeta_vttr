@@ -170,7 +170,7 @@ class _ContactState extends State<Contact> {
                       ),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    backgroundColor: Color(0x00A49830),
+                    backgroundColor: Color(0xff2C5DA3),
                     foregroundColor: Color(0xffA2A2A4),
                   ),
                   child: Text('Enviar'))
