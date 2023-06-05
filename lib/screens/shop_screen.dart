@@ -97,7 +97,7 @@ class _ShopPageState extends State<ShopPage> {
                                     ),
                                     minimumSize: Size(20, 20),
                                     backgroundColor: Color(0xff2C5DA3),
-                                    foregroundColor: Color(0xffA2A2A4),
+                                    foregroundColor: Colors.white,
                                   ),
                                   child: Text(
                                     'Saiba Mais',
@@ -144,7 +144,7 @@ class _ShopPageState extends State<ShopPage> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                 Padding(padding: EdgeInsets.only(top: 10, bottom: 15),
-                                  child: Text('Dream Machine',
+                                  child: Text('Helios Overdrive',
                                   style: TextStyle(
                                     fontSize: 17,
                                     fontFamily: 'Rubik',
@@ -177,7 +177,7 @@ class _ShopPageState extends State<ShopPage> {
                                     ),
                                     minimumSize: Size(20, 20),
                                     backgroundColor: Color(0xff2C5DA3),
-                                    foregroundColor: Color(0xffA2A2A4),
+                                    foregroundColor: Colors.white,
                                   ),
                                   child: Text(
                                     'Saiba Mais',
@@ -257,7 +257,7 @@ class _ShopPageState extends State<ShopPage> {
                                     ),
                                     minimumSize: Size(20, 20),
                                     backgroundColor: Color(0xff2C5DA3),
-                                    foregroundColor: Color(0xffA2A2A4),
+                                    foregroundColor: Colors.white,
                                   ),
                                   child: Text(
                                     'Saiba Mais',

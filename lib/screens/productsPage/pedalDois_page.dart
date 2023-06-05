@@ -35,13 +35,14 @@ class _PedalDoisPageState extends State<PedalDoisPage> {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.7,
-                    height:  MediaQuery.of(context).size.width * 1.15,
+                    height:  MediaQuery.of(context).size.width * 1.27,
                     color: Color(0xffA49930),
                     child: Column(children: [
-                      Image.asset('assets/images/pedalDois.png', fit: BoxFit.fill,),
+                      Image.asset('assets/images/pedalDois.png', fit: BoxFit.fill,
+                      ),
                       Padding(
                         padding: EdgeInsets.only(top: 15),
-                      child: Text('Dream Machine',
+                      child: Text('Helios Overdrive',
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 17,
@@ -76,14 +77,17 @@ class _PedalDoisPageState extends State<PedalDoisPage> {
                       color: Color(0xffA2A2A4)
                     ),),
                     ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xff2C5DA3),
-                      foregroundColor: Colors.white,
-                      minimumSize: Size(0, 30)
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xff2C5DA3),
+                        foregroundColor: Colors.white,
+                        minimumSize: Size(0, 30),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                        ),
+                      ),
+                      child: Text("Comprar"),
                     ),
-                    child: Text("Comprar"),
-                  ),
                   ],
                 ),
                 )

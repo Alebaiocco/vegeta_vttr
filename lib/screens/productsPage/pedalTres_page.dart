@@ -76,14 +76,17 @@ class _PedalTresPageState extends State<PedalTresPage> {
                       color: Color(0xffA2A2A4)
                     ),),
                     ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xff2C5DA3),
-                      foregroundColor: Colors.white,
-                      minimumSize: Size(0, 30)
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xff2C5DA3),
+                        foregroundColor: Colors.white,
+                        minimumSize: Size(0, 30),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                        ),
+                      ),
+                      child: Text("Comprar"),
                     ),
-                    child: Text("Comprar"),
-                  ),
                   ],
                 ),
                 )
