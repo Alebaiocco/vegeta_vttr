@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_import, deprecated_member_use, prefer_const_declarations, use_build_context_synchronously, unused_local_variable
+// ignore_for_file: prefer_const_constructors, unused_import, deprecated_member_use, prefer_const_declarations, use_build_context_synchronously, unused_local_variable, prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
 
@@ -7,17 +7,18 @@ import 'package:vttr/components/top_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 class Product {
-  final int numSerie;
-  final String description;
+  final int serieNumber;
+  final String name;
   final String garantia;
   final String photoUrl;
   final bool hasNewVersion;
 
   Product({
-    required this.numSerie,
-    required this.description,
+    required this.serieNumber,
+    required this.name,
     required this.garantia,
     required this.photoUrl,
     this.hasNewVersion = false,
@@ -51,20 +52,20 @@ class _MyProductsPageState extends State<MyProductsPage> {
 
   /*final List<Product> products = [
     Product(
-      numSerie: 08821,
+      serieNumber: 08821,
       description: 'Descrição do produto 1',
       garantia: 'Vitalícia',
       photoUrl: 'assets/images/pedalUm.png',
       hasNewVersion: true,
     ),
     Product(
-      numSerie: 2034,
+      serieNumber: 2034,
       description: 'Descrição do produto 2',
       garantia: '27/12/2024',
       photoUrl: 'assets/images/pedalDois.png',
     ),
     Product(
-      numSerie: 0900,
+      serieNumber: 0900,
       description: 'Descrição do produto 3',
       garantia: '27/12/2024',
       photoUrl: 'assets/images/pedalTres.png',
@@ -96,16 +97,21 @@ class _MyProductsPageState extends State<MyProductsPage> {
         if (data['data'] != null && data['data']['product'] != null) {
           final List<dynamic> productData = data['data']['product'];
 
-          setState(() {
-            products.addAll(productData.map((data) {
-              return Product(
-                numSerie: data['numSerie'],
-                garantia: data['garantia'],
-                photoUrl: data['photoUrl'],
-                description: data['description'],
-              );
-            }));
-          });
+          products.addAll(productData.map((data) {
+            String garantia;
+            if (data['resale'] == 1) {
+              garantia = DateFormat('dd-MM-yyyy').format(
+                  DateTime.parse(data['buy_date']).add(Duration(days: 365)));
+            } else {
+              garantia = 'Vitalícia';
+            }
+            return Product(
+              serieNumber: data['serie_number'],
+              photoUrl: 'assets/images/' + data['product_image'],
+              name: data['name'],
+              garantia: garantia,
+            );
+          }));
         }
       } else if (response.statusCode >= 500) {
         final Map<String, dynamic> data = json.decode(response.body);
@@ -247,7 +253,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                     margin: const EdgeInsets.only(left: 3),
                     alignment: Alignment.topLeft,
                     child: Text(
-                      product.description,
+                      product.name,
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Rubik',
@@ -259,7 +265,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                     margin: const EdgeInsets.only(left: 3),
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'N ${product.numSerie}',
+                      'N ${product.serieNumber}',
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Rubik',
