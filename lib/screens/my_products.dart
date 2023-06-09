@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_import, deprecated_member_use, prefer_const_declarations, use_build_context_synchronously, unused_local_variable, prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_const_constructors, unused_import, deprecated_member_use, prefer_const_declarations, use_build_context_synchronously, unused_local_variable, prefer_interpolation_to_compose_strings, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, non_constant_identifier_names, unused_element
 
 import 'dart:convert';
 
@@ -26,8 +26,10 @@ class Product {
 }
 
 final Uri _url = Uri.parse('https://pub.dev/packages/url_launcher');
-final String _urlDriver =
-    'https://www.tuningparts.com.br/arq/manual-tecnico-de-instalacao-fastrev01web105211072019.pdf';
+final Uri _urlDriver = Uri.parse(
+    'https://www.tuningparts.com.br/arq/manual-tecnico-de-instalacao-fastrev01web105211072019.pdf');
+final Uri _urlGarantia = Uri.parse(
+    'https://www.cianet.com.br/wp-content/uploads/2018/08/TERMO_DE_GARANTIA_-_Atualizado.pdf');
 
 class MyProductsPage extends StatefulWidget {
   const MyProductsPage({Key? key}) : super(key: key);
@@ -97,6 +99,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
         if (data['data'] != null && data['data']['product'] != null) {
           final List<dynamic> productData = data['data']['product'];
 
+          products.clear();
           products.addAll(productData.map((data) {
             String garantia;
             if (data['resale'] == 1) {
@@ -107,7 +110,8 @@ class _MyProductsPageState extends State<MyProductsPage> {
             }
             return Product(
               serieNumber: data['serie_number'],
-              photoUrl: 'assets/images/' + data['product_image'],
+              photoUrl:
+                  'https://ronaldo.gtasamp.com.br/' + data['product_image'],
               name: data['name'],
               garantia: garantia,
             );
@@ -177,70 +181,30 @@ class _MyProductsPageState extends State<MyProductsPage> {
         final product = products[index];
         return Column(
           children: [
-            if (product.hasNewVersion)
-              Container(
-                margin: const EdgeInsets.only(top: 10),
-                width: 288,
-                height: 300,
-                color: Color(0xff000915),
-                child: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(8),
-                        topRight: Radius.circular(8),
-                      ),
-                      child: GestureDetector(
-                        onTap: () => {showManualOrDriver(context)},
-                        child: Image.asset(
-                          product.photoUrl,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+            Container(
+              margin: const EdgeInsets.only(top: 10),
+              width: 288,
+              height: 300,
+              color: Color(0xff000915),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8)),
+                  child: GestureDetector(
+                    onTap: () => {showManualOrDriver(context)},
+                    child: FadeInImage.assetNetwork(
+                      placeholder:
+                          'assets/images/logo.png', // Caminho para a imagem de espera
+                      image: product.photoUrl,
+                      fit: BoxFit.cover,
                     ),
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(8),
-                            bottomRight: Radius.circular(8),
-                          ),
-                        ),
-                        child: Icon(
-                          Icons.new_releases,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            else
-              Container(
-                margin: const EdgeInsets.only(top: 10),
-                width: 288,
-                height: 300,
-                color: Color(0xff000915),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(8),
-                        topRight: Radius.circular(8)),
-                    child: GestureDetector(
-                      onTap: () => {showManualOrDriver(context)},
-                      child: Image.asset(
-                        product.photoUrl,
-                        fit: BoxFit.cover,
-                      ),
-                    )),
-              ),
+                  )),
+            ),
             Container(
               alignment: Alignment.center,
               width: 288,
               height: 55,
+              margin: EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
                 color: Color(0xffA49930),
                 borderRadius: const BorderRadius.only(
@@ -265,7 +229,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                     margin: const EdgeInsets.only(left: 3),
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'N ${product.serieNumber}',
+                      'N° ${product.serieNumber}',
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Rubik',
@@ -287,6 +251,14 @@ class _MyProductsPageState extends State<MyProductsPage> {
                           borderRadius: const BorderRadius.only(
                             bottomRight: Radius.circular(35),
                           ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xff000915),
+                              spreadRadius: 1,
+                              blurRadius: 2,
+                              offset: Offset(0, 1),
+                            ),
+                          ],
                         ),
                         child: Align(
                           alignment: Alignment.centerLeft,
@@ -339,35 +311,55 @@ class _MyProductsPageState extends State<MyProductsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Termo de Garantia'),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  fit: BoxFit.cover,
+                  height: 40,
+                  width: 40,
+                ),
+              ),
+              SizedBox(width: 10),
+              Text(
+                'Termo de Garantia',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
           content: Text(
-              'Aqui estão algumas informações importantes para ajudá-lo a entender melhor como a Garantia Shopee protege sua compra e como você pode solicitar o reembolso, caso haja algum contratempo com seu pedido. A Garantia Shopee assegura o recebimento e qualidade dos produtos que comprou, tornando mais fácil para você solicitar um reembolso em caso de inconvenientes. Esse processo certifica que o valor pago por você, em qualquer compra feita na nossa plataforma, seja creditado ao vendedor após 7 dias do recebimento do produto. É importante lembrar que para pedidos que ainda não foram encaminhados, os vendedores devem enviá-los dentro do período de Garantia Shopee. Caso contrário, o pagamento será automaticamente reembolsado a você após o término do prazo. Além disso, você pode usar uma extensão única de 3 dias da Garantia Shopee para um pedido que ainda não foi enviado. Para fazer isso, selecione Estender Garantia Shopee na página Detalhes do pedido.'),
+              'Teve algum problema com seu produto? Clique no botão abaixo caso deseje "acionar a garantia" caso contrário, basta clicar em voltar para retornar a visualizar seus pedáis'),
           actions: [
-            Container(
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 111, 223, 20),
-                borderRadius: BorderRadius.circular(4),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xffA49930),
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context)
-                      .pop(true); // Fecha a caixa de diálogo e retorna true
-                },
-                child: Text('Confirmar', style: TextStyle(color: Colors.white)),
-              ),
+              child: Text('Acionar Garantia'),
+              onPressed: () {
+                _launchGarantia();
+              },
             ),
-            Container(
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 236, 52, 5),
-                borderRadius: BorderRadius.circular(4),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.transparent,
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context)
-                      .pop(false); // Fecha a caixa de diálogo e retorna false
-                },
-                child: Text('Negar', style: TextStyle(color: Colors.white)),
-              ),
+              child: Text('Voltar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
           ],
         );
@@ -380,41 +372,68 @@ class _MyProductsPageState extends State<MyProductsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Selecione abaixo o recurso desejado :)'),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  fit: BoxFit.cover,
+                  height: 40,
+                  width: 40,
+                ),
+              ),
+              SizedBox(width: 10),
+              Text(
+                'Explore mais seu produto',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+              'Opa, parece que você está interessado em saber mais sobre seu produto, não é mesmo? haha. Nos botões abaixo você tem acesso a área de manual do seu produto ou então se for um guitarrista veterano pode verifica a nova atualização de seu pedal.'),
           actions: [
-            Container(
-              decoration: BoxDecoration(
-                color: Color(0xffA49930),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: TextButton(
-                onPressed: () {
-                  _launchManual();
-                },
-                child: Text(
-                  'Manual',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xffA49930),
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
+              child: Text('Acessar o Manual'),
+              onPressed: () {
+                _launchManual();
+              },
             ),
-            Container(
-              decoration: BoxDecoration(
-                color: Color(0xffA49930),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: TextButton(
-                onPressed: () {
-                  _launchDriver();
-                },
-                child: Text(
-                  'Atualização dos Drivers',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xffA49930),
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
+              child: Text('Baixar Nova Atualização'),
+              onPressed: () {
+                _launchDriver();
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.transparent,
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text('Voltar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
           ],
         );
@@ -424,15 +443,19 @@ class _MyProductsPageState extends State<MyProductsPage> {
 
   Future<void> _launchManual() async {
     if (!await launchUrl(_url)) {
-      throw Exception('Could not launch $_url');
+      throw Exception('Não foi possivel acessar a página$_url');
     }
   }
 
   Future<void> _launchDriver() async {
-    if (await canLaunch(_urlDriver)) {
-      await launch(_urlDriver);
-    } else {
-      throw 'Não foi possível abrir o arquivo PDF';
+    if (!await launchUrl(_urlDriver)) {
+      throw Exception('Não foi possivel acessar a página $_urlDriver');
+    }
+  }
+
+  Future<void> _launchGarantia() async {
+    if (!await launchUrl(_urlGarantia)) {
+      throw Exception('Não foi possivel acessar a página $_urlGarantia');
     }
   }
 }
