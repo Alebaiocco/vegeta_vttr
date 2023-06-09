@@ -1,7 +1,12 @@
-// ignore_for_file: unused_import, prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, avoid_web_libraries_in_flutter
+// ignore_for_file: unused_import, prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, avoid_web_libraries_in_flutter, use_build_context_synchronously
+
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:vttr/components/top_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
 import 'dart:math';
 
 class Contact extends StatefulWidget {
@@ -12,6 +17,7 @@ class Contact extends StatefulWidget {
 }
 
 class _ContactState extends State<Contact> {
+  String description = "";
   List<String> items = [
     'Selecione uma categoria',
     'Solicitação de Garantia',
@@ -21,6 +27,128 @@ class _ContactState extends State<Contact> {
     'Outros'
   ];
   String? selectedItem = 'Selecione uma categoria';
+
+  Future<void> pushContact() async {
+    var url =
+        Uri.parse('https://ronaldo.gtasamp.com.br/api/contact/send-contact');
+    List<String> listaString = [];
+
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      var response = await http.post(url,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $token',
+            "Access-Control-Allow-Credentials": 'true',
+            "Access-Control-Allow-Headers":
+                "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
+            "Access-Control-Allow-Methods": "POST"
+          },
+          body: jsonEncode(<String, String>{
+            'category': selectedItem ?? '',
+            'description': description
+          }));
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        if (data['data'] != null && data['data']['message'] != null) {
+          String message = data['data']['message'];
+
+          Fluttertoast.showToast(
+            msg: message,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 10,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            webShowClose: true,
+            webPosition: 'center',
+          );
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Contact()),
+          );
+        }
+      } else if (response.statusCode == 401) {
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        if (data['data']['message'] != null) {
+          String errorMessage = data['data']['message'];
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                errorMessage,
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 7),
+              action: SnackBarAction(
+                label: 'OK',
+                textColor: Colors.white,
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
+              ),
+            ),
+          );
+        }
+      } else if (response.statusCode >= 500) {
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        if (data['message'] != null && data['message']['erros'] != null) {
+          List<String> erros = List<String>.from(
+              data['message']['erros'].map((item) => item.toString()));
+
+          if (erros.isNotEmpty) {
+            listaString.addAll(erros);
+          }
+
+          String errorMessage = erros.join('\n');
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Ops! Ocorreu um erro no envio da mensagem:\n$errorMessage',
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 7),
+              action: SnackBarAction(
+                label: 'OK',
+                textColor: Colors.white,
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
+              ),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text(e.toString()),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +188,9 @@ class _ContactState extends State<Contact> {
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.95,
-                child: TextField(
+                child: TextFormField(
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(vertical: 2),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5)),
                     enabledBorder: OutlineInputBorder(
@@ -96,7 +223,6 @@ class _ContactState extends State<Contact> {
                 width: MediaQuery.of(context).size.width * 0.95,
                 child: DropdownButtonFormField<String>(
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(vertical: 2),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5)),
                     enabledBorder: OutlineInputBorder(
@@ -119,6 +245,7 @@ class _ContactState extends State<Contact> {
                           ))
                       .toList(),
                   onChanged: (item) => setState(() => selectedItem = item),
+                  dropdownColor: Color(0xff000915),
                 ),
               ),
               Row(
@@ -142,12 +269,12 @@ class _ContactState extends State<Contact> {
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.95,
-                child: TextField(
+                child: TextFormField(
+                  onChanged: (value) => description = value,
                   maxLines: 5,
                   minLines: 1,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(vertical: 2),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5)),
                     enabledBorder: OutlineInputBorder(
@@ -161,7 +288,9 @@ class _ContactState extends State<Contact> {
                 height: 30,
               ),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    pushContact();
+                  },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       side: BorderSide(
