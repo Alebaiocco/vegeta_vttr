@@ -102,7 +102,6 @@ class _LoginState extends State<Login> {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('token', token);
 
-
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const Home()),
@@ -148,7 +147,7 @@ class _LoginState extends State<Login> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                'Ops! Ocorreram alguns erros no seu cadastro:\n$errorMessage',
+                'Ops! Ocorreu um erro no login:\n$errorMessage',
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.red,
@@ -163,8 +162,7 @@ class _LoginState extends State<Login> {
             ),
           );
         }
-      }
-        else if (response.statusCode == 401) {
+      } else if (response.statusCode == 401) {
         final Map<String, dynamic> data = json.decode(response.body);
 
         if (data['data']['message'] != null) {
@@ -188,7 +186,7 @@ class _LoginState extends State<Login> {
             ),
           );
         }
-        }else {
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
