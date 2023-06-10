@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_import, deprecated_member_use, prefer_const_declarations, use_build_context_synchronously, unused_local_variable, prefer_interpolation_to_compose_strings, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, non_constant_identifier_names, unused_element
+// ignore_for_file: prefer_const_constructors, unused_import, deprecated_member_use, prefer_const_declarations, use_build_context_synchronously, unused_local_variable, prefer_interpolation_to_compose_strings, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, non_constant_identifier_names, unused_element, avoid_print
 
 import 'dart:convert';
 
@@ -123,6 +123,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
         if (data['data'] != null && data['data']['message'] != null) {
           String message = data['data']['message'];
           messageEmptyProducts = message;
+          print(messageEmptyProducts);
         }
       }
     } catch (e) {
@@ -164,7 +165,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
               if (products.isNotEmpty)
                 _buildProductList()
               else
-                _buildEmptyProducts(messageEmptyProducts)
+                _buildEmptyProducts(messageEmptyProducts),
             ],
           ),
         ),
@@ -186,19 +187,51 @@ class _MyProductsPageState extends State<MyProductsPage> {
               width: 288,
               height: 300,
               color: Color(0xff000915),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.only(
+              child: Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8)),
-                  child: GestureDetector(
-                    onTap: () => {showManualOrDriver(context)},
-                    child: FadeInImage.assetNetwork(
-                      placeholder:
-                          'assets/images/logo.png', // Caminho para a imagem de espera
-                      image: product.photoUrl,
-                      fit: BoxFit.cover,
+                      topRight: Radius.circular(8),
                     ),
-                  )),
+                    child: GestureDetector(
+                      onTap: () => {showManualOrDriver(context)},
+                      child: SizedBox(
+                        width: 288,
+                        height: 300,
+                        child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/images/logo.png',
+                          image: product.photoUrl,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Icon(
+                    Icons.touch_app_outlined,
+                    size: 30,
+                    color: Color(0xffA49930),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              color: Color(0xff000915),
+              width: 288,
+              child: Padding(
+                padding: EdgeInsets.all(2),
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  child: Text(
+                    'Clique na imagem para verificar as atualizações ou o manual do produto',
+                    style: TextStyle(
+                      color: Color(0xffA49930),
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ),
             ),
             Container(
               alignment: Alignment.center,
@@ -294,13 +327,22 @@ class _MyProductsPageState extends State<MyProductsPage> {
             width: 200,
           ),
         ),
-        Text(
-          message,
-          style: TextStyle(
-            color: Color(0xffA49930),
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        if (message != '')
+          Text(
+            message,
+            style: TextStyle(
+              color: Color(0xffA49930),
+              fontWeight: FontWeight.bold,
+            ),
+          )
+        else
+          Text(
+            'Ops, parece que você não possui produtos',
+            style: TextStyle(
+              color: Color(0xffA49930),
+              fontWeight: FontWeight.bold,
+            ),
+          )
       ],
     );
   }
