@@ -97,7 +97,7 @@ class _ShopPageState extends State<ShopPage> {
                                     ),
                                     minimumSize: Size(20, 20),
                                     backgroundColor: Color(0xff2C5DA3),
-                                    foregroundColor: Colors.white,
+                                    foregroundColor: Color(0xffA2A2A4),
                                   ),
                                   child: Text(
                                     'Saiba Mais',
@@ -177,7 +177,7 @@ class _ShopPageState extends State<ShopPage> {
                                     ),
                                     minimumSize: Size(20, 20),
                                     backgroundColor: Color(0xff2C5DA3),
-                                    foregroundColor: Colors.white,
+                                    foregroundColor: Color(0xffA2A2A4),
                                   ),
                                   child: Text(
                                     'Saiba Mais',
@@ -257,7 +257,7 @@ class _ShopPageState extends State<ShopPage> {
                                     ),
                                     minimumSize: Size(20, 20),
                                     backgroundColor: Color(0xff2C5DA3),
-                                    foregroundColor: Colors.white,
+                                    foregroundColor: Color(0xffA2A2A4),
                                   ),
                                   child: Text(
                                     'Saiba Mais',

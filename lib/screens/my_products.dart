@@ -161,6 +161,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                 thickness: 2,
                 color: Color(0xffA49930),
               ),
+              ElevatedButton(onPressed: transfeProduct(context), child: Text('Transfer')),
               Padding(padding: EdgeInsets.only(top: 10)),
               if (products.isNotEmpty)
                 _buildProductList()
@@ -408,7 +409,15 @@ class _MyProductsPageState extends State<MyProductsPage> {
       },
     );
   }
-
+  void transfeProduct(BuildContext context){
+    showDialog(
+      context: context, 
+      builder: (BuildContext context) {
+        return AlertDialog(
+          
+        );
+      });
+  }
   void showManualOrDriver(BuildContext context) {
     showDialog(
       context: context,
