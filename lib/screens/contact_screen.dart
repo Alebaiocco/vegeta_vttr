@@ -9,6 +9,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:math';
 
+import 'package:vttr/screens/home_screen.dart';
+
 class Contact extends StatefulWidget {
   const Contact({super.key});
 
@@ -69,7 +71,7 @@ class _ContactState extends State<Contact> {
 
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const Contact()),
+            MaterialPageRoute(builder: (context) => const Home()),
           );
         }
       } else if (response.statusCode == 401) {

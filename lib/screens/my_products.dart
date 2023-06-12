@@ -7,7 +7,9 @@ import 'package:vttr/components/top_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:vttr/screens/home_screen.dart';
 
 class Product {
   final int serieNumber;
@@ -51,28 +53,6 @@ class _MyProductsPageState extends State<MyProductsPage> {
       });
     });
   }
-
-  /*final List<Product> products = [
-    Product(
-      serieNumber: 08821,
-      description: 'Descrição do produto 1',
-      garantia: 'Vitalícia',
-      photoUrl: 'assets/images/pedalUm.png',
-      hasNewVersion: true,
-    ),
-    Product(
-      serieNumber: 2034,
-      description: 'Descrição do produto 2',
-      garantia: '27/12/2024',
-      photoUrl: 'assets/images/pedalDois.png',
-    ),
-    Product(
-      serieNumber: 0900,
-      description: 'Descrição do produto 3',
-      garantia: '27/12/2024',
-      photoUrl: 'assets/images/pedalTres.png',
-    ),
-  ];*/
 
   Future<void> listProduct() async {
     var url =
@@ -148,6 +128,142 @@ class _MyProductsPageState extends State<MyProductsPage> {
     }
   }
 
+  Future<void> transfeProduct(String newUser, String name) async {
+    var url = Uri.parse('https://ronaldo.gtasamp.com.br/api/trade/product');
+    List<String> listaString = [];
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+      var response = await http.post(url,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $token',
+            "Access-Control-Allow-Credentials": 'true',
+            "Access-Control-Allow-Headers":
+                "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
+            "Access-Control-Allow-Methods": "POST"
+          },
+          body: jsonEncode(
+              <String, String>{'new_user': newUser, 'product_name': name}));
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        if (data['data'] != null && data['data']['message'] != null) {
+          String message = data['data']['message'];
+
+          Fluttertoast.showToast(
+            msg: message,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 10,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            webShowClose: true,
+            webPosition: 'center',
+          );
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Home()),
+          );
+        }
+      } else if (response.statusCode == 401) {
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        if (data['data']['message'] != null) {
+          String errorMessage = data['data']['message'];
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                errorMessage,
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 7),
+              action: SnackBarAction(
+                label: 'OK',
+                textColor: Colors.white,
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
+              ),
+            ),
+          );
+        }
+      } else if (response.statusCode >= 500) {
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        if (data['message'] != null && data['message']['erros'] != null) {
+          List<String> erros = List<String>.from(
+              data['message']['erros'].map((item) => item.toString()));
+
+          if (erros.isNotEmpty) {
+            listaString.addAll(erros);
+          }
+
+          String errorMessage = erros.join('\n');
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Ops! Ocorreu um erro no login:\n$errorMessage',
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 7),
+              action: SnackBarAction(
+                label: 'OK',
+                textColor: Colors.white,
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
+              ),
+            ),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Ops! Ocorreu algum erro interno',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 7),
+            action: SnackBarAction(
+              label: 'OK',
+              textColor: Colors.white,
+              onPressed: () {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              },
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text(e.toString()),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -160,12 +276,6 @@ class _MyProductsPageState extends State<MyProductsPage> {
               const Divider(
                 thickness: 2,
                 color: Color(0xffA49930),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  transfeProduct(context);
-                },
-                child: Text('Transfer'),
               ),
               Padding(padding: EdgeInsets.only(top: 10)),
               if (products.isNotEmpty)
@@ -242,7 +352,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
             Container(
               alignment: Alignment.center,
               width: 288,
-              height: 55,
+              height: 78,
               margin: EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
                 color: Color(0xffA49930),
@@ -283,8 +393,8 @@ class _MyProductsPageState extends State<MyProductsPage> {
                       margin: const EdgeInsets.only(left: 3),
                       alignment: Alignment.bottomLeft,
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        margin: EdgeInsets.only(right: 150),
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        margin: EdgeInsets.only(right: 110),
                         decoration: BoxDecoration(
                           color: Colors.black,
                           borderRadius: const BorderRadius.only(
@@ -299,15 +409,72 @@ class _MyProductsPageState extends State<MyProductsPage> {
                             ),
                           ],
                         ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            product.garantia,
-                            style: TextStyle(
-                              color: Color(0xffA49930),
-                              fontFamily: 'Rubik',
+                        child: Row(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Garantia: ' + product.garantia,
+                                style: TextStyle(
+                                  color: Color(0xffA49930),
+                                  fontFamily: 'Rubik',
+                                ),
+                              ),
                             ),
+                            Padding(padding: EdgeInsets.only(left: 7)),
+                            Icon(
+                              Icons.touch_app_rounded,
+                              size: 15,
+                              color: Color(0xffA49930),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      showAlertTransferencia(context, product);
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 3, top: 8),
+                      alignment: Alignment.bottomLeft,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        margin: EdgeInsets.only(right: 180),
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: const BorderRadius.only(
+                            bottomRight: Radius.circular(35),
                           ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color.fromARGB(255, 51, 47, 2),
+                              spreadRadius: 1,
+                              blurRadius: 2,
+                              offset: Offset(0, 1),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Transferir',
+                                style: TextStyle(
+                                  color: Color(0xffA49930),
+                                  fontFamily: 'Rubik',
+                                ),
+                              ),
+                            ),
+                            Padding(padding: EdgeInsets.only(left: 7)),
+                            Icon(
+                              Icons.touch_app_rounded,
+                              size: 15,
+                              color: Color(0xffA49930),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -415,12 +582,147 @@ class _MyProductsPageState extends State<MyProductsPage> {
     );
   }
 
-  void transfeProduct(BuildContext context) {
+  void showAlertTransferencia(BuildContext context, Product product) {
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog();
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  fit: BoxFit.cover,
+                  height: 40,
+                  width: 40,
+                ),
+              ),
+              SizedBox(width: 10),
+              Text(
+                'Atenção!',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+              'Você está prestes a realizar a de tranferência de produtos. Deseja continuar?'),
+          actions: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xffA49930),
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text('Sim'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                showTransferencia(context, product);
+                FocusScope.of(context).unfocus();
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.transparent,
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text('Não'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showTransferencia(BuildContext context, Product product) {
+    String newUser = '';
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  fit: BoxFit.cover,
+                  height: 40,
+                  width: 40,
+                ),
+              ),
+              SizedBox(width: 10),
+              Text(
+                'Transferir Produto!',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+          content: Form(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  onChanged: (value) => newUser = value,
+                  decoration: InputDecoration(
+                    labelText: 'Email do novo dono do Produto',
+                    labelStyle: TextStyle(color: Color(0xffA49930)),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0xffA49930), width: 2.0),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xffA49930),
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+                transfeProduct(newUser, product.name);
+              },
+              child: Text('Transferir'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.transparent,
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text('Fechar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void showManualOrDriver(BuildContext context) {
