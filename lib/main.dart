@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:vttr/screens/home_screen.dart';
 import 'package:vttr/screens/login_screen.dart';
-import 'package:vttr/screens/productsPage/pedalUm_page.dart';
 import 'package:vttr/screens/shop_screen.dart';
 import 'package:vttr/screens/signup_screen.dart';
 import 'package:vttr/screens/splash_screen.dart';
@@ -54,7 +53,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(),
-      home: PedalUmPage(),
+      home: Splash(),
     );
   }
 }

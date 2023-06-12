@@ -682,7 +682,8 @@ class _MyProductsPageState extends State<MyProductsPage> {
                     labelText: 'Email do novo dono do Produto',
                     labelStyle: TextStyle(color: Color(0xffA49930)),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xffA49930), width: 2.0),
+                      borderSide:
+                          BorderSide(color: Color(0xffA49930), width: 2.0),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
