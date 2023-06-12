@@ -1,4 +1,8 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:vttr/components/top_bar.dart';
 import 'package:vttr/models/product.dart';
 import 'package:vttr/models/product_comment.dart';
@@ -14,6 +18,7 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   List<ProductComment> comments = [];
+  double rating = 0;
   
   Future<void> getProductComment() async {
     try {
@@ -77,35 +82,27 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                              bottom: 10, left: 10, right: 10, top: 10), //ALTERAR
+                              bottom: 15, left: 20, right: 20, top: 10), //ALTERAR
                           child: Text(
                             widget.product.description,
                             textAlign: TextAlign.justify,
                             style: const TextStyle(
-                              fontSize: 11,
+                              fontSize: 13,
                               fontFamily: 'Rubik',
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
+                        ),
                         Text(
                           'RS ${widget.product.price.toStringAsFixed(2)}',
                           style: const TextStyle(
                               fontSize: 18,
+                              fontWeight: FontWeight.bold,
                               fontFamily: 'Rubik',
-                              color: Color(0xffA2A2A4)),
+                              color: Color(0xff000915)),
                         ),
-                        ElevatedButton(
+                        Padding(padding: EdgeInsets.symmetric(vertical: 10),
+                        child: ElevatedButton(
                           onPressed: () {
                             // Implemente a lógica para adicionar o produto ao carrinho ou realizar a ação desejada
                           },
@@ -118,8 +115,121 @@ class _ProductPageState extends State<ProductPage> {
                                   BorderRadius.all(Radius.circular(12)),
                             ),
                           ),
-                          child: const Text("Comprar"),
+                          child: Text("Saiba Mais", style: TextStyle(color: Color(0xffA2A2A4)),),
+                        ),)
+                      ],
+                    ),
+                  ),
+                  // Comentarios
+                  SizedBox(
+                        height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 40, right: 5),
+                        child: SvgPicture.asset(
+                          'assets/images/star.svg',
+                          width: 22,
+                          height: 22,
                         ),
+                      ),
+                      Text(
+                        '4.5',
+                        style: TextStyle(
+                          color: Color(0xffA49930),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
+                        ),
+                      )
+                    ],
+                  ),
+                  Padding(padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Comentários', 
+                        style: TextStyle(
+                          color: Color(0xffA2A2A4),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 19,
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          // COMEÇAR A COMENTAR
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              width: 1,
+                              color: Color(0xffA49930),
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          backgroundColor: Color(0xff000915),
+                          foregroundColor: Color(0xffA2A2A4),
+                        ),
+                        child: Text('Comentar'))
+                    ],
+                  ),),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    decoration: BoxDecoration(
+                      color:  Color(0xff000915),
+                      borderRadius: BorderRadius.circular(10.0),
+                      border: Border.all(
+                        color:  Color(0xffA49930),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Username", // mome do usuario
+                                style: TextStyle(
+                                  color: Color(0xffA2A2A4), 
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17
+                                  ),
+                              ), 
+                              RatingBar.builder(
+                                initialRating: rating,
+                                minRating: 1,
+                                direction: Axis.horizontal,
+                                itemCount: 5,
+                                itemSize: 20,
+                                itemBuilder: (context, _) =>Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                onRatingUpdate: (value) {
+                                  setState(() {
+                                    rating = value;
+                                  });
+                                },
+                              )
+                            ],
+                          ),
+                        ),
+                        Padding(padding: EdgeInsets.only(bottom: 20),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          child: Text(
+                            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+                            textAlign: TextAlign.justify,
+                            style: TextStyle(
+                              color: Color(0xffA2A2A4),
+                              fontSize: 14
+                            ),
+                          ),
+                        ),)
                       ],
                     ),
                   ),
