@@ -8,6 +8,8 @@ import 'package:vttr/models/product.dart';
 import 'package:vttr/models/product_comment.dart';
 import 'package:vttr/widgets/comments_widget.dart';
 
+import '../../widgets/newcomments_widget.dart';
+
 class ProductPage extends StatefulWidget {
   final Product product;
 
@@ -207,7 +209,7 @@ class _ProductPageState extends State<ProductPage> {
                       ),
                     ),
                     child: Column(
-                      children: [mountBody()],
+                      children: [NewCommentsWidget()],
                     ),
                   ),
                 ],
