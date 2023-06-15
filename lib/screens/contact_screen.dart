@@ -168,40 +168,6 @@ class _ContactState extends State<Contact> {
                 thickness: 2,
                 color: Color(0xffA49930),
               ),
-              // Cabeçalho
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 20, top: 40),
-                    child: Text(
-                      'Nome',
-                      style: TextStyle(
-                        color: Color(0xffA49930),
-                        fontFamily: 'Roboto-bold',
-                        fontSize: 18,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.95,
-                child: TextFormField(
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(width: 2, color: Color(0xffA49930)),
-                    ),
-                  ),
-                ),
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
