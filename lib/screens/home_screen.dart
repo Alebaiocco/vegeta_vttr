@@ -52,7 +52,7 @@ class _HomeState extends State<Home> {
                 children: [
                   // Cabeçalho
                   TopBar(
-                      text: 'Olá, Username!', text2: 'Bem vindo a VTR Effects'),
+                      text: 'Bem vindo a VTR Effects', text2: '',),
                   const Divider(
                     thickness: 2,
                     color: Color(0xffA49930),
