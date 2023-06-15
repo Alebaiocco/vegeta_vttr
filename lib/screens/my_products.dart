@@ -525,58 +525,101 @@ class _MyProductsPageState extends State<MyProductsPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  fit: BoxFit.cover,
-                  height: 40,
-                  width: 40,
-                ),
-              ),
-              SizedBox(width: 10),
-              Text(
-                'Termo de Garantia',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-            ],
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
-          content: Text(
-              'Teve algum problema com seu produto? Clique no botão abaixo caso deseje "acionar a garantia" caso contrário, basta clicar em voltar para retornar a visualizar seus pedáis'),
-          actions: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xffA49930),
-                onPrimary: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+          child: Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Image.asset(
+                        'assets/images/logo.png',
+                        fit: BoxFit.cover,
+                        height: 40,
+                        width: 40,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      'Termo de Garantia',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              child: Text('Acionar Garantia'),
-              onPressed: () {
-                _launchGarantia();
-              },
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.transparent,
-                onPrimary: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                SizedBox(height: 20),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Text(
+                      'Agradecemos por escolher nosso produto e nos honrar com sua confiança. Temos o compromisso de oferecer produtos de alta qualidade e durabilidade, e para reforçar nosso compromisso, fornecemos a seguinte garantia genérica para sua tranquilidade.\n\n'
+                      '1. Cobertura da Garantia\n'
+                      'Garantimos que o produto estará livre de defeitos de fabricação e funcionará conforme as especificações indicadas no momento da compra. Esta garantia cobre tanto os componentes físicos quanto o desempenho do produto, desde que seja utilizado de acordo com as instruções fornecidas.\n\n'
+                      '2. Prazo da Garantia\n'
+                      'A garantia é válida por um período vitalício em caso de compra direta em um parceiro VTR ou pelo período de 1 ano a partir da data de compra por revenda. Durante esse período, caso o produto apresente algum defeito coberto pela garantia, providenciaremos o reparo ou a substituição do produto, de acordo com nossa política de garantia.\n\n'
+                      '3. Exclusões da Garantia\n'
+                      'Esta garantia não cobre danos causados por mau uso, negligência, acidentes, manutenção inadequada, reparos não autorizados, modificações não autorizadas, uso indevido ou qualquer outra circunstância que não se enquadre nas condições normais de utilização do produto.\n\n'
+                      '4. Processo de Acionamento da Garantia\n'
+                      'Caso você identifique um defeito coberto pela garantia durante o período de cobertura, solicitamos que entre em contato com nosso serviço de atendimento ao cliente. Faremos o possível para resolver o problema de maneira rápida e eficiente. Podemos solicitar informações adicionais, como comprovante de compra, número de série do produto, descrição do defeito, entre outros, para agilizar o processo de atendimento.\n\n'
+                      '5. Opções de Reparo ou Substituição\n'
+                      'Após a avaliação do produto, caso seja constatado um defeito coberto pela garantia, ofereceremos as seguintes opções:\n'
+                      'a) Reparo: Providenciaremos o conserto do produto sem custos adicionais para você. Faremos o possível para realizar o reparo de forma ágil e eficaz.\n'
+                      'b) Substituição: Caso o reparo não seja viável ou se o produto apresentar repetidos problemas, ofereceremos a substituição por um produto idêntico ou similar, de acordo com nossa disponibilidade.\n\n'
+                      '6. Limitações da Garantia\n'
+                      'Nossa responsabilidade, limitada à reparação ou substituição conforme descrito nesta garantia, exclui qualquer outra responsabilidade por danos diretos, indiretos, incidentais ou consequenciais, incluindo perda de uso, perda de dados, perda de lucros ou qualquer outro tipo de perda financeira.\n\n'
+                      '7. Legislação Aplicável\n'
+                      'Esta garantia é regida pelas leis do país/estado/jurisdição aplicável. Quaisquer disputas relacionadas a esta garantia serão resolvidas por meio dos tribunais competentes da mesma.\n\n'
+                      'Esperamos que este texto de garantia genérica tenha esclarecido suas dúvidas. Para informações mais específicas sobre a garantia do seu produto, consulte o documento de garantia fornecido juntamente com o produto ou entre em contato com nosso serviço de atendimento ao cliente.\n\n'
+                      'Atenciosamente,\n'
+                      'ÍTALO\n'
+                      'VTR EFFECTS',
+                    ),
+                  ),
                 ),
-              ),
-              child: Text('Voltar'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xffA49930),
+                        onPrimary: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Text('Acionar Garantia'),
+                      onPressed: () {
+                        _launchGarantia();
+                      },
+                    ),
+                    SizedBox(width: 10),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.transparent,
+                        onPrimary: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: BorderSide(color: Colors.grey),
+                        ),
+                      ),
+                      child: Text('Voltar'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );
