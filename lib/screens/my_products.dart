@@ -208,7 +208,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                'Ops! Ocorreu um erro no login:\n$errorMessage',
+                'Ops! Ocorreu um erro:\n$errorMessage',
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.red,
@@ -595,7 +595,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: Text('Acionar Garantia'),
+                      child: Text('Estou Ciente'),
                       onPressed: () {
                         _launchGarantia();
                       },
@@ -652,7 +652,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
             ],
           ),
           content: Text(
-              'Você está prestes a realizar a de tranferência de produtos. Deseja continuar?'),
+              'Você está prestes a realizar a tranferência de produtos. Deseja continuar?'),
           actions: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
