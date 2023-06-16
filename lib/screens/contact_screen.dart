@@ -29,11 +29,15 @@ class _ContactState extends State<Contact> {
     'Outros'
   ];
   String? selectedItem = 'Selecione uma categoria';
+  bool isLoading = false;
 
   Future<void> pushContact() async {
     var url =
         Uri.parse('https://ronaldo.gtasamp.com.br/api/contact/send-contact');
     List<String> listaString = [];
+    setState(() {
+      isLoading = true;
+    });
 
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -149,6 +153,10 @@ class _ContactState extends State<Contact> {
           );
         },
       );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -287,24 +295,31 @@ class _ContactState extends State<Contact> {
                             ),
                           ),
                           SizedBox(height: 30),
-                          Center(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                pushContact();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                    width: 2,
-                                    color: Color(0xff777D6D),
+                          if (!isLoading)
+                            Center(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  pushContact();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                      width: 2,
+                                      color: Color(0xff777D6D),
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  borderRadius: BorderRadius.circular(10),
+                                  primary: Color(0xffA49930),
+                                  onPrimary: Colors.white,
+                                  padding: EdgeInsets.symmetric(horizontal: 40),
                                 ),
-                                primary: Color(0xffA49930),
-                                onPrimary: Colors.white,
-                                padding: EdgeInsets.symmetric(horizontal: 40),
+                                child: Text('Enviar'),
                               ),
-                              child: Text('Enviar'),
+                            ),
+                          if (isLoading)
+                          Center(
+                            child: CircularProgressIndicator(
+                              color: Color(0xffA49930),
                             ),
                           ),
                         ],
