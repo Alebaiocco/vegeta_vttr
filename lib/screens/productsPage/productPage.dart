@@ -3,11 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vttr/components/top_bar.dart';
 import 'package:vttr/models/product.dart';
 import 'package:vttr/models/product_comment.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:vttr/widgets/comments_widget.dart';
 
+import '../../repository/product.dart';
 import '../../widgets/newcomments_widget.dart';
 
 class ProductPage extends StatefulWidget {
@@ -44,13 +47,153 @@ class _ProductPageState extends State<ProductPage> {
     super.initState();
   }
 
+  final TextEditingController commentController = TextEditingController();
+
   Widget mountBody() {
     return Column(
       children: comments
           .map<Widget>(
-            (comment) => CommentsWidget(User: comment.User, comment: comment.comment, assessment: comment.assessment),
+            (comment) => CommentsWidget(
+                User: comment.User,
+                comment: comment.comment,
+                assessment: comment.assessment),
           )
           .toList(),
+    );
+  }
+
+  void showNewComment() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  fit: BoxFit.cover,
+                  height: 40,
+                  width: 40,
+                ),
+              ),
+              SizedBox(width: 10),
+              Text(
+                'Novo Comentário',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+          content: Form(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                RatingBar.builder(
+                  initialRating: 0,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  itemCount: 5,
+                  itemSize: 20,
+                  itemBuilder: (context, _) => const Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (value) {
+                    // Lógica para atualizar a avaliação
+                  },
+                ),
+                TextFormField(
+                  controller: commentController,
+                  decoration: InputDecoration(
+                    labelText: 'Digite seu comentário...',
+                    labelStyle: TextStyle(color: Color(0xffA49930)),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0xffA49930), width: 2.0),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xffA49930),
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: () async {
+                Navigator.of(context).pop();
+
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                String? token = prefs.getString('token');
+
+                if (token == null) return;
+
+                try {
+                  await ProductRepositoryImpl().addProductComment(
+                      token, commentController.text, 5, widget.product.name);
+
+                  Fluttertoast.showToast(
+                    msg: 'Comentário adicionado com sucesso.',
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 10,
+                    backgroundColor: Colors.green,
+                    textColor: Colors.white,
+                    webShowClose: true,
+                    webPosition: 'center',
+                  );
+
+                  await getProductComment();
+
+                  // ignore: empty_catches
+                } catch (error) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Erro ao comentar:\n$error',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.red,
+                      duration: Duration(seconds: 7),
+                      action: SnackBarAction(
+                        label: 'OK',
+                        textColor: Colors.white,
+                        onPressed: () {
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        },
+                      ),
+                    ),
+                  );
+                }
+              },
+              child: Text('Enviar'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.transparent,
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text('Fechar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -182,7 +325,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                         ElevatedButton(
                             onPressed: () {
-                              // COMEÇAR A COMENTAR
+                              showNewComment();
                             },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
@@ -209,7 +352,7 @@ class _ProductPageState extends State<ProductPage> {
                       ),
                     ),
                     child: Column(
-                      children: [NewCommentsWidget()],
+                      children: [mountBody()],
                     ),
                   ),
                 ],

@@ -3,8 +3,8 @@ import 'package:vttr/models/product.dart';
 
 abstract class ProductRepository {
   Future<List<Product>> getProducts();
-  Future<void> addProductComment(String token, String comment,
-      int assessment, String productName);
+  Future<void> addProductComment(
+      String token, String comment, int assessment, String productName);
 }
 
 class ProductRepositoryImpl implements ProductRepository {
@@ -40,7 +40,7 @@ class ProductRepositoryImpl implements ProductRepository {
       String token, String comment, int assessment, String productName) async {
     try {
       final response = await client.post(
-        'api/product/comments',
+        'https://ronaldo.gtasamp.com.br/api/product/comments',
         options: Options(headers: {'Authorization': 'Bearer $token'}),
         data: {
           'comment': comment,
@@ -51,10 +51,13 @@ class ProductRepositoryImpl implements ProductRepository {
 
       final data = response.data['data'];
 
+      print("OIIIIII");
+      print(data);
+
       print(data['message']);
     } catch (e) {
       print(e);
-      throw Exception('Failed to add product comment.');
+      throw Exception('Falha ao adicionar o comentario ao produto.');
     }
   }
 }

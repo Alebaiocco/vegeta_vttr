@@ -2,18 +2,28 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vttr/models/product.dart';
+
+import '../repository/product.dart';
 
 class NewCommentsWidget extends StatelessWidget {
-  //final String user;
-  //final TextEditingController commentController;
-  //final int assessment;
+  final Product product;
 
-  //const NewCommentsWidget({
-   // Key? key,
-    //required this.user,
-    //required this.commentController,
-    //required this.assessment,
-  //}) : super(key: key);
+  final TextEditingController commentController =
+      TextEditingController(); // Adicione esta linha
+
+  NewCommentsWidget({Key? key, required this.product}) : super(key: key);
+
+  Future<void> addCommentProduct(String comment) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+
+    if (token == null) return;
+
+    return ProductRepositoryImpl()
+        .addProductComment(token, comment, 0, product.name);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +69,8 @@ class NewCommentsWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(8.0), // Defina o valor de padding desejado
+                padding: const EdgeInsets.all(
+                    8.0), // Defina o valor de padding desejado
                 child: TextField(
                   maxLines: null,
                   textAlign: TextAlign.justify,
@@ -67,6 +78,7 @@ class NewCommentsWidget extends StatelessWidget {
                     color: Color(0xffA2A2A4),
                     fontSize: 14,
                   ),
+                  controller: commentController,
                   decoration: InputDecoration(
                     hintText: 'Digite seu comentário...',
                     hintStyle: TextStyle(
@@ -78,7 +90,24 @@ class NewCommentsWidget extends StatelessWidget {
               ),
             ),
           ),
-        )
+        ),
+        ElevatedButton(
+            onPressed: () {
+              // função
+              addCommentProduct(commentController.text);
+            },
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                side: BorderSide(
+                  width: 1,
+                  color: Color(0xffA49930),
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              backgroundColor: Color(0xff000915),
+              foregroundColor: Color(0xffA2A2A4),
+            ),
+            child: Text('Enviar'))
       ],
     );
   }
