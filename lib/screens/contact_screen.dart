@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, avoid_web_libraries_in_flutter, use_build_context_synchronously
+// ignore_for_file: unused_import, prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, avoid_web_libraries_in_flutter, use_build_context_synchronously, deprecated_member_use
 
 import 'dart:convert';
 
@@ -159,118 +159,160 @@ class _ContactState extends State<Contact> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               // Cabeçalho
               TopBar(
-                  text: 'Fale Conosco',
-                  text2: 'Tire suas dúvidas diretamente com o time da VTR'),
+                text: 'Fale Conosco',
+                text2: 'Tire suas dúvidas diretamente com o time da VTR',
+              ),
               Divider(
                 thickness: 2,
                 color: Color(0xffA49930),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 20, top: 15),
-                    child: Text(
-                      'Categorias',
-                      style: TextStyle(
-                        color: Color(0xffA49930),
-                        fontFamily: 'Roboto-bold',
-                        fontSize: 18,
-                      ),
+              Padding(
+                padding: EdgeInsets.only(top: 80, left: 10, right: 10),
+                child: Center(
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.95,
-                child: DropdownButtonFormField<String>(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(width: 2, color: Color(0xffA49930)),
-                    ),
-                  ),
-                  value: selectedItem,
-                  items: items
-                      .map((item) => DropdownMenuItem<String>(
-                            value: item,
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 20),
-                              child: Text(
-                                item,
+                    color: Color(0xff0F0F1B),
+                    child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 10),
+                                child: Image.asset(
+                                  'assets/images/logo.png',
+                                  fit: BoxFit.cover,
+                                  height: 80,
+                                  width: 80,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Text(
+                                'Fale Conosco',
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    fontSize: 20, color: Color(0xffA2A2A4)),
+                                  color: Color(0xffA49930),
+                                  fontFamily: 'Roboto-bold',
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            'Categorias',
+                            style: TextStyle(
+                              color: Color(0xffA49930),
+                              fontFamily: 'Roboto-bold',
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.95,
+                            child: DropdownButtonFormField<String>(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    width: 2,
+                                    color: Color(0xffA49930),
+                                  ),
+                                ),
+                              ),
+                              value: selectedItem,
+                              items: items.map((item) {
+                                return DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 5),
+                                    child: Text(
+                                      item,
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Color(0xffA2A2A4),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (item) {
+                                setState(() {
+                                  selectedItem = item;
+                                });
+                              },
+                              dropdownColor: Color(0xff000915),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            'Descrição',
+                            style: TextStyle(
+                              color: Color(0xffA49930),
+                              fontFamily: 'Roboto-bold',
+                              fontSize: 18,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.95,
+                            child: TextFormField(
+                              onChanged: (value) => description = value,
+                              maxLines: 5,
+                              minLines: 1,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    width: 2,
+                                    color: Color(0xffA49930),
+                                  ),
+                                ),
                               ),
                             ),
-                          ))
-                      .toList(),
-                  onChanged: (item) => setState(() => selectedItem = item),
-                  dropdownColor: Color(0xff000915),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 20, top: 15),
-                    child: Text(
-                      'Descrição',
-                      style: TextStyle(
-                        color: Color(0xffA49930),
-                        fontFamily: 'Roboto-bold',
-                        fontSize: 18,
+                          ),
+                          SizedBox(height: 30),
+                          Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                pushContact();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                    width: 2,
+                                    color: Color(0xff777D6D),
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                primary: Color(0xffA49930),
+                                onPrimary: Colors.white,
+                                padding: EdgeInsets.symmetric(horizontal: 40),
+                              ),
+                              child: Text('Enviar'),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.95,
-                child: TextFormField(
-                  onChanged: (value) => description = value,
-                  maxLines: 5,
-                  minLines: 1,
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(width: 2, color: Color(0xffA49930)),
                     ),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 30,
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    pushContact();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        width: 2,
-                        color: Color(0xff2C5DA3),
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    backgroundColor: Color(0xff2C5DA3),
-                    foregroundColor: Color(0xffA2A2A4),
-                  ),
-                  child: Text('Enviar'))
             ],
           ),
         ),
