@@ -42,8 +42,9 @@ class _LoginState extends State<Login> {
     if (value == null || value.isEmpty) {
       return 'Digite um e-mail válido';
     }
+    final valueTrim = value.trim();
     final emailRegExp = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
-    if (!emailRegExp.hasMatch(value)) {
+    if (!emailRegExp.hasMatch(valueTrim)) {
       return 'Digite um e-mail válido';
     }
     return null;
@@ -52,9 +53,6 @@ class _LoginState extends State<Login> {
   String? _validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Digite uma senha válida';
-    }
-    if (value.length <= 7) {
-      return 'A senha deve conter no mínimo 8 caractéres';
     }
     return null;
   }
