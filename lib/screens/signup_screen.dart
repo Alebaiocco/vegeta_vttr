@@ -21,8 +21,9 @@ class _SignupState extends State<Signup> {
     if (value == null || value.isEmpty) {
       return 'Digite um e-mail válido';
     }
+    final valueTrim = value.trim();
     final emailRegExp = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
-    if (!emailRegExp.hasMatch(value)) {
+    if (!emailRegExp.hasMatch(valueTrim)) {
       return 'Digite um e-mail válido';
     }
     return null;
