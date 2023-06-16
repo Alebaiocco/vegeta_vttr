@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:vttr/models/product.dart';
 import 'package:vttr/repository/product.dart';
 import 'package:vttr/widgets/product_widget.dart';
+import 'package:vttr/components/top_bar.dart';
 
 class ShopPage extends StatefulWidget {
   const ShopPage({Key? key}) : super(key: key);
@@ -70,6 +71,11 @@ class _ShopPageState extends State<ShopPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              TopBar(text: 'Meus Produtos', text2: ''),
+              const Divider(
+                thickness: 2,
+                color: Color(0xffA49930),
+              ),
               mountBody(),
             ],
           ),
