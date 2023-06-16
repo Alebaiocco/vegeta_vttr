@@ -71,7 +71,7 @@ class _ShopPageState extends State<ShopPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TopBar(text: 'Meus Produtos', text2: ''),
+              TopBar(text: 'Conheça nossos Produtos', text2: ''),
               const Divider(
                 thickness: 2,
                 color: Color(0xffA49930),

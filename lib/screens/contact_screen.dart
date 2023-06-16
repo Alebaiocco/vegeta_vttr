@@ -185,7 +185,7 @@ class _ContactState extends State<Contact> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    color: Color(0xff0F0F1B),
+                    color: Color.fromARGB(255, 66, 66, 83),
                     child: Padding(
                       padding: EdgeInsets.all(5),
                       child: Column(
