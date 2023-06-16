@@ -10,7 +10,7 @@ class ProductWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 20, bottom: 20),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
@@ -40,7 +40,7 @@ class ProductWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 15),
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
                     child: Text(
                       product.name.toString(),
                       style: const TextStyle(
@@ -65,9 +65,9 @@ class ProductWidget extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 3,
                   ),
-                  ElevatedButton(
+                  ElevatedButton(                  
                     onPressed: () {
                       Navigator.push(
                         context,

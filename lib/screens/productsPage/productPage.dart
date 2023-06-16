@@ -92,6 +92,18 @@ class _ProductPageState extends State<ProductPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                TextFormField(
+                  controller: commentController,
+                  decoration: InputDecoration(
+                    labelText: 'Digite seu comentário...',
+                    labelStyle: TextStyle(color: Color(0xffA49930)),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0xffA49930), width: 2.0),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
                 RatingBar.builder(
                   initialRating: 0,
                   minRating: 1,
@@ -105,18 +117,6 @@ class _ProductPageState extends State<ProductPage> {
                   onRatingUpdate: (value) {
                     // Lógica para atualizar a avaliação
                   },
-                ),
-                TextFormField(
-                  controller: commentController,
-                  decoration: InputDecoration(
-                    labelText: 'Digite seu comentário...',
-                    labelStyle: TextStyle(color: Color(0xffA49930)),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Color(0xffA49930), width: 2.0),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
                 ),
               ],
             ),
