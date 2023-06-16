@@ -43,6 +43,7 @@ class MyProductsPage extends StatefulWidget {
 class _MyProductsPageState extends State<MyProductsPage> {
   final List<Product> products = [];
   String messageEmptyProducts = '';
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -52,6 +53,19 @@ class _MyProductsPageState extends State<MyProductsPage> {
         listProduct();
       });
     });
+  }
+
+  String? _validateEmailTransferencia(String? value) {
+    print(value);
+    if (value == null || value.isEmpty) {
+      return 'Digite um e-mail válido';
+    }
+    final valueTrim = value.trim();
+    final emailRegExp = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
+    if (!emailRegExp.hasMatch(valueTrim)) {
+      return 'Digite um e-mail válido';
+    }
+    return null;
   }
 
   Future<void> listProduct() async {
@@ -302,7 +316,17 @@ class _MyProductsPageState extends State<MyProductsPage> {
               margin: const EdgeInsets.only(top: 10),
               width: 288,
               height: 300,
-              color: Color(0xff000915),
+              decoration: BoxDecoration(
+                color: Color(0xFF000915),
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 4,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
               child: Stack(
                 alignment: Alignment.topRight,
                 children: [
@@ -312,7 +336,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                       topRight: Radius.circular(8),
                     ),
                     child: GestureDetector(
-                      onTap: () => {showManualOrDriver(context)},
+                      onTap: () => showManualOrDriver(context),
                       child: SizedBox(
                         width: 288,
                         height: 300,
@@ -324,53 +348,85 @@ class _MyProductsPageState extends State<MyProductsPage> {
                       ),
                     ),
                   ),
-                  Icon(
-                    Icons.touch_app_outlined,
-                    size: 30,
-                    color: Color(0xffA49930),
+                  GestureDetector(                   
+                    onTap: () => showManualOrDriver(context),
+                    child: Container(
+                      padding: EdgeInsets.all(12),
+                      child: Icon(
+                        Icons.touch_app_outlined,
+                        size: 30,
+                        color: Color(0xFFA49930),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 260,
+                    left: 200,
+                    child: GestureDetector(
+                      onTap: () {
+                        showAlertTransferencia(context, product);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(108, 216, 44, 32),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.autorenew_rounded,
+                              size: 15,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              'Transferir',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'Rubik',
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
             Container(
-              color: Color(0xff000915),
-              width: 288,
-              child: Padding(
-                padding: EdgeInsets.all(2),
-                child: FittedBox(
-                  fit: BoxFit.cover,
-                  child: Text(
-                    'Clique na imagem para verificar as atualizações ou o manual do produto',
-                    style: TextStyle(
-                      color: Color(0xffA49930),
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Container(
               alignment: Alignment.center,
               width: 288,
-              height: 78,
+              height: 60,
               margin: EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
-                color: Color(0xffA49930),
-                borderRadius: const BorderRadius.only(
+                color: Color(0xFFA49930),
+                borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(35),
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 4,
+                    offset: Offset(0, 2),
+                  ),
+                ],
               ),
               child: Column(
                 children: [
                   Container(
                     margin: const EdgeInsets.only(left: 3),
-                    alignment: Alignment.topLeft,
+                    alignment: Alignment.centerLeft,
                     child: Text(
                       product.name,
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Rubik',
                         fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -382,6 +438,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Rubik',
+                        fontSize: 14,
                       ),
                     ),
                   ),
@@ -390,7 +447,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                       showConfirmationDialog(context);
                     },
                     child: Container(
-                      margin: const EdgeInsets.only(left: 3),
+                      margin: const EdgeInsets.only(left: 3, top: 4),
                       alignment: Alignment.bottomLeft,
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 10),
@@ -402,7 +459,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Color(0xff000915),
+                              color: Color(0xFF000915),
                               spreadRadius: 1,
                               blurRadius: 2,
                               offset: Offset(0, 1),
@@ -411,68 +468,19 @@ class _MyProductsPageState extends State<MyProductsPage> {
                         ),
                         child: Row(
                           children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Garantia: ' + product.garantia,
-                                style: TextStyle(
-                                  color: Color(0xffA49930),
-                                  fontFamily: 'Rubik',
-                                ),
-                              ),
-                            ),
-                            Padding(padding: EdgeInsets.only(left: 7)),
                             Icon(
-                              Icons.touch_app_rounded,
+                              Icons.info_outline,
                               size: 15,
-                              color: Color(0xffA49930),
+                              color: Color(0xFFA49930),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      showAlertTransferencia(context, product);
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 3, top: 8),
-                      alignment: Alignment.bottomLeft,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        margin: EdgeInsets.only(right: 180),
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: const BorderRadius.only(
-                            bottomRight: Radius.circular(35),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color.fromARGB(255, 51, 47, 2),
-                              spreadRadius: 1,
-                              blurRadius: 2,
-                              offset: Offset(0, 1),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Transferir',
-                                style: TextStyle(
-                                  color: Color(0xffA49930),
-                                  fontFamily: 'Rubik',
-                                ),
+                            SizedBox(width: 5),
+                            Text(
+                              'Garantia: ${product.garantia}',
+                              style: TextStyle(
+                                color: Color(0xFFA49930),
+                                fontFamily: 'Rubik',
+                                fontSize: 14,
                               ),
-                            ),
-                            Padding(padding: EdgeInsets.only(left: 7)),
-                            Icon(
-                              Icons.touch_app_rounded,
-                              size: 15,
-                              color: Color(0xffA49930),
                             ),
                           ],
                         ),
@@ -597,7 +605,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                       ),
                       child: Text('Estou Ciente'),
                       onPressed: () {
-                        _launchGarantia();
+                        Navigator.of(context).pop();
                       },
                     ),
                     SizedBox(width: 10),
@@ -630,33 +638,33 @@ class _MyProductsPageState extends State<MyProductsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Row(
+          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+          title: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  fit: BoxFit.cover,
-                  height: 40,
-                  width: 40,
-                ),
-              ),
+                  child: Icon(
+                Icons.dangerous_rounded,
+                size: 60,
+                color: Colors.red,
+              )),
               SizedBox(width: 10),
               Text(
                 'Atenção!',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 26,
                 ),
               ),
             ],
           ),
           content: Text(
-              'Você está prestes a realizar a tranferência de produtos. Deseja continuar?'),
+              'Você está prestes a realizar a tranferência do seu produto. Tem certeza que deseja continuar?',
+              textAlign: TextAlign.justify),
           actions: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Color(0xffA49930),
+                primary: Colors.red,
                 onPrimary: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -672,6 +680,71 @@ class _MyProductsPageState extends State<MyProductsPage> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 primary: Colors.transparent,
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text('Não'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showConfirmationTransferencia(
+      BuildContext context, String newUser, String name) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                  child: Icon(
+                Icons.warning,
+                size: 60,
+                color: Color(0xffA49930),
+              )),
+              SizedBox(width: 10),
+              Text(
+                'Quase lá!',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 26,
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+              'Você está prestes a transferir o seu produto para ' +
+                  newUser +
+                  '. Você confirma essa operação?',
+              textAlign: TextAlign.justify),
+          actions: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.transparent,
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text('Sim, quero transferir!'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                transfeProduct(newUser, name);
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xffA49930),
                 onPrimary: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -716,10 +789,12 @@ class _MyProductsPageState extends State<MyProductsPage> {
             ],
           ),
           content: Form(
+            key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextFormField(
+                  validator: _validateEmailTransferencia,
                   onChanged: (value) => newUser = value,
                   decoration: InputDecoration(
                     labelText: 'Email do novo dono do Produto',
@@ -736,6 +811,13 @@ class _MyProductsPageState extends State<MyProductsPage> {
           ),
           actions: [
             ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  Navigator.of(context).pop();
+                  showConfirmationTransferencia(context, newUser, product.name);
+                  FocusScope.of(context).unfocus();
+                }
+              },
               style: ElevatedButton.styleFrom(
                 primary: Color(0xffA49930),
                 onPrimary: Colors.white,
@@ -743,10 +825,6 @@ class _MyProductsPageState extends State<MyProductsPage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                transfeProduct(newUser, product.name);
-              },
               child: Text('Transferir'),
             ),
             ElevatedButton(
