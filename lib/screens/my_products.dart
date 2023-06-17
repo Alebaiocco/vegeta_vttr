@@ -317,7 +317,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
               width: 288,
               height: 300,
               decoration: BoxDecoration(
-                color: Color(0xFF000915),
+                color: Colors.blueGrey[900],
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
                   BoxShadow(
@@ -348,14 +348,14 @@ class _MyProductsPageState extends State<MyProductsPage> {
                       ),
                     ),
                   ),
-                  GestureDetector(                   
+                  GestureDetector(
                     onTap: () => showManualOrDriver(context),
                     child: Container(
                       padding: EdgeInsets.all(12),
                       child: Icon(
                         Icons.touch_app_outlined,
                         size: 30,
-                        color: Color(0xFFA49930),
+                        color: Color(0xffA49930),
                       ),
                     ),
                   ),
@@ -369,7 +369,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                       child: Container(
                         padding: EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(108, 216, 44, 32),
+                          color: Color.fromARGB(172, 198, 40, 40),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
@@ -403,7 +403,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
               height: 60,
               margin: EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
-                color: Color(0xFFA49930),
+                color: Color(0xffA49930),
                 borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(35),
                 ),
@@ -459,7 +459,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Color(0xFF000915),
+                              color: const Color.fromARGB(255, 38, 50, 56),
                               spreadRadius: 1,
                               blurRadius: 2,
                               offset: Offset(0, 1),
@@ -471,13 +471,13 @@ class _MyProductsPageState extends State<MyProductsPage> {
                             Icon(
                               Icons.info_outline,
                               size: 15,
-                              color: Color(0xFFA49930),
+                              color: Color(0xffA49930),
                             ),
                             SizedBox(width: 5),
                             Text(
                               'Garantia: ${product.garantia}',
                               style: TextStyle(
-                                color: Color(0xFFA49930),
+                                color: Color(0xffA49930),
                                 fontFamily: 'Rubik',
                                 fontSize: 14,
                               ),
@@ -608,21 +608,6 @@ class _MyProductsPageState extends State<MyProductsPage> {
                         Navigator.of(context).pop();
                       },
                     ),
-                    SizedBox(width: 10),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.transparent,
-                        onPrimary: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side: BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                      child: Text('Voltar'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
                   ],
                 ),
               ],
@@ -644,7 +629,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
             children: [
               Container(
                   child: Icon(
-                Icons.dangerous_rounded,
+                Icons.warning,
                 size: 60,
                 color: Colors.red,
               )),
@@ -660,7 +645,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
           ),
           content: Text(
               'Você está prestes a realizar a tranferência do seu produto. Tem certeza que deseja continuar?',
-              textAlign: TextAlign.justify),
+              textAlign: TextAlign.center),
           actions: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -701,61 +686,93 @@ class _MyProductsPageState extends State<MyProductsPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Color.fromARGB(255, 255, 255, 255),
-          title: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                  child: Icon(
-                Icons.warning,
-                size: 60,
-                color: Color(0xffA49930),
-              )),
-              SizedBox(width: 10),
-              Text(
-                'Quase lá!',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 26,
-                ),
-              ),
-            ],
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
           ),
-          content: Text(
-              'Você está prestes a transferir o seu produto para ' +
-                  newUser +
-                  '. Você confirma essa operação?',
-              textAlign: TextAlign.justify),
-          actions: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.transparent,
-                onPrimary: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Text('Sim, quero transferir!'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                transfeProduct(newUser, name);
-              },
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16.0),
+              color: Colors.white,
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xffA49930),
-                onPrimary: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.warning,
+                  size: 60,
+                  color: Colors.red,
                 ),
-              ),
-              child: Text('Não'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+                SizedBox(height: 16),
+                Text(
+                  'Confirmação Irreversível!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 26,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Ao confirmar a transferência, o produto será permanentemente transferido para $newUser e você não poderá desfazer essa ação. Tem certeza de que deseja prosseguir?',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black87,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.red,
+                          onPrimary: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                        ),
+                        child: Text(
+                          'Sim, confirmo!',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          transfeProduct(newUser, name);
+                        },
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Theme.of(context).primaryColor,
+                          onPrimary: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          backgroundColor: Colors.transparent,
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                        ),
+                        child: Text(
+                          'Não, desisti!',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );
@@ -767,80 +784,128 @@ class _MyProductsPageState extends State<MyProductsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  fit: BoxFit.cover,
-                  height: 40,
-                  width: 40,
-                ),
-              ),
-              SizedBox(width: 10),
-              Text(
-                'Transferir Produto!',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-            ],
+          contentPadding: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
           ),
           content: Form(
             key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  validator: _validateEmailTransferencia,
-                  onChanged: (value) => newUser = value,
-                  decoration: InputDecoration(
-                    labelText: 'Email do novo dono do Produto',
-                    labelStyle: TextStyle(color: Color(0xffA49930)),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Color(0xffA49930), width: 2.0),
-                      borderRadius: BorderRadius.circular(8.0),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color.fromARGB(255, 167, 155, 48),
+                          Color.fromARGB(255, 206, 192, 84),
+                          Color.fromARGB(255, 255, 251, 179),
+                        ],
+                      ),
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(16.0)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          'assets/images/logo.png',
+                          color: Colors.white,
+                          fit: BoxFit.cover,
+                          height: 40,
+                          width: 40,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Transferir Produto',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          'Informe o e-mail do novo dono do Pedal',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(255, 167, 155, 48),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        TextFormField(
+                          validator: _validateEmailTransferencia,
+                          onChanged: (value) => newUser = value,
+                          decoration: InputDecoration(
+                            labelText: 'Email',
+                            labelStyle: TextStyle(
+                              color: Color(0xFFA49930),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0xFFA49930),
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 24),
+                        ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              Navigator.of(context).pop();
+                              showConfirmationTransferencia(
+                                  context, newUser, product.name);
+                              FocusScope.of(context).unfocus();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Color(0xFFA49930),
+                            onPrimary: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Text('Transferir'),
+                        ),
+                        SizedBox(height: 12),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            primary: Color(0xFFA49930),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: EdgeInsets.symmetric(vertical: 16),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            'Fechar',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  Navigator.of(context).pop();
-                  showConfirmationTransferencia(context, newUser, product.name);
-                  FocusScope.of(context).unfocus();
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xffA49930),
-                onPrimary: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Text('Transferir'),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.transparent,
-                onPrimary: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Text('Fechar'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
         );
       },
     );
@@ -850,71 +915,108 @@ class _MyProductsPageState extends State<MyProductsPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  fit: BoxFit.cover,
-                  height: 40,
-                  width: 40,
-                ),
-              ),
-              SizedBox(width: 10),
-              Text(
-                'Explore mais seu produto',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-            ],
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
           ),
-          content: Text(
-              'Opa, parece que você está interessado em saber mais sobre seu produto, não é mesmo? haha. Nos botões abaixo você tem acesso a área de manual do seu produto ou então se for um guitarrista veterano pode verifica a nova atualização de seu pedal.'),
-          actions: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xffA49930),
-                onPrimary: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+          child: Container(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Image.asset(
+                        'assets/images/logo.png',
+                        fit: BoxFit.cover,
+                        height: 40,
+                        width: 40,
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      'Explore mais seu produto',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              child: Text('Acessar o Manual'),
-              onPressed: () {
-                _launchManual();
-              },
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xffA49930),
-                onPrimary: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                SizedBox(height: 16),
+                Text(
+                  'Opa, parece que você está interessado em saber mais sobre seu produto, não é mesmo? haha. Nos botões abaixo você tem acesso à área de manual do seu produto ou então, se for um guitarrista veterano, pode verificar a nova atualização de seu pedal.',
+                  style: TextStyle(fontSize: 16),
                 ),
-              ),
-              child: Text('Baixar Nova Atualização'),
-              onPressed: () {
-                _launchDriver();
-              },
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.transparent,
-                onPrimary: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xffA49930),
+                      onPrimary: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    child: Text(
+                      'Acessar o Manual',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    onPressed: () {
+                      _launchManual();
+                    },
+                  ),
                 ),
-              ),
-              child: Text('Voltar'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+                SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xffA49930),
+                      onPrimary: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    child: Text(
+                      'Baixar Nova Atualização',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    onPressed: () {
+                      _launchDriver();
+                    },
+                  ),
+                ),
+                SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      side: BorderSide(color: Color(0xffA49930)),
+                      primary: Theme.of(context).primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: BorderSide(color: Theme.of(context).primaryColor),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    child: Text(
+                      'Voltar',
+                      style: TextStyle(fontSize: 16, color: Color(0xffA49930)),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );
