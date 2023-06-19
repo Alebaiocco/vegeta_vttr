@@ -11,7 +11,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:vttr/widgets/comments_widget.dart';
 
 import '../../repository/product.dart';
-import '../../widgets/newcomments_widget.dart';
 
 class ProductPage extends StatefulWidget {
   final Product product;
@@ -48,6 +47,7 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   final TextEditingController commentController = TextEditingController();
+  late double assessment = 0.0;
 
   Widget mountBody() {
     return Column(
@@ -115,7 +115,7 @@ class _ProductPageState extends State<ProductPage> {
                     color: Colors.amber,
                   ),
                   onRatingUpdate: (value) {
-                    // Lógica para atualizar a avaliação
+                    assessment = value;
                   },
                 ),
               ],
@@ -140,7 +140,10 @@ class _ProductPageState extends State<ProductPage> {
 
                 try {
                   await ProductRepositoryImpl().addProductComment(
-                      token, commentController.text, 5, widget.product.name);
+                      token,
+                      commentController.text,
+                      assessment.toInt(),
+                      widget.product.name);
 
                   Fluttertoast.showToast(
                     msg: 'Comentário adicionado com sucesso.',
@@ -154,8 +157,7 @@ class _ProductPageState extends State<ProductPage> {
                   );
 
                   await getProductComment();
-
-                  // ignore: empty_catches
+                  
                 } catch (error) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

@@ -36,6 +36,7 @@ class CommentsWidget extends StatelessWidget {
                 direction: Axis.horizontal,
                 itemCount: 5,
                 itemSize: 20,
+                ignoreGestures: true,
                 itemBuilder: (context, _) => const Icon(
                   Icons.star,
                   color: Colors.amber,
