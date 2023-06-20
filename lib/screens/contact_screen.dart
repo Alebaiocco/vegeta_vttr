@@ -24,7 +24,7 @@ class _ContactState extends State<Contact> {
     'Selecione uma categoria',
     'Solicitação de Garantia',
     'Dúvidas',
-    'Problemas com Funcionalidades',
+    'Problemas com funcionalidades',
     'Sugestão',
     'Outros'
   ];
