@@ -8,6 +8,8 @@ import 'package:vttr/screens/shop_screen.dart';
 import 'package:vttr/components/nav_bar.dart';
 import 'package:vttr/components/top_bar.dart';
 
+import '../models/global_data.dart';
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -29,10 +31,13 @@ class _HomeState extends State<Home> {
     const Contact(),
   ];
 
+  GlobalData globalData = GlobalData();
+
   int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    String username = globalData.getUsername();
     return Scaffold(
       backgroundColor: const Color(0xff000915),
       bottomNavigationBar: NavBar(
@@ -52,7 +57,7 @@ class _HomeState extends State<Home> {
                 children: [
                   // Cabeçalho
                   TopBar(
-                      text: 'Bem vindo a VTR Effects', text2: '',),
+                      text: 'Olá $username', text2: 'Bem vindo a VTR Effects'),
                   const Divider(
                     thickness: 2,
                     color: Color(0xffA49930),
@@ -63,20 +68,21 @@ class _HomeState extends State<Home> {
                       const Padding(padding: EdgeInsets.only(top: 10)),
                       // Carrossel de imagens
                       GestureDetector(
-                        onDoubleTap: ()=>{
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) =>  ShopPage()))
-                        },
-                        child: CarouselSlider.builder(
-                        options: CarouselOptions(height: 400),
-                        itemCount: CarouselImages.length,
-                        itemBuilder: (context, index, realIndex) {
-                          final carrossel = CarouselImages[index];
+                          onDoubleTap: () => {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ShopPage()))
+                              },
+                          child: CarouselSlider.builder(
+                            options: CarouselOptions(height: 400),
+                            itemCount: CarouselImages.length,
+                            itemBuilder: (context, index, realIndex) {
+                              final carrossel = CarouselImages[index];
 
-                          return buildImage(carrossel, index);
-                        },
-                      )),
+                              return buildImage(carrossel, index);
+                            },
+                          )),
                       Padding(padding: EdgeInsets.only(top: 10)),
                       ElevatedButton(
                         onPressed: () {
@@ -121,47 +127,51 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       SizedBox(
-                      height: 20,
+                        height: 20,
                       ),
-                     Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Color(0xffA49930),
-                        ),
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: 200,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            ClipRRect(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(5.0),
-                              bottomLeft: Radius.circular(5.0),),
-                            child: Image.asset(
-                              'assets/images/artistas.png',
-                              fit: BoxFit.cover,
-                              width: MediaQuery.of(context).size.width * 0.49,
-                              height: 200,
+                      Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Color(0xffA49930),
+                          ),
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: 200,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(5.0),
+                                  bottomLeft: Radius.circular(5.0),
+                                ),
+                                child: Image.asset(
+                                  'assets/images/artistas.png',
+                                  fit: BoxFit.cover,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.49,
+                                  height: 200,
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 55),
-                              child: Text('Artistas',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 17,
-                                fontFamily: 'Rubik',
-                                ),), 
-                            ),
-                          ],
+                              Padding(
+                                padding: EdgeInsets.only(left: 55),
+                                child: Text(
+                                  'Artistas',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 17,
+                                    fontFamily: 'Rubik',
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 40,
-                    )
+                      SizedBox(
+                        height: 40,
+                      )
                     ],
                   ),
                 ],
