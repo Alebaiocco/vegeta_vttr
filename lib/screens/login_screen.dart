@@ -233,12 +233,16 @@ class _LoginState extends State<Login> {
     }
   }
 
+  bool _obscureText = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff000915),
       body: SingleChildScrollView(
         child: Container(
+          height: MediaQuery.of(context).size.height * 0.90,
+          width: MediaQuery.of(context).size.width,
           child: Form(
             key: _formKey,
             child: Column(
@@ -247,9 +251,9 @@ class _LoginState extends State<Login> {
               children: <Widget>[
                 Image.asset('assets/images/logo.png', width: 200, height: 200),
                 Padding(
-                  padding: EdgeInsets.only(left: 10, top: 10),
+                  padding: EdgeInsets.only(left: 10),
                   child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.93,
+                    width: MediaQuery.of(context).size.width * 0.80,
                     child: TextFormField(
                       style: TextStyle(color: Colors.white),
                       validator: _validateEmail,
@@ -271,11 +275,12 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: EdgeInsets.only(left: 10, top: 10),
                   child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.93,
+                    width: MediaQuery.of(context).size.width * 0.80,
                     child: TextFormField(
                       style: TextStyle(color: Colors.white),
                       validator: _validatePassword,
-                      obscureText: true,
+                      obscureText:
+                          _obscureText, // Variável booleana para controlar a visibilidade da senha
                       onChanged: (value) => password = value,
                       decoration: InputDecoration(
                         hintText: '************',
@@ -287,6 +292,19 @@ class _LoginState extends State<Login> {
                         enabledBorder: OutlineInputBorder(
                           borderSide:
                               BorderSide(width: 2, color: Color(0xffA2A2A4)),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.grey,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
                         ),
                       ),
                     ),
@@ -301,7 +319,7 @@ class _LoginState extends State<Login> {
                   ),
                 if (!isLoading)
                   Padding(
-                    padding: EdgeInsets.only(top: 5, bottom: 10),
+                    padding: EdgeInsets.only(top: 40, bottom: 10),
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
@@ -313,7 +331,10 @@ class _LoginState extends State<Login> {
                         backgroundColor: Color(0xffA49930),
                         foregroundColor: Colors.white,
                       ),
-                      child: Text("Entrar"),
+                      child: Text(
+                        "Entrar",
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
                   ),
                 if (!isLoading)
@@ -328,7 +349,9 @@ class _LoginState extends State<Login> {
                         child: Text(
                           "Cadastre-se",
                           style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14),
                         ),
                       )),
               ],
