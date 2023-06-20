@@ -9,6 +9,8 @@ import 'package:vttr/screens/signup_screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/global_data.dart';
+
 class Login extends StatefulWidget {
   const Login({Key? key});
 
@@ -99,6 +101,8 @@ class _LoginState extends State<Login> {
           // Armazenando o token no dispositivo do usuário
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('token', token);
+
+          GlobalData().username = data['data']['user'];
 
           Navigator.push(
             context,
@@ -295,25 +299,6 @@ class _LoginState extends State<Login> {
                       color: Color(0xffA49930),
                     ),
                   ),
-                  Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                  if (!isLoading)
-                  Padding(
-                    padding: EdgeInsets.only(left: 5, bottom: 5, top: 5),
-                    child: GestureDetector(
-                      onTap: () =>  Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Signup()),
-                        ),
-                      child: Text("Cadastre-se",
-                      style: TextStyle(color: Colors.white,
-                      fontWeight: FontWeight.bold),),
-                    )
-                  ),
-                  ],
-                ),
                 if (!isLoading)
                   Padding(
                     padding: EdgeInsets.only(top: 5, bottom: 10),
@@ -331,7 +316,21 @@ class _LoginState extends State<Login> {
                       child: Text("Entrar"),
                     ),
                   ),
-                
+                if (!isLoading)
+                  Padding(
+                      padding: EdgeInsets.only(left: 5, bottom: 5, top: 5),
+                      child: GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Signup()),
+                        ),
+                        child: Text(
+                          "Cadastre-se",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      )),
               ],
             ),
           ),
