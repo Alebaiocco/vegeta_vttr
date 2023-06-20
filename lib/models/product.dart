@@ -9,45 +9,34 @@ class Product {
   final double price;
   final String description;
   final String product_image;
-  final DateTime created_at;
-  final DateTime updated_at;
+  final double avg_assessment;
   Future<List<ProductComment>>? comments; // Alteração aqui
 
-  Product(
-    this.id,
-    this.name,
-    this.price,
-    this.description,
-    this.product_image,
-    this.created_at,
-    this.updated_at,
-  ) {
+  Product(this.id, this.name, this.price, this.description, this.product_image,
+      this.avg_assessment) {
     try {
       comments = fetchComments();
-    }
-    catch(e) {
+      print("ACHOU COMENTARIOS");
+    } catch (e) {
+      print("NULL");
       comments = null;
     }
   }
 
-  Product copyWith({
-    int? id,
-    String? name,
-    double? price,
-    String? description,
-    String? product_image,
-    DateTime? created_at,
-    DateTime? updated_at,
-  }) {
+  Product copyWith(
+      {int? id,
+      String? name,
+      double? price,
+      String? description,
+      String? product_image,
+      double? avg_assessment}) {
     return Product(
-      id ?? this.id,
-      name ?? this.name,
-      price ?? this.price,
-      description ?? this.description,
-      product_image ?? this.product_image,
-      created_at ?? this.created_at,
-      updated_at ?? this.updated_at,
-    );
+        id ?? this.id,
+        name ?? this.name,
+        price ?? this.price,
+        description ?? this.description,
+        product_image ?? this.product_image,
+        avg_assessment ?? this.avg_assessment);
   }
 
   Map<String, dynamic> toMap() {
@@ -57,21 +46,17 @@ class Product {
       'price': price,
       'description': description,
       'product_image': product_image,
-      'created_at': created_at.millisecondsSinceEpoch,
-      'updated_at': updated_at.millisecondsSinceEpoch,
     };
   }
 
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
-      map['id'] as int,
-      map['name'] as String,
-      map['price'] as double,
-      map['description'] as String,
-      map['product_image'] as String,
-      DateTime.fromMillisecondsSinceEpoch(map['created_at'] as int),
-      DateTime.fromMillisecondsSinceEpoch(map['updated_at'] as int),
-    );
+        map['id'] as int,
+        map['name'] as String,
+        map['price'] as double,
+        map['description'] as String,
+        map['product_image'] as String,
+        map['avg_assessment'] as double);
   }
 
   String toJson() => json.encode(toMap());
@@ -81,7 +66,7 @@ class Product {
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, price: $price, description: $description, product_image: $product_image, created_at: $created_at, updated_at: $updated_at)';
+    return 'Product(id: $id, name: $name, price: $price, description: $description, product_image: $product_image)';
   }
 
   @override
@@ -92,9 +77,7 @@ class Product {
         other.name == name &&
         other.price == price &&
         other.description == description &&
-        other.product_image == product_image &&
-        other.created_at == created_at &&
-        other.updated_at == updated_at;
+        other.product_image == product_image;
   }
 
   @override
@@ -103,9 +86,7 @@ class Product {
         name.hashCode ^
         price.hashCode ^
         description.hashCode ^
-        product_image.hashCode ^
-        created_at.hashCode ^
-        updated_at.hashCode;
+        product_image.hashCode;
   }
 
   Future<List<ProductComment>> fetchComments() async {

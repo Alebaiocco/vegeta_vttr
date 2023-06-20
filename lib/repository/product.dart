@@ -26,11 +26,9 @@ class ProductRepositoryImpl implements ProductRepository {
               e['description'] as String,
               // ignore: prefer_interpolation_to_compose_strings
               "https://ronaldo.gtasamp.com.br/" + e['product_image'],
-              DateTime.parse(e['created_at'] as String),
-              DateTime.parse(e['updated_at'] as String)))
+              e['avg_assessment'] as double))
           .toList();
     } catch (e) {
-      print(e);
       throw Exception("Não foi possível buscar os produtos");
     }
   }

@@ -118,115 +118,121 @@ class _ProductPageState extends State<ProductPage> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.7,
                     child: TextFormField(
-                    controller: commentController,
-                    decoration: InputDecoration(
-                      labelText: 'Digite seu comentário...',
-                      labelStyle: TextStyle(color: Color(0xffA49930)),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Color(0xffA49930), width: 2.0),
-                        borderRadius: BorderRadius.circular(8.0),
+                      controller: commentController,
+                      decoration: InputDecoration(
+                        labelText: 'Digite seu comentário...',
+                        labelStyle: TextStyle(color: Color(0xffA49930)),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xffA49930), width: 2.0),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                       ),
                     ),
                   ),
-                  ),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 7),
-                  child: Text("Avalie aqui ", 
-                    style: TextStyle(
-                      color: Color(0xffA49930),
-                      fontWeight: FontWeight.bold))),
-                  Padding(padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                  child: RatingBar.builder(
-                    initialRating: 0,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    itemCount: 5,
-                    itemSize: 20,
-                    itemBuilder: (context, _) => const Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (value) {
-                      assessment = value;
-                    },
-                  )),
+                  Padding(
+                      padding: EdgeInsets.symmetric(vertical: 7),
+                      child: Text("Avalie aqui ",
+                          style: TextStyle(
+                              color: Color(0xffA49930),
+                              fontWeight: FontWeight.bold))),
+                  Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                      child: RatingBar.builder(
+                        initialRating: 0,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        itemCount: 5,
+                        itemSize: 20,
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        onRatingUpdate: (value) {
+                          assessment = value;
+                        },
+                      )),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Padding(padding: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.transparent,
-                          onPrimary: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Text('Fechar'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      )),
-                      Padding(padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xffA49930),
-                          onPrimary: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        onPressed: () async {
-                          Navigator.of(context).pop();
-
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          String? token = prefs.getString('token');
-
-                          if (token == null) return;
-
-                          try {
-                            await ProductRepositoryImpl().addProductComment(
-                                token,
-                                commentController.text,
-                                assessment.toInt(),
-                                widget.product.name);
-
-                            Fluttertoast.showToast(
-                              msg: 'Comentário adicionado com sucesso.',
-                              toastLength: Toast.LENGTH_LONG,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 10,
-                              backgroundColor: Colors.green,
-                              textColor: Colors.white,
-                              webShowClose: true,
-                              webPosition: 'center',
-                            );
-
-                            await getProductComment();
-                          } catch (error) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Erro ao comentar:\n$error',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                backgroundColor: Colors.red,
-                                duration: Duration(seconds: 7),
-                                action: SnackBarAction(
-                                  label: 'OK',
-                                  textColor: Colors.white,
-                                  onPressed: () {
-                                    ScaffoldMessenger.of(context)
-                                        .hideCurrentSnackBar();
-                                  },
-                                ),
+                      Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.transparent,
+                              onPrimary: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                            );
-                          }
-                        },
-                        child: Text('Enviar'),
-                      ))
+                            ),
+                            child: Text('Fechar'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          )),
+                      Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xffA49930),
+                              onPrimary: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onPressed: () async {
+                              Navigator.of(context).pop();
+
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              String? token = prefs.getString('token');
+
+                              if (token == null) return;
+
+                              try {
+                                await ProductRepositoryImpl().addProductComment(
+                                    token,
+                                    commentController.text,
+                                    assessment.toInt(),
+                                    widget.product.name);
+
+                                Fluttertoast.showToast(
+                                  msg: 'Comentário adicionado com sucesso.',
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 10,
+                                  backgroundColor: Colors.green,
+                                  textColor: Colors.white,
+                                  webShowClose: true,
+                                  webPosition: 'center',
+                                );
+
+                                await getProductComment();
+                              } catch (error) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      'Erro ao comentar:\n$error',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    backgroundColor: Colors.red,
+                                    duration: Duration(seconds: 7),
+                                    action: SnackBarAction(
+                                      label: 'OK',
+                                      textColor: Colors.white,
+                                      onPressed: () {
+                                        ScaffoldMessenger.of(context)
+                                            .hideCurrentSnackBar();
+                                      },
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            child: Text('Enviar'),
+                          ))
                     ],
                   )
                 ],
@@ -340,7 +346,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                       ),
                       Text(
-                        '4.5',
+                        widget.product.avg_assessment.toStringAsFixed(2),
                         style: TextStyle(
                           color: Color(0xffA49930),
                           fontWeight: FontWeight.bold,
