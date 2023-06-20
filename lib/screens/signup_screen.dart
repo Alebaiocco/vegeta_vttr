@@ -83,7 +83,7 @@ class _SignupState extends State<Signup> {
         }),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         final Map<String, dynamic> data = json.decode(response.body);
         if (data['data'] != null && data['data']['message'] != null) {
           String message = data['data']['message'];
@@ -104,6 +104,37 @@ class _SignupState extends State<Signup> {
             MaterialPageRoute(builder: (context) => const Login()),
           );
         }
+      } else if ((response.statusCode >= 400 ) && (response.statusCode < 500)) {
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        if (data['message'] != null && data['message']['erros'] != null) {
+          List<String> erros = List<String>.from(
+              data['message']['erros'].map((item) => item.toString()));
+
+          if (erros.isNotEmpty) {
+            listaString.addAll(erros);
+          }
+
+          String errorMessage = erros.join('\n');
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Ocorreram alguns erros no seu cadastro:\n$errorMessage',
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 7),
+              action: SnackBarAction(
+                label: 'OK',
+                textColor: Colors.white,
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
+              ),
+            ),
+          );
+        }
       } else if (response.statusCode >= 500) {
         final Map<String, dynamic> data = json.decode(response.body);
 
@@ -120,7 +151,7 @@ class _SignupState extends State<Signup> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                'Ops! Ocorreram alguns erros no seu cadastro:\n$errorMessage',
+                'Ocorreram alguns erros no seu cadastro:\n$errorMessage',
                 style: TextStyle(color: Colors.white),
               ),
               backgroundColor: Colors.red,
@@ -139,7 +170,7 @@ class _SignupState extends State<Signup> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Ops! Ocorreu algum erro interno',
+              'Ocorreu algum erro interno',
               style: TextStyle(color: Colors.white),
             ),
             backgroundColor: Colors.red,
