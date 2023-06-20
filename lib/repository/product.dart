@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'package:dio/dio.dart';
 import 'package:vttr/models/product.dart';
 
@@ -18,18 +20,24 @@ class ProductRepositoryImpl implements ProductRepository {
 
       final data = response.data['data']['products'] as List<dynamic>;
 
-      return data
-          .map<Product>((e) => Product(
-              e['id'] as int,
-              e['name'] as String,
-              (e['price'] as num).toDouble(),
-              e['description'] as String,
-              // ignore: prefer_interpolation_to_compose_strings
-              "https://ronaldo.gtasamp.com.br/" + e['product_image'],
-              e['avg_assessment'] as double))
-          .toList();
+      return data.map<Product>((e) {
+        final avgAssessmentValue = e['avg_assessment'];
+        final avgAssessment = avgAssessmentValue is int
+            ? avgAssessmentValue.toDouble()
+            : avgAssessmentValue as double;
+
+        return Product(
+          e['id'] as int,
+          e['name'] as String,
+          double.parse(e['price'].toString()),
+          e['description'] as String,
+          "https://ronaldo.gtasamp.com.br/" + e['product_image'],
+          avgAssessment,
+        );
+      }).toList();
     } catch (e) {
-      throw Exception("Não foi possível buscar os produtos");
+      print(e);
+      throw Exception("Não foi possível buscar os produtos $e");
     }
   }
 
