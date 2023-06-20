@@ -7,7 +7,7 @@ import 'package:vttr/screens/my_products.dart';
 import 'package:vttr/screens/shop_screen.dart';
 import 'package:vttr/widgets/nav_bar.dart';
 import 'package:vttr/widgets/top_bar.dart';
-
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../models/global_data.dart';
 
 class Home extends StatefulWidget {
@@ -34,6 +34,22 @@ class _HomeState extends State<Home> {
   GlobalData globalData = GlobalData();
 
   int _selectedIndex = 0;
+
+  final youtubeUrl = "https://www.youtube.com/watch?v=shH6FgfZQUM";
+
+  late YoutubePlayerController _controller;
+
+  @override
+  void initState() {
+    final videoID = YoutubePlayer.convertUrlToId(youtubeUrl);
+
+    _controller = YoutubePlayerController(
+      initialVideoId: videoID!,
+      flags: const YoutubePlayerFlags(
+        autoPlay: false,
+      )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,9 +120,23 @@ class _HomeState extends State<Home> {
                         child: const Text("Saiba Mais"),
                       ),
                       const Padding(padding: EdgeInsets.only(top: 20)),
-                      Image.asset(
-                        'assets/images/equipe.jpeg',
+                      Container(
                         width: MediaQuery.of(context).size.width * 0.8,
+                        child: YoutubePlayer(
+                          controller: _controller,
+                          showVideoProgressIndicator: true,
+                          onReady: () => debugPrint('Ready'),
+                          bottomActions: [
+                            CurrentPosition(),
+                            ProgressBar(
+                              isExpanded: true,
+                              colors: const ProgressBarColors(
+                                playedColor: Color(0xffA49930),
+                                handleColor: Color(0xffA49930),
+                              ),
+                            )
+                          ],
+                      ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 30, bottom: 20),
@@ -171,7 +201,7 @@ class _HomeState extends State<Home> {
                       ),
                       SizedBox(
                         height: 40,
-                      )
+                      ),
                     ],
                   ),
                 ],
