@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vttr/components/top_bar.dart';
+import 'package:vttr/widgets/top_bar.dart';
 import 'package:vttr/models/product.dart';
 import 'package:vttr/models/product_comment.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:vttr/widgets/comments_widget.dart';
 
-import '../../repository/product.dart';
+import '../repository/product.dart';
+import '../widgets/nav_bar.dart';
 
 class ProductPage extends StatefulWidget {
   final Product product;
@@ -346,7 +347,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                       ),
                       Text(
-                        widget.product.avg_assessment.toStringAsFixed(2),
+                        '4.5',
                         style: TextStyle(
                           color: Color(0xffA49930),
                           fontWeight: FontWeight.bold,

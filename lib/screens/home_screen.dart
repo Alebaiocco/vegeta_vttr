@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:vttr/screens/contact_screen.dart';
 import 'package:vttr/screens/my_products.dart';
 import 'package:vttr/screens/shop_screen.dart';
-import 'package:vttr/components/nav_bar.dart';
-import 'package:vttr/components/top_bar.dart';
+import 'package:vttr/widgets/nav_bar.dart';
+import 'package:vttr/widgets/top_bar.dart';
 
 import '../models/global_data.dart';
 

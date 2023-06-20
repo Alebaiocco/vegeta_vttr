@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vttr/models/product.dart';
-import 'package:vttr/screens/productsPage/productPage.dart';
+import 'package:vttr/screens/productPage.dart';
 
 class ProductWidget extends StatelessWidget {
   final Product product;
@@ -67,7 +67,7 @@ class ProductWidget extends StatelessWidget {
                   const SizedBox(
                     height: 3,
                   ),
-                  ElevatedButton(                  
+                  ElevatedButton(
                     onPressed: () {
                       Navigator.push(
                         context,

@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:vttr/models/product.dart';
 import 'package:vttr/repository/product.dart';
 import 'package:vttr/widgets/product_widget.dart';
-import 'package:vttr/components/top_bar.dart';
-
+import 'package:vttr/widgets/top_bar.dart';
 class ShopPage extends StatefulWidget {
   const ShopPage({Key? key}) : super(key: key);
 

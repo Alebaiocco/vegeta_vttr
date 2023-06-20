@@ -104,7 +104,7 @@ class _SignupState extends State<Signup> {
             MaterialPageRoute(builder: (context) => const Login()),
           );
         }
-      } else if ((response.statusCode >= 400 ) && (response.statusCode < 500)) {
+      } else if ((response.statusCode >= 400) && (response.statusCode < 500)) {
         final Map<String, dynamic> data = json.decode(response.body);
 
         if (data['message'] != null && data['message']['erros'] != null) {
