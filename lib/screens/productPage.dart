@@ -266,9 +266,10 @@ class _ProductPageState extends State<ProductPage> {
                     color: const Color(0xffA49930),
                     child: Column(
                       children: [
-                        Image.network(
-                          widget.product.product_image,
-                          fit: BoxFit.fill,
+                        FadeInImage.assetNetwork(
+                          placeholder: 'assets/images/logo.png',
+                          image: widget.product.product_image,
+                          fit: BoxFit.cover,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 15),
