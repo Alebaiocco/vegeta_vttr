@@ -59,7 +59,7 @@ class ProductRepositoryImpl implements ProductRepository {
               responseData['data'].containsKey('message')) {
             final errorMessage = responseData['data']['message'];
             print('Erro na requisição: $errorMessage');
-            throw Exception(errorMessage);
+            throw Exception("Voce ja fez um comentario para este produto!");
           }
         }
       }
