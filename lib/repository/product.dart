@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_interpolation_to_compose_strings
-
 import 'package:dio/dio.dart';
 import 'package:vttr/models/product.dart';
 
@@ -21,23 +19,20 @@ class ProductRepositoryImpl implements ProductRepository {
       final data = response.data['data']['products'] as List<dynamic>;
 
       return data.map<Product>((e) {
-        final avgAssessmentValue = e['avg_assessment'];
-        final avgAssessment = avgAssessmentValue is int
-            ? avgAssessmentValue.toDouble()
-            : avgAssessmentValue as double;
-
         return Product(
           e['id'] as int,
           e['name'] as String,
           double.parse(e['price'].toString()),
           e['description'] as String,
           "https://ronaldo.gtasamp.com.br/" + e['product_image'],
-          avgAssessment,
+          e['link_yt'] as String,
+          e['link_manual'] as String,
+          e['link_driver'] as String,
         );
       }).toList();
     } catch (e) {
       print(e);
-      throw Exception("Não foi possível buscar os produtos $e");
+      throw Exception("Não foi possível buscar os produtos: $e");
     }
   }
 
@@ -56,14 +51,21 @@ class ProductRepositoryImpl implements ProductRepository {
       );
 
       final data = response.data['data'];
-
-      print("OIIIIII");
-      print(data);
-
-      print(data['message']);
     } catch (e) {
-      print(e);
-      throw Exception('Falha ao adicionar o comentario ao produto.');
+      if (e is DioException) {
+        if (e.response != null && e.response!.data != null) {
+          final responseData = e.response!.data;
+          if (responseData.containsKey('data') &&
+              responseData['data'].containsKey('message')) {
+            final errorMessage = responseData['data']['message'];
+            print('Erro na requisição: $errorMessage');
+            throw Exception(errorMessage);
+          }
+        }
+      }
+
+      print('Erro na requisição: $e');
+      throw Exception('Falha ao adicionar o comentário ao produto: $e');
     }
   }
 }

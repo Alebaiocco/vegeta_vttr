@@ -9,11 +9,22 @@ class Product {
   final double price;
   final String description;
   final String product_image;
-  final double avg_assessment;
-  Future<List<ProductComment>>? comments; // Alteração aqui
+  final String link_yt;
+  final String link_manual;
+  final String link_driver;
 
-  Product(this.id, this.name, this.price, this.description, this.product_image,
-      this.avg_assessment) {
+  Future<List<ProductComment>>? comments;
+
+  Product(
+    this.id,
+    this.name,
+    this.price,
+    this.description,
+    this.product_image,
+    this.link_yt,
+    this.link_manual,
+    this.link_driver,
+  ) {
     try {
       comments = fetchComments();
       print("ACHOU COMENTARIOS");
@@ -23,40 +34,52 @@ class Product {
     }
   }
 
-  Product copyWith(
-      {int? id,
-      String? name,
-      double? price,
-      String? description,
-      String? product_image,
-      double? avg_assessment}) {
+  Product copyWith({
+    int? id,
+    String? name,
+    double? price,
+    String? description,
+    String? product_image,
+    String? link_yt,
+    String? link_manual,
+    String? link_driver,
+  }) {
     return Product(
-        id ?? this.id,
-        name ?? this.name,
-        price ?? this.price,
-        description ?? this.description,
-        product_image ?? this.product_image,
-        avg_assessment ?? this.avg_assessment);
+      id ?? this.id,
+      name ?? this.name,
+      price ?? this.price,
+      description ?? this.description,
+      product_image ?? this.product_image,
+      link_yt ?? this.link_yt,
+      link_manual ?? this.link_manual,
+      link_driver ?? this.link_driver,
+    );
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+    return {
       'id': id,
       'name': name,
       'price': price,
       'description': description,
       'product_image': product_image,
+      'link_yt': link_yt,
+      'link_manual': link_manual,
+      'link_driver': link_driver,
     };
   }
 
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
-        map['id'] as int,
-        map['name'] as String,
-        map['price'] as double,
-        map['description'] as String,
-        map['product_image'] as String,
-        map['avg_assessment'] as double);
+      map['id'] as int,
+      map['name'] as String,
+      map['price'] as double,
+      map['description'] as String,
+      map['product_image'] as String,
+      map['link_yt'] as String,
+      map['link_manual'] as String,
+      map['link_driver'] as String,
+    );
   }
 
   String toJson() => json.encode(toMap());
@@ -66,7 +89,7 @@ class Product {
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, price: $price, description: $description, product_image: $product_image)';
+    return 'Product(id: $id, name: $name, price: $price, description: $description, product_image: $product_image, link_yt: $link_yt, link_manual: $link_manual, link_driver: $link_driver)';
   }
 
   @override
@@ -77,7 +100,10 @@ class Product {
         other.name == name &&
         other.price == price &&
         other.description == description &&
-        other.product_image == product_image;
+        other.product_image == product_image &&
+        other.link_yt == link_yt &&
+        other.link_manual == link_manual &&
+        other.link_driver == link_driver;
   }
 
   @override
@@ -86,7 +112,10 @@ class Product {
         name.hashCode ^
         price.hashCode ^
         description.hashCode ^
-        product_image.hashCode;
+        product_image.hashCode ^
+        link_yt.hashCode ^
+        link_manual.hashCode ^
+        link_driver.hashCode;
   }
 
   Future<List<ProductComment>> fetchComments() async {

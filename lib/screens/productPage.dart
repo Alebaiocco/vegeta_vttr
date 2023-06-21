@@ -26,14 +26,12 @@ class _ProductPageState extends State<ProductPage> {
   List<ProductComment> comments = [];
   double rating = 0;
 
-  Future<void> getProductComment() async {
+  Future<void> getProductComment({reload = false}) async {
     try {
-      comments = (await widget.product.comments)!;
-
-      print("Quantidade de comentários do produto: " +
-          comments.length.toString() +
-          " " +
-          widget.product.name);
+      if (!reload)
+        comments = (await widget.product.comments)!;
+      else
+        comments = (await widget.product.fetchComments())!;
 
       setState(() {});
     } catch (e) {
@@ -51,6 +49,8 @@ class _ProductPageState extends State<ProductPage> {
   late double assessment = 0.0;
 
   Widget mountBody() {
+    print(comments.length);
+
     return Column(
       children: comments
           .map<Widget>(
@@ -210,25 +210,20 @@ class _ProductPageState extends State<ProductPage> {
                                   webPosition: 'center',
                                 );
 
-                                await getProductComment();
+                                await getProductComment(reload: true);
                               } catch (error) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'Erro ao comentar:\n$error',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    backgroundColor: Colors.red,
-                                    duration: Duration(seconds: 7),
-                                    action: SnackBarAction(
-                                      label: 'OK',
-                                      textColor: Colors.white,
-                                      onPressed: () {
-                                        ScaffoldMessenger.of(context)
-                                            .hideCurrentSnackBar();
-                                      },
-                                    ),
-                                  ),
+                                print("Falha ao comentar");
+
+                                // ignore: use_build_context_synchronously
+                                Fluttertoast.showToast(
+                                  msg: error.toString().substring(10),
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 10,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  webShowClose: true,
+                                  webPosition: 'center',
                                 );
                               }
                             },
@@ -300,7 +295,7 @@ class _ProductPageState extends State<ProductPage> {
                           ),
                         ),
                         Text(
-                          'RS ${widget.product.price.toStringAsFixed(2)}',
+                          'RS valor',
                           style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
