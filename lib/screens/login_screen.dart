@@ -109,11 +109,18 @@ class _LoginState extends State<Login> {
             MaterialPageRoute(builder: (context) => const Home()),
           );
         }
-      } else if (response.statusCode == 401) {
+      } else if ((response.statusCode >= 400) && (response.statusCode < 500)) {
         final Map<String, dynamic> data = json.decode(response.body);
 
-        if (data['data']['message'] != null) {
-          String errorMessage = data['data']['message'];
+        if (data['message'] != null && data['message']['erros'] != null) {
+          List<String> erros = List<String>.from(
+              data['message']['erros'].map((item) => item.toString()));
+
+          if (erros.isNotEmpty) {
+            listaString.addAll(erros);
+          }
+
+          String errorMessage = erros.join('\n');
 
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
