@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unused_import, deprecated_member_use, prefer_const_declarations, use_build_context_synchronously, unused_local_variable, prefer_interpolation_to_compose_strings, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, non_constant_identifier_names, unused_element, avoid_print
+// ignore_for_file: prefer_const_constructors, unused_import, deprecated_member_use, prefer_const_declarations, use_build_context_synchronously, unused_local_variable, prefer_interpolation_to_compose_strings, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, non_constant_identifier_names, unused_element, avoid_print, no_leading_underscores_for_local_identifiers
 
 import 'dart:convert';
 
@@ -16,22 +16,18 @@ class Product {
   final String name;
   final String garantia;
   final String photoUrl;
-  final bool hasNewVersion;
+  final String link_manual;
+  final String link_driver;
 
   Product({
     required this.serieNumber,
     required this.name,
     required this.garantia,
     required this.photoUrl,
-    this.hasNewVersion = false,
+    this.link_driver = '',
+    this.link_manual = '',
   });
 }
-
-final Uri _url = Uri.parse('https://pub.dev/packages/url_launcher');
-final Uri _urlDriver = Uri.parse(
-    'https://www.tuningparts.com.br/arq/manual-tecnico-de-instalacao-fastrev01web105211072019.pdf');
-final Uri _urlGarantia = Uri.parse(
-    'https://www.cianet.com.br/wp-content/uploads/2018/08/TERMO_DE_GARANTIA_-_Atualizado.pdf');
 
 class MyProductsPage extends StatefulWidget {
   const MyProductsPage({Key? key}) : super(key: key);
@@ -93,23 +89,35 @@ class _MyProductsPageState extends State<MyProductsPage> {
         if (data['data'] != null && data['data']['product'] != null) {
           final List<dynamic> productData = data['data']['product'];
 
-          products.clear();
-          products.addAll(productData.map((data) {
-            String garantia;
-            if (data['resale'] == 1) {
-              garantia = DateFormat('dd-MM-yyyy').format(
-                  DateTime.parse(data['buy_date']).add(Duration(days: 365)));
-            } else {
-              garantia = 'Vitalícia';
-            }
-            return Product(
-              serieNumber: data['serie_number'],
-              photoUrl:
-                  'https://ronaldo.gtasamp.com.br/' + data['product_image'],
-              name: data['name'],
-              garantia: garantia,
-            );
-          }));
+          setState(() {
+            products.clear();
+            products.addAll(productData.map((data) {
+              String garantia;
+              if (data['resale'] == 1) {
+                garantia = DateFormat('dd-MM-yyyy').format(
+                    DateTime.parse(data['buy_date']).add(Duration(days: 365)));
+              } else {
+                garantia = 'Vitalícia';
+              }
+              return Product(
+                serieNumber: data['serie_number'],
+                photoUrl:
+                    'https://ronaldo.gtasamp.com.br/' + data['product_image'],
+                name: data['name'],
+                garantia: garantia,
+                /*link_driver: data['link_driver'],
+              link_manual: data['link_manual']*/
+              );
+            }));
+          });
+        }
+      } else if ((response.statusCode >= 400) && (response.statusCode < 500)) {
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        if (data['data'] != null && data['data']['message'] != null) {
+          String message = data['data']['message'];
+          messageEmptyProducts = message;
+          print(messageEmptyProducts);
         }
       } else if (response.statusCode >= 500) {
         final Map<String, dynamic> data = json.decode(response.body);
@@ -142,7 +150,8 @@ class _MyProductsPageState extends State<MyProductsPage> {
     }
   }
 
-  Future<void> transfeProduct(String newUser, String name) async {
+  Future<void> transfeProduct(
+      String newUser, String name, int serieNumber) async {
     var url = Uri.parse('https://ronaldo.gtasamp.com.br/api/trade/product');
     List<String> listaString = [];
     try {
@@ -157,8 +166,11 @@ class _MyProductsPageState extends State<MyProductsPage> {
                 "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
             "Access-Control-Allow-Methods": "POST"
           },
-          body: jsonEncode(
-              <String, String>{'new_user': newUser, 'product_name': name}));
+          body: jsonEncode(<String, String>{
+            'new_user': newUser,
+            'product_name': name,
+            'serie_number': serieNumber.toString()
+          }));
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
@@ -283,19 +295,30 @@ class _MyProductsPageState extends State<MyProductsPage> {
     return Scaffold(
       backgroundColor: Color(0xff000915),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              TopBar(text: 'Meus Produtos', text2: ''),
-              const Divider(
-                thickness: 2,
-                color: Color(0xffA49930),
+        child: RefreshIndicator(
+          onRefresh: listProduct,
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: TopBar(
+                    text: 'Meus Produtos',
+                    text2: ''), // Substitua TopBar pelo widget correto
               ),
-              Padding(padding: EdgeInsets.only(top: 10)),
-              if (products.isNotEmpty)
-                _buildProductList()
-              else
-                _buildEmptyProducts(messageEmptyProducts),
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    const Divider(
+                      thickness: 2,
+                      color: Color(0xffA49930),
+                    ),
+                    Padding(padding: EdgeInsets.only(top: 10)),
+                    if (products.isNotEmpty)
+                      _buildProductList()
+                    else
+                      _buildEmptyProducts(messageEmptyProducts),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -336,7 +359,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                       topRight: Radius.circular(8),
                     ),
                     child: GestureDetector(
-                      onTap: () => showManualOrDriver(context),
+                      onTap: () => showManualOrDriver(context, product),
                       child: SizedBox(
                         width: 288,
                         height: 300,
@@ -349,7 +372,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => showManualOrDriver(context),
+                    onTap: () => showManualOrDriver(context, product),
                     child: Container(
                       padding: EdgeInsets.all(12),
                       child: Icon(
@@ -497,34 +520,36 @@ class _MyProductsPageState extends State<MyProductsPage> {
   }
 
   Widget _buildEmptyProducts(String message) {
-    return Column(
-      children: [
-        Container(
-          margin: const EdgeInsets.only(top: 100, left: 100, right: 100),
-          alignment: Alignment.center,
-          child: Image.asset(
-            'assets/images/empityProducts.png',
-            height: 200,
-            width: 200,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 100, left: 100, right: 100),
+            alignment: Alignment.center,
+            child: Image.asset(
+              'assets/images/empityProducts.png',
+              height: 200,
+              width: 200,
+            ),
           ),
-        ),
-        if (message != '')
-          Text(
-            message,
-            style: TextStyle(
-              color: Color(0xffA49930),
-              fontWeight: FontWeight.bold,
-            ),
-          )
-        else
-          Text(
-            'Ops, parece que você não possui produtos',
-            style: TextStyle(
-              color: Color(0xffA49930),
-              fontWeight: FontWeight.bold,
-            ),
-          )
-      ],
+          if (message != '')
+            Text(
+              message,
+              style: TextStyle(
+                color: Color(0xffA49930),
+                fontWeight: FontWeight.bold,
+              ),
+            )
+          else
+            Text(
+              'Ops, parece que você não possui produtos',
+              style: TextStyle(
+                color: Color(0xffA49930),
+                fontWeight: FontWeight.bold,
+              ),
+            )
+        ],
+      ),
     );
   }
 
@@ -682,7 +707,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
   }
 
   void showConfirmationTransferencia(
-      BuildContext context, String newUser, String name) {
+      BuildContext context, String newUser, String name, int serieNumber) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -743,7 +768,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                         ),
                         onPressed: () {
                           Navigator.of(context).pop();
-                          transfeProduct(newUser, name);
+                          transfeProduct(newUser, name, serieNumber);
                         },
                       ),
                     ),
@@ -868,8 +893,8 @@ class _MyProductsPageState extends State<MyProductsPage> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               Navigator.of(context).pop();
-                              showConfirmationTransferencia(
-                                  context, newUser, product.name);
+                              showConfirmationTransferencia(context, newUser,
+                                  product.name, product.serieNumber);
                               FocusScope.of(context).unfocus();
                             }
                           },
@@ -911,7 +936,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
     );
   }
 
-  void showManualOrDriver(BuildContext context) {
+  void showManualOrDriver(BuildContext context, Product product) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -967,7 +992,8 @@ class _MyProductsPageState extends State<MyProductsPage> {
                       style: TextStyle(fontSize: 16),
                     ),
                     onPressed: () {
-                      _launchManual();
+                      Uri link_manual = Uri.parse(product.link_manual);
+                      //_launchManual(link_manual);
                     },
                   ),
                 ),
@@ -988,7 +1014,8 @@ class _MyProductsPageState extends State<MyProductsPage> {
                       style: TextStyle(fontSize: 16),
                     ),
                     onPressed: () {
-                      _launchDriver();
+                      Uri link_driver = Uri.parse(product.link_driver);
+                      //_launchDriver(link_driver);
                     },
                   ),
                 ),
@@ -1022,21 +1049,15 @@ class _MyProductsPageState extends State<MyProductsPage> {
     );
   }
 
-  Future<void> _launchManual() async {
-    if (!await launchUrl(_url)) {
-      throw Exception('Não foi possivel acessar a página$_url');
+  Future<void> _launchManual(Uri _linkManual) async {
+    if (!await launchUrl(_linkManual)) {
+      throw Exception('Não foi possivel acessar a página$_linkManual');
     }
   }
 
-  Future<void> _launchDriver() async {
-    if (!await launchUrl(_urlDriver)) {
-      throw Exception('Não foi possivel acessar a página $_urlDriver');
-    }
-  }
-
-  Future<void> _launchGarantia() async {
-    if (!await launchUrl(_urlGarantia)) {
-      throw Exception('Não foi possivel acessar a página $_urlGarantia');
+  Future<void> _launchDriver(Uri _linkDriver) async {
+    if (!await launchUrl(_linkDriver)) {
+      throw Exception('Não foi possivel acessar a página $_linkDriver');
     }
   }
 }

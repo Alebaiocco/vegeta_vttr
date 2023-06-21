@@ -109,37 +109,6 @@ class _LoginState extends State<Login> {
             MaterialPageRoute(builder: (context) => const Home()),
           );
         }
-      } else if ((response.statusCode >= 400) && (response.statusCode < 500)) {
-        final Map<String, dynamic> data = json.decode(response.body);
-
-        if (data['message'] != null && data['message']['erros'] != null) {
-          List<String> erros = List<String>.from(
-              data['message']['erros'].map((item) => item.toString()));
-
-          if (erros.isNotEmpty) {
-            listaString.addAll(erros);
-          }
-
-          String errorMessage = erros.join('\n');
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                errorMessage,
-                style: TextStyle(color: Colors.white),
-              ),
-              backgroundColor: Colors.red,
-              duration: Duration(seconds: 7),
-              action: SnackBarAction(
-                label: 'OK',
-                textColor: Colors.white,
-                onPressed: () {
-                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                },
-              ),
-            ),
-          );
-        }
       } else if (response.statusCode >= 500) {
         final Map<String, dynamic> data = json.decode(response.body);
 
@@ -171,7 +140,38 @@ class _LoginState extends State<Login> {
             ),
           );
         }
-      } else if (response.statusCode == 401) {
+      } else if (response.statusCode == 400) {
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        if (data['message'] != null && data['message']['erros'] != null) {
+          List<String> erros = List<String>.from(
+              data['message']['erros'].map((item) => item.toString()));
+
+          if (erros.isNotEmpty) {
+            listaString.addAll(erros);
+          }
+
+          String errorMessage = erros.join('\n');
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Ops! Ocorreu um erro no login:\n$errorMessage',
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 7),
+              action: SnackBarAction(
+                label: 'OK',
+                textColor: Colors.white,
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
+              ),
+            ),
+          );
+        }
+      }else if (response.statusCode == 401) {
         final Map<String, dynamic> data = json.decode(response.body);
 
         if (data['data']['message'] != null) {
