@@ -45,16 +45,13 @@ class _ProductPageState extends State<ProductPage> {
     getProductComment();
     super.initState();
 
-    final videoID = YoutubePlayer.convertUrlToId(youtubeUrl);
+    final videoID = YoutubePlayer.convertUrlToId(widget.product.link_yt);
 
     _controller = YoutubePlayerController(
-      initialVideoId: videoID!,
-      flags: const YoutubePlayerFlags(
-        autoPlay: false,
-      )
-    );
-
-
+        initialVideoId: videoID!,
+        flags: const YoutubePlayerFlags(
+          autoPlay: false,
+        ));
   }
 
   final TextEditingController commentController = TextEditingController();
@@ -250,8 +247,6 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  final youtubeUrl = "https://www.youtube.com/watch?v=shH6FgfZQUM"; // AQUI RONALDO -> Alterar com o link_yt
-
   late YoutubePlayerController _controller;
   @override
   Widget build(BuildContext context) {
@@ -343,23 +338,23 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                   ),
                   Container(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: YoutubePlayer(
-                          controller: _controller,
-                          showVideoProgressIndicator: true,
-                          onReady: () => debugPrint('Ready'),
-                          bottomActions: [
-                            CurrentPosition(),
-                            ProgressBar(
-                              isExpanded: true,
-                              colors: const ProgressBarColors(
-                                playedColor: Color(0xffA49930),
-                                handleColor: Color(0xffA49930),
-                              ),
-                            )
-                          ],
-                      ),
-                      ),
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: YoutubePlayer(
+                      controller: _controller,
+                      showVideoProgressIndicator: true,
+                      onReady: () => debugPrint('Ready'),
+                      bottomActions: [
+                        CurrentPosition(),
+                        ProgressBar(
+                          isExpanded: true,
+                          colors: const ProgressBarColors(
+                            playedColor: Color(0xffA49930),
+                            handleColor: Color(0xffA49930),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                   // Comentarios
                   SizedBox(
                     height: 20,
