@@ -295,7 +295,7 @@ class _ProductPageState extends State<ProductPage> {
                           ),
                         ),
                         Text(
-                          'RS valor',
+                          'RS ${widget.product.price}',
                           style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
