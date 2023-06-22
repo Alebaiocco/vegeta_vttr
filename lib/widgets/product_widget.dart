@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:vttr/models/product.dart';
 import 'package:vttr/screens/productPage.dart';
@@ -77,23 +79,21 @@ class ProductWidget extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
+                      primary: Colors.black,
+                      onPrimary: Colors.black,
+                      minimumSize: const Size(0, 20),
                       shape: RoundedRectangleBorder(
-                        side: const BorderSide(
-                          width: 2,
-                          color: Color(0xff2C5DA3),
-                        ),
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
                       ),
-                      minimumSize: const Size(20, 20),
-                      backgroundColor: const Color(0xff2C5DA3),
-                      foregroundColor: const Color(0xffA2A2A4),
+                      shadowColor: Colors.black,
+                      elevation: 10,
                     ),
-                    child: const Text(
-                      'Saiba Mais',
+                    child: Text(
+                      "Saiba Mais",
                       style: TextStyle(
-                        fontSize: 10,
-                        fontFamily: 'Rubik',
-                        fontWeight: FontWeight.w400,
+                        color: const Color(0xffA49930),
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -342,17 +342,23 @@ class _ProductPageState extends State<ProductPage> {
                               // Implemente a lógica para adicionar o produto ao carrinho ou realizar a ação desejada
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xff2C5DA3),
-                              foregroundColor: Colors.white,
+                              primary: Colors.black,
+                              onPrimary: Colors.black,
                               minimumSize: const Size(0, 30),
-                              shape: const RoundedRectangleBorder(
+                              shape: RoundedRectangleBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(12)),
                               ),
+                              shadowColor: Colors.black,
+                              elevation: 10,
                             ),
                             child: Text(
                               "Saiba Mais",
-                              style: TextStyle(color: Color(0xffA2A2A4)),
+                              style: TextStyle(
+                                color: const Color(0xffA49930),
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         )
@@ -393,7 +399,9 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                       ),
                       Text(
-                        avg_assessment == null ? ('0.0') : (avg_assessment.toString()),
+                        avg_assessment == null
+                            ? ('0.0')
+                            : (avg_assessment.toString()),
                         style: TextStyle(
                           color: Color(0xffA49930),
                           fontWeight: FontWeight.bold,
