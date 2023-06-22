@@ -365,8 +365,15 @@ class _ProductPageState extends State<ProductPage> {
                       ],
                     ),
                   ),
+                  Padding(padding: EdgeInsets.all(10)),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.8,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color(0xffA49930), 
+                        width: 3
+                      ),
+                    ),
                     child: YoutubePlayer(
                       controller: _controller,
                       showVideoProgressIndicator: true,
