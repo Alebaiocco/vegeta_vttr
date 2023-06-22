@@ -105,8 +105,8 @@ class _MyProductsPageState extends State<MyProductsPage> {
                     'https://ronaldo.gtasamp.com.br/' + data['product_image'],
                 name: data['name'],
                 garantia: garantia,
-                /*link_driver: data['link_driver'],
-              link_manual: data['link_manual']*/
+                link_driver: data['link_driver'],
+                link_manual: data['link_manual']
               );
             }));
           });
@@ -191,7 +191,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
 
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const Home()),
+            MaterialPageRoute(builder: (context) => const MyProductsPage()),
           );
         }
       } else if (response.statusCode == 401) {
@@ -302,7 +302,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
               SliverToBoxAdapter(
                 child: TopBar(
                     text: 'Meus Produtos',
-                    text2: ''), // Substitua TopBar pelo widget correto
+                    text2: ''), 
               ),
               SliverToBoxAdapter(
                 child: Column(
@@ -741,7 +741,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  'Ao confirmar a transferência, o produto será permanentemente transferido para $newUser e você não poderá desfazer essa ação. Tem certeza de que deseja prosseguir?',
+                  'Ao confirmar a transferência, o produto  com numero de série "$serieNumber", será permanentemente transferido para $newUser e você não poderá desfazer essa ação. Tem certeza de que deseja prosseguir?',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 16,
@@ -993,7 +993,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                     ),
                     onPressed: () {
                       Uri link_manual = Uri.parse(product.link_manual);
-                      //_launchManual(link_manual);
+                      _launchManual(link_manual);
                     },
                   ),
                 ),
@@ -1015,7 +1015,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
                     ),
                     onPressed: () {
                       Uri link_driver = Uri.parse(product.link_driver);
-                      //_launchDriver(link_driver);
+                      _launchDriver(link_driver);
                     },
                   ),
                 ),
