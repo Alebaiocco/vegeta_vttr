@@ -26,13 +26,18 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   List<ProductComment> comments = [];
   double rating = 0;
+  // ignore: non_constant_identifier_names
+  double avg_assessment = 0.0;
 
   Future<void> getProductComment({reload = false}) async {
     try {
       if (!reload)
         comments = (await widget.product.comments)!;
-      else
+      else {
         comments = (await widget.product.fetchComments())!;
+      }
+
+      await getProductAssessment();
 
       setState(() {});
     } catch (e) {
@@ -40,9 +45,26 @@ class _ProductPageState extends State<ProductPage> {
     } finally {}
   }
 
+  Future<void> getProductAssessment() async {
+    try {
+      avg_assessment = (await ProductRepositoryImpl()
+          .fetchProductAssessment(widget.product.id));
+
+      print('avg_assessment é $avg_assessment');
+    }
+    // ignore: empty_catches
+    catch (e) {}
+  }
+
   @override
   void initState() {
     getProductComment();
+    getProductAssessment();
+
+    try {} catch (e) {
+      avg_assessment = 0.0;
+    }
+
     super.initState();
 
     final videoID = YoutubePlayer.convertUrlToId(widget.product.link_yt);
@@ -371,7 +393,7 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                       ),
                       Text(
-                        '4.5',
+                        avg_assessment == null ? ('0.0') : (avg_assessment.toString()),
                         style: TextStyle(
                           color: Color(0xffA49930),
                           fontWeight: FontWeight.bold,

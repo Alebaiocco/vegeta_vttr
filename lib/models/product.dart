@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:vttr/models/product_comment.dart';
+import 'package:vttr/repository/product.dart';
 
 class Product {
   final int id;
@@ -27,9 +28,7 @@ class Product {
   ) {
     try {
       comments = fetchComments();
-      print("ACHOU COMENTARIOS");
     } catch (e) {
-      print("NULL");
       comments = null;
     }
   }
@@ -116,6 +115,17 @@ class Product {
         link_yt.hashCode ^
         link_manual.hashCode ^
         link_driver.hashCode;
+  }
+
+  Future<double> fetchAssessment() async {
+    try {
+      ProductRepositoryImpl().fetchProductAssessment(id);
+
+    }
+    catch(e) {
+
+    }
+    return 0.0;
   }
 
   Future<List<ProductComment>> fetchComments() async {

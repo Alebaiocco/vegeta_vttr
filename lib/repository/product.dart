@@ -68,4 +68,29 @@ class ProductRepositoryImpl implements ProductRepository {
       throw Exception('Falha ao adicionar o comentário ao produto: $e');
     }
   }
+
+  Future<double> fetchProductAssessment(int productId) async {
+    try {
+      final response = await Dio().get(
+        'https://ronaldo.gtasamp.com.br/api/product/assessment/$productId',
+      );
+
+      print('https://ronaldo.gtasamp.com.br/api/product/assessment/$productId');
+
+      final data = response.data;
+
+      if (data['success'] == true) {
+        final avgAssessment = data['avg_assessment'];
+
+        print('AVG É: $avgAssessment');
+        
+        return avgAssessment != null ? avgAssessment.toDouble() : 0.0;
+      } else {
+        throw Exception('Falha ao buscar a avaliação média do produto.');
+      }
+    } catch (e) {
+      print(e);
+      throw Exception('Falha ao buscar a avaliação média do produto.');
+    }
+  }
 }
