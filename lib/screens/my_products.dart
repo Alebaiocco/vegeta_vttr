@@ -100,14 +100,13 @@ class _MyProductsPageState extends State<MyProductsPage> {
                 garantia = 'Vitalícia';
               }
               return Product(
-                serieNumber: data['serie_number'],
-                photoUrl:
-                    'https://ronaldo.gtasamp.com.br/' + data['product_image'],
-                name: data['name'],
-                garantia: garantia,
-                link_driver: data['link_driver'],
-                link_manual: data['link_manual']
-              );
+                  serieNumber: data['serie_number'],
+                  photoUrl:
+                      'https://ronaldo.gtasamp.com.br/' + data['product_image'],
+                  name: data['name'],
+                  garantia: garantia,
+                  link_driver: data['link_driver'],
+                  link_manual: data['link_manual']);
             }));
           });
         }
@@ -192,6 +191,37 @@ class _MyProductsPageState extends State<MyProductsPage> {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const MyProductsPage()),
+          );
+        }
+      } else if (response.statusCode == 400) {
+        final Map<String, dynamic> data = json.decode(response.body);
+
+        if (data['message'] != null && data['message']['erros'] != null) {
+          List<String> erros = List<String>.from(
+              data['message']['erros'].map((item) => item.toString()));
+
+          if (erros.isNotEmpty) {
+            listaString.addAll(erros);
+          }
+
+          String errorMessage = erros.join('\n');
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Ops! Ocorreu um erro:\n$errorMessage',
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 7),
+              action: SnackBarAction(
+                label: 'OK',
+                textColor: Colors.white,
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
+              ),
+            ),
           );
         }
       } else if (response.statusCode == 401) {
@@ -300,9 +330,7 @@ class _MyProductsPageState extends State<MyProductsPage> {
           child: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
-                child: TopBar(
-                    text: 'Meus Produtos',
-                    text2: ''), 
+                child: TopBar(text: 'Meus Produtos', text2: ''),
               ),
               SliverToBoxAdapter(
                 child: Column(
