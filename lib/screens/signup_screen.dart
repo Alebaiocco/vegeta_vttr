@@ -234,7 +234,7 @@ class _SignupState extends State<Signup> {
                       onChanged: (value) => username = value,
                       decoration: InputDecoration(
                         labelStyle: TextStyle(color: Color(0xffA49930)),
-                        labelText: 'Username',
+                        labelText: 'Nome',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),

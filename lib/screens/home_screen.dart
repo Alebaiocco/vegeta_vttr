@@ -2,6 +2,8 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vttr/screens/contact_screen.dart';
 import 'package:vttr/screens/my_products.dart';
 import 'package:vttr/screens/shop_screen.dart';
@@ -45,11 +47,10 @@ class _HomeState extends State<Home> {
     final videoID = YoutubePlayer.convertUrlToId(youtubeUrl);
 
     _controller = YoutubePlayerController(
-      initialVideoId: videoID!,
-      flags: const YoutubePlayerFlags(
-        autoPlay: false,
-      )
-    );
+        initialVideoId: videoID!,
+        flags: const YoutubePlayerFlags(
+          autoPlay: false,
+        ));
   }
 
   @override
@@ -85,21 +86,15 @@ class _HomeState extends State<Home> {
                       const Padding(padding: EdgeInsets.only(top: 10)),
                       // Carrossel de imagens
                       GestureDetector(
-                          onDoubleTap: () => {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ShopPage()))
-                              },
                           child: CarouselSlider.builder(
-                            options: CarouselOptions(height: 400),
-                            itemCount: CarouselImages.length,
-                            itemBuilder: (context, index, realIndex) {
-                              final carrossel = CarouselImages[index];
+                        options: CarouselOptions(height: 400),
+                        itemCount: CarouselImages.length,
+                        itemBuilder: (context, index, realIndex) {
+                          final carrossel = CarouselImages[index];
 
-                              return buildImage(carrossel, index);
-                            },
-                          )),
+                          return buildImage(carrossel, index);
+                        },
+                      )),
                       Padding(padding: EdgeInsets.only(top: 10)),
                       ElevatedButton(
                         onPressed: () {
@@ -121,6 +116,16 @@ class _HomeState extends State<Home> {
                         child: const Text("Saiba Mais"),
                       ),
                       const Padding(padding: EdgeInsets.only(top: 20)),
+                      Padding(
+                        padding: EdgeInsets.only( bottom: 20),
+                        child: Text(
+                          'Quem Somos',
+                          style: TextStyle(
+                            color: Color(0xffA2A2A4),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                        ),
+                      ),
                       Container(
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: YoutubePlayer(
@@ -137,17 +142,10 @@ class _HomeState extends State<Home> {
                               ),
                             )
                           ],
-                      ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 30, bottom: 20),
-                        child: Text(
-                          'Quem Somos',
-                          style: TextStyle(color: Color(0xffA2A2A4)),
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 6),
+                        padding: EdgeInsets.only(top:15),
                         child: Padding(
                           padding: EdgeInsets.only(left: 40, right: 40),
                           child: Text(
@@ -200,9 +198,43 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 40,
-                      ),
+                      Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 30),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    const url =
+                                        'https://www.instagram.com/vtreffects/';
+                                    launch(url);
+                                  },
+                                  child: SvgPicture.asset(
+                                      "assets/images/insta.svg"),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    const url = 'https://vtreffects.com.br';
+                                    launch(url);
+                                  },
+                                  child: SvgPicture.asset(
+                                      "assets/images/site.svg"),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    const url =
+                                        'https://api.whatsapp.com/send/?phone=5527998660610&text&type=phone_number&app_absent=0';
+                                    launch(url);
+                                  },
+                                  child: SvgPicture.asset(
+                                      "assets/images/whats.svg"),
+                                ),
+                              ],
+                            ),
+                          ))
                     ],
                   ),
                 ],

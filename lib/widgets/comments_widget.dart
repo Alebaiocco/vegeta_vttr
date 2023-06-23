@@ -31,6 +31,7 @@ class CommentsWidget extends StatelessWidget {
                 ),
               ),
               RatingBar.builder(
+                unratedColor: Color(0xff727273),
                 initialRating: assessment.toDouble(),
                 minRating: 1,
                 direction: Axis.horizontal,

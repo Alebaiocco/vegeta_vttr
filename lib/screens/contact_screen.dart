@@ -3,6 +3,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vttr/widgets/top_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -185,11 +187,11 @@ class _ContactState extends State<Contact> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    color: Color.fromARGB(255, 66, 66, 83),
+                    color: Color.fromARGB(255, 66, 66, 83).withOpacity(0.3),
                     child: Padding(
                       padding: EdgeInsets.all(5),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -217,13 +219,20 @@ class _ContactState extends State<Contact> {
                               ),
                             ],
                           ),
-                          Text(
-                            'Categorias',
-                            style: TextStyle(
-                              color: Color(0xffA49930),
-                              fontFamily: 'Roboto-bold',
-                              fontSize: 18,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Text(
+                                    'Categorias',
+                                    style: TextStyle(
+                                      color: Color(0xffA49930),
+                                      fontFamily: 'Roboto-bold',
+                                      fontSize: 18,
+                                    ),
+                                  ))
+                            ],
                           ),
                           SizedBox(height: 10),
                           SizedBox(
@@ -265,13 +274,20 @@ class _ContactState extends State<Contact> {
                             ),
                           ),
                           SizedBox(height: 20),
-                          Text(
-                            'Descrição',
-                            style: TextStyle(
-                              color: Color(0xffA49930),
-                              fontFamily: 'Roboto-bold',
-                              fontSize: 18,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Text(
+                                    'Descrição',
+                                    style: TextStyle(
+                                      color: Color(0xffA49930),
+                                      fontFamily: 'Roboto-bold',
+                                      fontSize: 18,
+                                    ),
+                                  ))
+                            ],
                           ),
                           SizedBox(height: 10),
                           SizedBox(
@@ -322,6 +338,44 @@ class _ContactState extends State<Contact> {
                                 color: Color(0xffA49930),
                               ),
                             ),
+                          Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 30),
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.3,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        const url =
+                                            'https://www.instagram.com/vtreffects/';
+                                        launch(url);
+                                      },
+                                      child: SvgPicture.asset(
+                                          "assets/images/insta.svg"),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        const url = 'https://vtreffects.com.br';
+                                        launch(url);
+                                      },
+                                      child: SvgPicture.asset(
+                                          "assets/images/site.svg"),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        const url =
+                                            'https://api.whatsapp.com/send/?phone=5527998660610&text&type=phone_number&app_absent=0';
+                                        launch(url);
+                                      },
+                                      child: SvgPicture.asset(
+                                          "assets/images/whats.svg"),
+                                    ),
+                                  ],
+                                ),
+                              ))
                         ],
                       ),
                     ),

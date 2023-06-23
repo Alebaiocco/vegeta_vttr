@@ -8,7 +8,6 @@ import 'package:vttr/screens/signup_screen.dart';
 import 'package:vttr/screens/splash_screen.dart';
 import 'screens/contact_screen.dart';
 import 'screens/my_products.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';

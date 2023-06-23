@@ -10,7 +10,7 @@ import 'package:vttr/models/product_comment.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:vttr/widgets/comments_widget.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../repository/product.dart';
 import '../widgets/nav_bar.dart';
 
@@ -339,7 +339,8 @@ class _ProductPageState extends State<ProductPage> {
                           padding: EdgeInsets.symmetric(vertical: 10),
                           child: ElevatedButton(
                             onPressed: () {
-                              // Implemente a lógica para adicionar o produto ao carrinho ou realizar a ação desejada
+                              const url = 'https://vtreffects.com.br/loja/';
+                              launch(url);
                             },
                             style: ElevatedButton.styleFrom(
                               primary: Colors.black,
@@ -352,14 +353,23 @@ class _ProductPageState extends State<ProductPage> {
                               shadowColor: Colors.black,
                               elevation: 10,
                             ),
-                            child: Text(
-                              "Saiba Mais",
-                              style: TextStyle(
-                                color: const Color(0xffA49930),
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                            child: Container(
+                              width: 90,
+                              child: Row(
+                              children: [
+                              Text(
+                                "Comprar",
+                                style: TextStyle(
+                                  color: const Color(0xffA49930),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
+                              Padding(padding: EdgeInsets.only(left: 10),
+                              child: SvgPicture.asset("assets/images/cart.svg", color: Color(0xffA2A2A4), width: 16, height: 16),)
+                              ]
                             ),
+                            )
                           ),
                         )
                       ],

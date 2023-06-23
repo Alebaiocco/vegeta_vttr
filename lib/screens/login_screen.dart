@@ -267,7 +267,7 @@ class _LoginState extends State<Login> {
                       onChanged: (value) => email = value,
                       decoration: InputDecoration(
                         labelStyle: TextStyle(color: Color(0xffA49930)),
-                        labelText: 'Login',
+                        labelText: 'Email',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
