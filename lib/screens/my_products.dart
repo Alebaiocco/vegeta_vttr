@@ -188,10 +188,13 @@ class _MyProductsPageState extends State<MyProductsPage> {
             webPosition: 'center',
           );
 
-          Navigator.push(
+          /*Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const MyProductsPage()),
-          );
+          );*/
+          setState(() {
+            listProduct();
+          });
         }
       } else if (response.statusCode == 400) {
         final Map<String, dynamic> data = json.decode(response.body);
