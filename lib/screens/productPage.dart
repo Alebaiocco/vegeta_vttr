@@ -269,6 +269,182 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
+
+  //DIALOG PARA ALTERAR COMENTARIOS
+  void alterComment() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color.fromARGB(255, 167, 155, 48),
+                          Color.fromARGB(255, 206, 192, 84),
+                          Color.fromARGB(255, 255, 251, 179),
+                        ],
+                      ),
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(16.0)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          'assets/images/logo.png',
+                          color: Colors.white,
+                          fit: BoxFit.cover,
+                          height: 40,
+                          width: 40,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Alterar Comentario',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    child: TextFormField(
+                      controller: commentController,
+                      decoration: InputDecoration(
+                        labelText: 'Altere seu comentário...',
+                        labelStyle: TextStyle(color: Color(0xffA49930)),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xffA49930), width: 2.0),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.symmetric(vertical: 7),
+                      child: Text("Avalie aqui ",
+                          style: TextStyle(
+                              color: Color(0xffA49930),
+                              fontWeight: FontWeight.bold))),
+                  Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                      child: RatingBar.builder(
+                        initialRating: 0,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        itemCount: 5,
+                        itemSize: 20,
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        onRatingUpdate: (value) {
+                          assessment = value;
+                        },
+                      )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.transparent,
+                              onPrimary: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: Text('Fechar'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          )),
+                      Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xffA49930),
+                              onPrimary: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onPressed: () async {
+                              Navigator.of(context).pop();
+
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              String? token = prefs.getString('token');
+
+                              if (token == null) return;
+
+                              try {
+                                await ProductRepositoryImpl().addProductComment(
+                                    token,
+                                    commentController.text,
+                                    assessment.toInt(),
+                                    widget.product.name);
+
+                                Fluttertoast.showToast(
+                                  msg: 'Comentário alterado com sucesso.',
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 10,
+                                  backgroundColor: Colors.green,
+                                  textColor: Colors.white,
+                                  webShowClose: true,
+                                  webPosition: 'center',
+                                );
+
+                                await getProductComment(reload: true);
+                              } catch (error) {
+                                print("Falha ao alterar o comentário");
+
+                                // ignore: use_build_context_synchronously
+                                Fluttertoast.showToast(
+                                  msg: error.toString().substring(10),
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 10,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  webShowClose: true,
+                                  webPosition: 'center',
+                                );
+                              }
+                            },
+                            child: Text('Alterar'),
+                          ))
+                    ],
+                  )
+                ],
+              ),
+            ));
+      },
+    );
+  }
   late YoutubePlayerController _controller;
   @override
   Widget build(BuildContext context) {
@@ -338,39 +514,42 @@ class _ProductPageState extends State<ProductPage> {
                         Padding(
                           padding: EdgeInsets.symmetric(vertical: 10),
                           child: ElevatedButton(
-                            onPressed: () {
-                              const url = 'https://vtreffects.com.br/loja/';
-                              launch(url);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.black,
-                              onPrimary: Colors.black,
-                              minimumSize: const Size(0, 30),
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
-                              ),
-                              shadowColor: Colors.black,
-                              elevation: 10,
-                            ),
-                            child: Container(
-                              width: 90,
-                              child: Row(
-                              children: [
-                              Text(
-                                "Comprar",
-                                style: TextStyle(
-                                  color: const Color(0xffA49930),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                              onPressed: () {
+                                const url = 'https://vtreffects.com.br/loja/';
+                                launch(url);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.black,
+                                onPrimary: Colors.black,
+                                minimumSize: const Size(0, 30),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)),
                                 ),
+                                shadowColor: Colors.black,
+                                elevation: 10,
                               ),
-                              Padding(padding: EdgeInsets.only(left: 10),
-                              child: SvgPicture.asset("assets/images/cart.svg", color: Color(0xffA2A2A4), width: 16, height: 16),)
-                              ]
-                            ),
-                            )
-                          ),
+                              child: Container(
+                                width: 90,
+                                child: Row(children: [
+                                  Text(
+                                    "Comprar",
+                                    style: TextStyle(
+                                      color: const Color(0xffA49930),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: SvgPicture.asset(
+                                        "assets/images/cart.svg",
+                                        color: Color(0xffA2A2A4),
+                                        width: 16,
+                                        height: 16),
+                                  )
+                                ]),
+                              )),
                         )
                       ],
                     ),
@@ -379,10 +558,7 @@ class _ProductPageState extends State<ProductPage> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.8,
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Color(0xffA49930), 
-                        width: 3
-                      ),
+                      border: Border.all(color: Color(0xffA49930), width: 3),
                     ),
                     child: YoutubePlayer(
                       controller: _controller,
